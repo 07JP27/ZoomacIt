@@ -82,7 +82,18 @@ final class StatusBarController: NSObject {
     }
 
     @objc private func aboutAction() {
-        NSApplication.shared.orderFrontStandardAboutPanel(nil)
+        let credits = NSAttributedString(
+            string: "https://github.com/07JP27/ZoomacIt",
+            attributes: [
+                .link: URL(string: "https://github.com/07JP27/ZoomacIt")!,
+                .font: NSFont.systemFont(ofSize: 11)
+            ]
+        )
+        NSApplication.shared.orderFrontStandardAboutPanel(options: [
+            .credits: credits,
+            .init(rawValue: "Copyright"): "© 2026 07JP27"
+        ])
+        NSApplication.shared.activate(ignoringOtherApps: true)
     }
 
     @objc private func quitAction() {
