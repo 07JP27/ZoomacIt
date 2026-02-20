@@ -17,3 +17,4 @@ DerivedData/
 # Swift Package Manager
 .build/
 Packages/
+.vscode/settings.json

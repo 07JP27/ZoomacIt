@@ -2,8 +2,9 @@
   <img src="images/1024.png" width="128">
 </p>
 
-# ZoomacIt
+English | [日本語](README_ja.md)
 
+# ZoomacIt
 ZoomacIt is a native macOS menu bar app inspired by [ZoomIt for Windows](https://learn.microsoft.com/en-us/sysinternals/downloads/zoomit).
 The project aims for feature compatibility with ZoomIt, providing system-wide hotkeys, smooth zooming, and on-screen annotation while minimizing required permissions.
 
