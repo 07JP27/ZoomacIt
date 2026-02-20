@@ -381,7 +381,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jp27.ZoomacItTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.x07jp27.ZoomacItTests;
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZoomacIt.app/Contents/MacOS/ZoomacIt";
 			};
@@ -395,7 +395,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = ZoomacIt/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jp27.ZoomacIt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.x07jp27.ZoomacIt;
 				PRODUCT_NAME = ZoomacIt;
 				SDKROOT = macosx;
 			};
@@ -412,7 +412,7 @@
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.jp27.ZoomacItTests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.x07jp27.ZoomacItTests;
 				SDKROOT = macosx;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ZoomacIt.app/Contents/MacOS/ZoomacIt";
 			};
@@ -426,7 +426,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = ZoomacIt/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.jp27.ZoomacIt;
+				PRODUCT_BUNDLE_IDENTIFIER = com.x07jp27.ZoomacIt;
 				PRODUCT_NAME = ZoomacIt;
 				SDKROOT = macosx;
 			};
