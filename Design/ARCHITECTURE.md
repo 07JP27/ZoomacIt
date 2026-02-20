@@ -46,7 +46,7 @@ ZoomacIt/                          # リポジトリルート
 │  AppDelegate / StatusBarController          │
 ├─────────────────────────────────────────────┤
 │                 Core 層                      │  OS機能への橋渡し
-│  HotkeyManager / PermissionManager          │
+│  HotkeyManager                               │
 ├─────────────────────────────────────────────┤
 │               Overlay 層                     │  ウィンドウ管理・画面キャプチャ
 │  OverlayWindow / OverlayWindowController    │
@@ -68,7 +68,7 @@ ZoomacIt/                          # リポジトリルート
 | ファイル | 役割 |
 |---|---|
 | `main.swift` | 明示的エントリーポイント。`NSApplication.shared.run()` を呼び出す。（`@main` は正しくエントリーポイントを合成しなかったため不採用） |
-| `AppDelegate.swift` | `NSApplicationDelegate` を実装。起動時に権限チェック・メニューバー・ホットキーを初期化し、Drawモードのトグルを管理する。`@MainActor` で隔離。 |
+| `AppDelegate.swift` | `NSApplicationDelegate` を実装。起動時にメニューバー・ホットキーを初期化し、Drawモードのトグルを管理する。`@MainActor` で隔離。 |
 | `StatusBarController.swift` | `NSStatusItem` によるメニューバーアイコンの表示とメニュー構築。Draw起動・About・Quitのアクションを提供。 |
 
 **設計ポイント:**
@@ -82,7 +82,6 @@ ZoomacIt/                          # リポジトリルート
 | ファイル | 役割 |
 |---|---|
 | `HotkeyManager.swift` | Carbon `RegisterEventHotKey` によるグローバルホットキーの登録。⌃2 の押下を検知して Draw モードを起動する。`@unchecked Sendable` として Carbon コールバックから `DispatchQueue.main.async` で安全にメインスレッドへ発火する。Accessibility 権限不要。 |
-| `PermissionManager.swift` | Screen Recording（`CGPreflightScreenCaptureAccess`）の権限チェック・リクエスト。`@MainActor` で隔離し、`isScreenRecordingGranted` は `nonisolated` として他スレッドからも参照可能。 |
 
 **設計ポイント:**
 - Carbon `RegisterEventHotKey` を採用。`CGEventTap` は Accessibility 権限が必要で、リビルドのたびに権限が無効化されるため不採用

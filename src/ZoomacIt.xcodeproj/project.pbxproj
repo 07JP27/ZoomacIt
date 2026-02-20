@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1270055E14568B54C02DF463 /* PermissionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98A2FFD4FED32082CD0E69E4 /* PermissionManager.swift */; };
 		17A6C1BCCBE9B8670704E4C2 /* DrawingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A34CBC6D716010D6E3DA63 /* DrawingStateTests.swift */; };
 		19840E05A102F6B23E08C60C /* NSScreen+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E670EBEBFE36CE4EF3BFEDDD /* NSScreen+Extensions.swift */; };
 		1EF7046471522CBF02EE3D9D /* StrokeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7EC7D8734530BA2E376139 /* StrokeManager.swift */; };
@@ -65,7 +64,6 @@
 		8E069EC8EF00483692203882 /* DrawingCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingCanvasView.swift; sourceTree = "<group>"; };
 		9059A7F84AC48FE489FC4064 /* OverlayWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowController.swift; sourceTree = "<group>"; };
 		972CA1E50E6818D068D22333 /* TextInputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputController.swift; sourceTree = "<group>"; };
-		98A2FFD4FED32082CD0E69E4 /* PermissionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionManager.swift; sourceTree = "<group>"; };
 		AD7667A522D320490BA4461A /* ZoomacItTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZoomacItTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD830BA2019F30C637E19AC9 /* ZoomacIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZoomacIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF0B1156D71050ABD1623796 /* CGContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGContext+Extensions.swift"; sourceTree = "<group>"; };
@@ -156,7 +154,6 @@
 			isa = PBXGroup;
 			children = (
 				2601F1F38544CFA522261C7D /* HotkeyManager.swift */,
-				98A2FFD4FED32082CD0E69E4 /* PermissionManager.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -296,7 +293,6 @@
 				19840E05A102F6B23E08C60C /* NSScreen+Extensions.swift in Sources */,
 				E9920C14A86002F653920D7E /* OverlayWindow.swift in Sources */,
 				EFB76DD8BEEDF74D7AB326DD /* OverlayWindowController.swift in Sources */,
-				1270055E14568B54C02DF463 /* PermissionManager.swift in Sources */,
 				C93442BB6C4635032200E48B /* ShapeRenderer.swift in Sources */,
 				7B4FDA5C58C43A27DA1A201B /* StatusBarController.swift in Sources */,
 				41011F5512E5B70E02211DF4 /* Stroke.swift in Sources */,

@@ -5,7 +5,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private var statusBarController: StatusBarController?
     private var hotkeyManager: HotkeyManager { HotkeyManager.shared }
-    private var permissionManager: PermissionManager { PermissionManager.shared }
     private var overlayController: OverlayWindowController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -15,9 +14,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             self?.toggleDrawMode()
         }
         hotkeyManager.start()
-
-        // Request Screen Recording permission if needed
-        permissionManager.requestRequiredPermissions()
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
