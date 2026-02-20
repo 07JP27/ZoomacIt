@@ -67,7 +67,8 @@ ZoomacIt/                          # リポジトリルート
 
 | ファイル | 役割 |
 |---|---|
-| `AppDelegate.swift` | `@main` エントリーポイント。`NSApplicationDelegate` を実装。起動時に権限チェック・メニューバー・ホットキーを初期化し、Drawモードのトグルを管理する。`@MainActor` で隔離。 |
+| `main.swift` | 明示的エントリーポイント。`NSApplication.shared.run()` を呼び出す。（`@main` は正しくエントリーポイントを合成しなかったため不採用） |
+| `AppDelegate.swift` | `NSApplicationDelegate` を実装。起動時に権限チェック・メニューバー・ホットキーを初期化し、Drawモードのトグルを管理する。`@MainActor` で隔離。 |
 | `StatusBarController.swift` | `NSStatusItem` によるメニューバーアイコンの表示とメニュー構築。Draw起動・About・Quitのアクションを提供。 |
 
 **設計ポイント:**
@@ -80,12 +81,12 @@ ZoomacIt/                          # リポジトリルート
 
 | ファイル | 役割 |
 |---|---|
-| `HotkeyManager.swift` | `CGEvent.tapCreate()` によるグローバルホットキーの登録と監視。⌃2 の押下を検知して Draw モードを起動する。`@unchecked Sendable` としてメインスレッド外のイベントタップから安全にコールバックを発火する。 |
-| `PermissionManager.swift` | Accessibility（`AXIsProcessTrusted`）と Screen Recording（`CGPreflightScreenCaptureAccess`）の権限チェック・リクエスト。`@MainActor` で隔離し、`isAccessibilityGranted` / `isScreenRecordingGranted` は `nonisolated` として他スレッドからも参照可能。 |
+| `HotkeyManager.swift` | Carbon `RegisterEventHotKey` によるグローバルホットキーの登録。⌃2 の押下を検知して Draw モードを起動する。`@unchecked Sendable` として Carbon コールバックから `DispatchQueue.main.async` で安全にメインスレッドへ発火する。Accessibility 権限不要。 |
+| `PermissionManager.swift` | Screen Recording（`CGPreflightScreenCaptureAccess`）の権限チェック・リクエスト。`@MainActor` で隔離し、`isScreenRecordingGranted` は `nonisolated` として他スレッドからも参照可能。 |
 
 **設計ポイント:**
-- `CGEventTap` のコールバックは C 関数ポインタが必要なため `Unmanaged` で self を受け渡し
-- タップが OS によりタイムアウト無効化された場合に自動再有効化する
+- Carbon `RegisterEventHotKey` を採用。`CGEventTap` は Accessibility 権限が必要で、リビルドのたびに権限が無効化されるため不採用
+- Carbon コールバックは `EventHandlerUPP` で受け取り、`DispatchQueue.main.async` でメインスレッドへ転送
 
 ---
 
@@ -279,9 +280,9 @@ Draw 機能の全要件が AppKit ネイティブ API に 1:1 で対応するた
 
 | 権限 | 用途 | API |
 |---|---|---|
-| **Accessibility** | `CGEventTap` によるグローバルホットキー | `AXIsProcessTrusted()` |
 | **Screen Recording** | Draw モード開始時の画面キャプチャ | `CGPreflightScreenCaptureAccess()` / `ScreenCaptureKit` |
 
+**Accessibility 権限は不要。** グローバルホットキーに Carbon `RegisterEventHotKey` を使用しているため。
+
 権限が拒否された場合の動作:
-- Accessibility 拒否 → ホットキー無効（メニューからのみ起動可能）
 - Screen Recording 拒否 → 黒背景上に描画（graceful degradation）
