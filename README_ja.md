@@ -8,6 +8,14 @@
 ZoomacIt は [Windows 版 ZoomIt](https://learn.microsoft.com/ja-jp/sysinternals/downloads/zoomit) にインスパイアされた、ネイティブ macOS メニューバーアプリです。
 ZoomIt との機能互換を目指しており、システム全体で使えるホットキー、スムーズなズーム、画面上へのアノテーション機能を、最小限の権限で提供します。
 
+## インストール
+
+1. [Releases](https://github.com/07JP27/ZoomacIt/releases) から最新の `.pkg` をダウンロード
+2. `.pkg` ファイルを右クリック → **開く** → ダイアログで **開く** をクリック  
+   *（Apple Developer ID で署名されていないため必要です）*
+3. インストーラーに従って ZoomacIt を Applications にインストール
+4. プロンプトが表示されたら **画面収録** 権限を許可
+
 ## 現在の機能カバレッジ
 | 機能 | 状態 |
 |---|---|
