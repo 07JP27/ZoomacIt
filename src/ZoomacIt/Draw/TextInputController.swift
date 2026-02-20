@@ -4,23 +4,35 @@ import CoreGraphics
 /// Manages an NSTextView for text input during Draw mode.
 /// On commit, the text is rasterized into a CGImage and composited onto finishedLayer.
 @MainActor
-final class TextInputController {
+final class TextInputController: NSObject, NSTextViewDelegate {
 
     private weak var canvasView: NSView?
     private let drawingState: DrawingState
     private var textView: NSTextView?
     private var fontSize: CGFloat = 24.0
 
+    /// Called when the user presses Escape inside the text view.
+    /// The owner (DrawingCanvasView) should call commitText() in response.
+    var onCommit: (() -> Void)?
+
     init(canvasView: NSView, drawingState: DrawingState) {
         self.canvasView = canvasView
         self.drawingState = drawingState
+        super.init()
     }
 
     // MARK: - Public
 
+    /// Whether the controller has a text view with non-empty content.
+    var hasText: Bool {
+        guard let textView else { return false }
+        return !textView.string.isEmpty
+    }
+
     /// Place a text field at the specified position within the canvas.
+    /// If there is existing text, the caller is responsible for committing it first.
     func placeTextField(at point: CGPoint) {
-        cleanup() // Remove any existing text view
+        cleanup() // Remove any existing text view (caller should have committed first)
 
         guard let canvas = canvasView else { return }
 
@@ -40,6 +52,9 @@ final class TextInputController {
         textView.maxSize = NSSize(width: canvas.bounds.width - point.x, height: canvas.bounds.height - point.y)
         textView.textContainer?.widthTracksTextView = false
         textView.textContainer?.containerSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
+
+        // Set delegate to intercept Escape key
+        textView.delegate = self
 
         canvas.addSubview(textView)
         textView.window?.makeFirstResponder(textView)
@@ -94,7 +109,20 @@ final class TextInputController {
 
     /// Remove the text view from the canvas.
     func cleanup() {
+        textView?.delegate = nil
         textView?.removeFromSuperview()
         textView = nil
+    }
+
+    // MARK: - NSTextViewDelegate
+
+    /// Intercept Escape key (cancelOperation:) before NSTextView consumes it.
+    func textView(_ textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+        if commandSelector == #selector(NSResponder.cancelOperation(_:)) {
+            // Escape pressed — notify owner to commit text and exit text mode
+            onCommit?()
+            return true // We handled it
+        }
+        return false // Let NSTextView handle other commands
     }
 }
