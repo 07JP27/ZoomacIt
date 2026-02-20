@@ -1,0 +1,77 @@
+import AppKit
+
+@MainActor
+final class StatusBarController: NSObject {
+
+    private var statusItem: NSStatusItem?
+
+    override init() {
+        super.init()
+        setupStatusItem()
+    }
+
+    // MARK: - Setup
+
+    private func setupStatusItem() {
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        NSLog("[StatusBar] statusItem created: %@", statusItem != nil ? "yes" : "no")
+
+        guard let button = statusItem?.button else {
+            NSLog("[StatusBar] ERROR: button is nil")
+            return
+        }
+
+        // Use a well-known system symbol
+        if let image = NSImage(systemSymbolName: "pencil.and.outline",
+                               accessibilityDescription: "ZoomacIt") {
+            image.isTemplate = true
+            button.image = image
+            NSLog("[StatusBar] Icon set successfully")
+        } else {
+            // Fallback: use text title
+            button.title = "Z"
+            NSLog("[StatusBar] SF Symbol not found, using text fallback")
+        }
+
+        statusItem?.menu = buildMenu()
+        NSLog("[StatusBar] Menu assigned")
+    }
+
+    private func buildMenu() -> NSMenu {
+        let menu = NSMenu()
+
+        let drawItem = NSMenuItem(title: "Draw", action: #selector(drawAction), keyEquivalent: "2")
+        drawItem.keyEquivalentModifierMask = [.control]
+        drawItem.target = self
+        menu.addItem(drawItem)
+
+        menu.addItem(.separator())
+
+        let aboutItem = NSMenuItem(title: "About ZoomacIt", action: #selector(aboutAction), keyEquivalent: "")
+        aboutItem.target = self
+        menu.addItem(aboutItem)
+
+        menu.addItem(.separator())
+
+        let quitItem = NSMenuItem(title: "Quit ZoomacIt", action: #selector(quitAction), keyEquivalent: "q")
+        quitItem.keyEquivalentModifierMask = [.command]
+        quitItem.target = self
+        menu.addItem(quitItem)
+
+        return menu
+    }
+
+    // MARK: - Actions
+
+    @objc private func drawAction() {
+        HotkeyManager.shared.onDrawHotkey?()
+    }
+
+    @objc private func aboutAction() {
+        NSApplication.shared.orderFrontStandardAboutPanel(nil)
+    }
+
+    @objc private func quitAction() {
+        NSApplication.shared.terminate(nil)
+    }
+}
