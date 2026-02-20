@@ -6,12 +6,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var statusBarController: StatusBarController?
     private var hotkeyManager: HotkeyManager { HotkeyManager.shared }
     private var overlayController: OverlayWindowController?
+    private var breakTimerController: BreakTimerWindowController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSLog("[AppDelegate] applicationDidFinishLaunching")
         statusBarController = StatusBarController()
         hotkeyManager.onDrawHotkey = { [weak self] in
             self?.toggleDrawMode()
+        }
+        hotkeyManager.onBreakHotkey = { [weak self] in
+            self?.toggleBreakTimer()
         }
         hotkeyManager.start()
     }
@@ -36,5 +40,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// Called from OverlayWindowController when the user exits draw mode (Escape / right-click)
     func drawModeDidEnd() {
         overlayController = nil
+    }
+
+    // MARK: - Break Timer
+
+    private func toggleBreakTimer() {
+        if let controller = breakTimerController {
+            controller.dismiss()
+            breakTimerController = nil
+        } else {
+            let controller = BreakTimerWindowController()
+            controller.showTimer()
+            breakTimerController = controller
+        }
+    }
+
+    /// Called from BreakTimerWindowController when the timer is dismissed.
+    func breakTimerDidEnd() {
+        breakTimerController = nil
     }
 }

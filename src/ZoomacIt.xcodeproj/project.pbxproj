@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		17A6C1BCCBE9B8670704E4C2 /* DrawingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A34CBC6D716010D6E3DA63 /* DrawingStateTests.swift */; };
 		19840E05A102F6B23E08C60C /* NSScreen+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E670EBEBFE36CE4EF3BFEDDD /* NSScreen+Extensions.swift */; };
+		1EAA0D96B867DF66AF0A6D2A /* BreakTimerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD499A142CC237EF664DD96 /* BreakTimerWindow.swift */; };
 		1EF7046471522CBF02EE3D9D /* StrokeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7EC7D8734530BA2E376139 /* StrokeManager.swift */; };
+		26292806CB72F8D077354D37 /* BreakTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B27C880479A92E16A621C7B /* BreakTimerView.swift */; };
 		398052FC99D2C2CD71B1DFC5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BB99CA77A8C7A975390CA9 /* AppDelegate.swift */; };
 		3ECA67329DFFE9622AF916FB /* HighlighterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD20BCB0F5497D5789C75AF /* HighlighterRenderer.swift */; };
 		3F26DF307478E72BC3652D92 /* NSBezierPath+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F32C327FD3231AE4777979 /* NSBezierPath+Extensions.swift */; };
@@ -17,11 +19,14 @@
 		62B9C3FC42F88FE77EB06D9E /* DrawingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F716B76F77ECE1104368663A /* DrawingState.swift */; };
 		7A1095C1C52F1230FDBE9403 /* StrokeManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453513CAB75B5909A1521589 /* StrokeManagerTests.swift */; };
 		7B4FDA5C58C43A27DA1A201B /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DED7AFD9439A1BCE15FFFAC /* StatusBarController.swift */; };
+		862780FF803ABA4C039BC6B7 /* BreakTimerWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3023CD2A9E7BBC51D21E79 /* BreakTimerWindowController.swift */; };
 		89CCEAA1BB96EE5C5323B494 /* FreehandRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABECEA7A773ED6A7EAE57DC /* FreehandRendererTests.swift */; };
 		8EB5433F06804DD1E27E51DF /* ShapeRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8699BCE233A5E7F09663017F /* ShapeRendererTests.swift */; };
 		A43592DDACECF5B06B176B5B /* BlurRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F090455D6F911163D0815F3 /* BlurRenderer.swift */; };
 		BDA90D7BFA5D8BEB00DCDB50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00930854C1D0CC9734D203CD /* Assets.xcassets */; };
 		BFE4A25ECEF31F988FA3CBC0 /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2601F1F38544CFA522261C7D /* HotkeyManager.swift */; };
+		C3267D6C7B3527E75BC44373 /* BreakTimerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD11F607239F9F22444F64A /* BreakTimerState.swift */; };
+		C851D93A53C172EA7A4F10C6 /* BreakTimerStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35CEE9FA480AD8EA3412F68 /* BreakTimerStateTests.swift */; };
 		C93442BB6C4635032200E48B /* ShapeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478A14C839BA1275E186312E /* ShapeRenderer.swift */; };
 		CB7DAA6D3BA711D13B9C0D94 /* FreehandRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068AF06DCD4187879DA06178 /* FreehandRenderer.swift */; };
 		DD29E7A2CA8719348BC7F361 /* DrawingCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E069EC8EF00483692203882 /* DrawingCanvasView.swift */; };
@@ -46,6 +51,7 @@
 		00930854C1D0CC9734D203CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		068AF06DCD4187879DA06178 /* FreehandRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreehandRenderer.swift; sourceTree = "<group>"; };
 		167B3BE9B273B7B056C41CD5 /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
+		1B27C880479A92E16A621C7B /* BreakTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakTimerView.swift; sourceTree = "<group>"; };
 		1F7CB4AB580AE896C4DAEE2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2601F1F38544CFA522261C7D /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
 		3AA294A8321CAB0BBDA54F11 /* Stroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
@@ -58,13 +64,17 @@
 		52BB99CA77A8C7A975390CA9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5D7EC7D8734530BA2E376139 /* StrokeManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeManager.swift; sourceTree = "<group>"; };
 		68A34CBC6D716010D6E3DA63 /* DrawingStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingStateTests.swift; sourceTree = "<group>"; };
+		6CD11F607239F9F22444F64A /* BreakTimerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakTimerState.swift; sourceTree = "<group>"; };
 		7DED7AFD9439A1BCE15FFFAC /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		8699BCE233A5E7F09663017F /* ShapeRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeRendererTests.swift; sourceTree = "<group>"; };
 		8E069EC8EF00483692203882 /* DrawingCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingCanvasView.swift; sourceTree = "<group>"; };
 		9059A7F84AC48FE489FC4064 /* OverlayWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowController.swift; sourceTree = "<group>"; };
 		972CA1E50E6818D068D22333 /* TextInputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputController.swift; sourceTree = "<group>"; };
 		AD7667A522D320490BA4461A /* ZoomacItTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZoomacItTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AFD499A142CC237EF664DD96 /* BreakTimerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakTimerWindow.swift; sourceTree = "<group>"; };
 		BD830BA2019F30C637E19AC9 /* ZoomacIt.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZoomacIt.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		BE3023CD2A9E7BBC51D21E79 /* BreakTimerWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakTimerWindowController.swift; sourceTree = "<group>"; };
+		C35CEE9FA480AD8EA3412F68 /* BreakTimerStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakTimerStateTests.swift; sourceTree = "<group>"; };
 		CF0B1156D71050ABD1623796 /* CGContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGContext+Extensions.swift"; sourceTree = "<group>"; };
 		E5F32C327FD3231AE4777979 /* NSBezierPath+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSBezierPath+Extensions.swift"; sourceTree = "<group>"; };
 		E670EBEBFE36CE4EF3BFEDDD /* NSScreen+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSScreen+Extensions.swift"; sourceTree = "<group>"; };
@@ -123,6 +133,9 @@
 		A9848C7C71E899E74E3268AF /* Overlay */ = {
 			isa = PBXGroup;
 			children = (
+				1B27C880479A92E16A621C7B /* BreakTimerView.swift */,
+				AFD499A142CC237EF664DD96 /* BreakTimerWindow.swift */,
+				BE3023CD2A9E7BBC51D21E79 /* BreakTimerWindowController.swift */,
 				167B3BE9B273B7B056C41CD5 /* OverlayWindow.swift */,
 				9059A7F84AC48FE489FC4064 /* OverlayWindowController.swift */,
 			);
@@ -132,6 +145,7 @@
 		ABD35C925B1B25CF1D934FAE /* ZoomacItTests */ = {
 			isa = PBXGroup;
 			children = (
+				C35CEE9FA480AD8EA3412F68 /* BreakTimerStateTests.swift */,
 				68A34CBC6D716010D6E3DA63 /* DrawingStateTests.swift */,
 				4ABECEA7A773ED6A7EAE57DC /* FreehandRendererTests.swift */,
 				8699BCE233A5E7F09663017F /* ShapeRendererTests.swift */,
@@ -143,6 +157,7 @@
 		C26D593D3EDA4357E09FE02E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6CD11F607239F9F22444F64A /* BreakTimerState.swift */,
 				F716B76F77ECE1104368663A /* DrawingState.swift */,
 				3AA294A8321CAB0BBDA54F11 /* Stroke.swift */,
 			);
@@ -268,6 +283,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C851D93A53C172EA7A4F10C6 /* BreakTimerStateTests.swift in Sources */,
 				17A6C1BCCBE9B8670704E4C2 /* DrawingStateTests.swift in Sources */,
 				89CCEAA1BB96EE5C5323B494 /* FreehandRendererTests.swift in Sources */,
 				8EB5433F06804DD1E27E51DF /* ShapeRendererTests.swift in Sources */,
@@ -281,6 +297,10 @@
 			files = (
 				398052FC99D2C2CD71B1DFC5 /* AppDelegate.swift in Sources */,
 				A43592DDACECF5B06B176B5B /* BlurRenderer.swift in Sources */,
+				C3267D6C7B3527E75BC44373 /* BreakTimerState.swift in Sources */,
+				26292806CB72F8D077354D37 /* BreakTimerView.swift in Sources */,
+				1EAA0D96B867DF66AF0A6D2A /* BreakTimerWindow.swift in Sources */,
+				862780FF803ABA4C039BC6B7 /* BreakTimerWindowController.swift in Sources */,
 				FFC7A2554BCDAF31EE2F2630 /* CGContext+Extensions.swift in Sources */,
 				DD29E7A2CA8719348BC7F361 /* DrawingCanvasView.swift in Sources */,
 				62B9C3FC42F88FE77EB06D9E /* DrawingState.swift in Sources */,
