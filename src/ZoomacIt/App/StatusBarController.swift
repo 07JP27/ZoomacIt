@@ -21,16 +21,21 @@ final class StatusBarController: NSObject {
             return
         }
 
-        // Use a well-known system symbol
-        if let image = NSImage(systemSymbolName: "pencil.and.outline",
-                               accessibilityDescription: "ZoomacIt") {
+        // Use custom menu bar icon from asset catalog
+        if let image = NSImage(named: "MenuBarIcon") {
             image.isTemplate = true
             button.image = image
             NSLog("[StatusBar] Icon set successfully")
         } else {
-            // Fallback: use text title
-            button.title = "Z"
-            NSLog("[StatusBar] SF Symbol not found, using text fallback")
+            // Fallback: use SF Symbol
+            if let sfImage = NSImage(systemSymbolName: "pencil.and.outline",
+                                     accessibilityDescription: "ZoomacIt") {
+                sfImage.isTemplate = true
+                button.image = sfImage
+            } else {
+                button.title = "Z"
+            }
+            NSLog("[StatusBar] Custom icon not found, using fallback")
         }
 
         statusItem?.menu = buildMenu()
