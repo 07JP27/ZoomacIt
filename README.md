@@ -78,3 +78,7 @@ Press **⌃2** (Control+2) to enter Draw mode. The screen freezes and you can dr
 | ⌘S | Save to file |
 | Space | Center cursor |
 | Escape / Right-click | Exit Draw mode |
+
+## License
+
+This project is licensed under the [GNU General Public License v3.0](LICENSE).
