@@ -10,11 +10,15 @@ The project aims for feature compatibility with ZoomIt, providing system-wide ho
 
 ## Installation
 
-1. Download the latest `.pkg` from [Releases](https://github.com/07JP27/ZoomacIt/releases)
-2. Right-click the `.pkg` file → **Open** → Click **Open** in the dialog  
+1. Download the latest `.dmg` from [Releases](https://github.com/07JP27/ZoomacIt/releases)
+2. Open the `.dmg` file and drag **ZoomacIt.app** to the **Applications** folder
+3. Open **Terminal** and run the following command to remove the quarantine flag:
+   ```bash
+   xattr -cr /Applications/ZoomacIt.app
+   ```
    *(Required because the app is not signed with an Apple Developer ID)*
-3. Follow the installer to install ZoomacIt to Applications
-4. Grant **Screen Recording** permission when prompted
+4. Open ZoomacIt from Applications
+5. Grant **Screen Recording** permission when prompted
 
 ## Current feature coverage
 | Feature | Status |
