@@ -9,23 +9,29 @@
 ## ディレクトリ構成
 
 ```
-ZoomacIt/
-├── CONCEPT.md                     # 機能定義書（Windows版 ZoomIt v10.0 完全互換を目指す）
-├── Tech-Design/
+ZoomacIt/                          # リポジトリルート
+├── .github/
+│   └── copilot-instructions.md    # Copilot 用指示書
+├── Design/
+│   ├── ARCHITECTURE.md            # 本ドキュメント
+│   ├── CONCEPT.md                 # 機能定義書（Windows版 ZoomIt v10.0 完全互換を目指す）
 │   └── Draw.md                    # Draw機能の詳細技術設計
-├── ARCHITECTURE.md                # 本ドキュメント
-├── project.yml                    # xcodegen プロジェクト定義
+├── README.md
 │
-├── ZoomacIt/                      # アプリケーション本体
-│   ├── App/                       # アプリケーションライフサイクル
-│   ├── Core/                      # OS基盤機能（権限・ホットキー）
-│   ├── Overlay/                   # オーバーレイウィンドウ管理
-│   ├── Draw/                      # 描画エンジン
-│   ├── Models/                    # データモデル
-│   ├── Utilities/                 # 汎用拡張
-│   └── Resources/                 # Info.plist, Assets, Entitlements
-│
-└── ZoomacItTests/                 # ユニットテスト
+└── src/                           # ソースコード・ビルド設定
+    ├── project.yml                # xcodegen プロジェクト定義
+    ├── ZoomacIt.xcodeproj/        # xcodegen から生成
+    │
+    ├── ZoomacIt/                  # アプリケーション本体
+    │   ├── App/                   # アプリケーションライフサイクル
+    │   ├── Core/                  # OS基盤機能（権限・ホットキー）
+    │   ├── Overlay/               # オーバーレイウィンドウ管理
+    │   ├── Draw/                  # 描画エンジン
+    │   ├── Models/                # データモデル
+    │   ├── Utilities/             # 汎用拡張
+    │   └── Resources/             # Info.plist, Assets, Entitlements
+    │
+    └── ZoomacItTests/             # ユニットテスト
 ```
 
 ---

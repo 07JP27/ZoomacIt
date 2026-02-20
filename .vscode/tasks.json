@@ -4,7 +4,7 @@
 		{
 			"label": "Build and Run ZoomacIt (Debug)",
 			"type": "shell",
-			"command": "xcodebuild -project ZoomacIt.xcodeproj -scheme ZoomacIt -configuration Debug build && open ./build/Debug/ZoomacIt.app",
+			"command": "xcodebuild -project src/ZoomacIt.xcodeproj -scheme ZoomacIt -configuration Debug build && open ~/Library/Developer/Xcode/DerivedData/ZoomacIt-*/Build/Products/Debug/ZoomacIt.app",
 			"problemMatcher": [],
 			"group": "build"
 		}
