@@ -3,6 +3,7 @@ import CoreGraphics
 
 /// Manages an NSTextView for text input during Draw mode.
 /// On commit, the text is rasterized into a CGImage and composited onto finishedLayer.
+@MainActor
 final class TextInputController {
 
     private weak var canvasView: NSView?
