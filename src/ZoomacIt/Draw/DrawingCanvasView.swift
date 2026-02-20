@@ -57,6 +57,12 @@ final class DrawingCanvasView: NSView {
         fatalError("init(coder:) is not supported")
     }
 
+    // MARK: - Cursor
+
+    override func resetCursorRects() {
+        addCursorRect(bounds, cursor: .crosshair)
+    }
+
     // MARK: - Drawing
 
     override func draw(_ dirtyRect: NSRect) {

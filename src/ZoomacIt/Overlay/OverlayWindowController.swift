@@ -53,13 +53,9 @@ final class OverlayWindowController {
 
         overlayWindow = window
         canvasView = canvas
-
-        // Change cursor for drawing
-        NSCursor.crosshair.push()
     }
 
     func dismiss() {
-        NSCursor.pop()
         overlayWindow?.orderOut(nil)
         overlayWindow?.close()
         overlayWindow = nil
