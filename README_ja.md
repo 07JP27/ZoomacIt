@@ -12,11 +12,10 @@ ZoomIt との機能互換を目指しており、システム全体で使える�
 
 1. [Releases](https://github.com/07JP27/ZoomacIt/releases) から最新の `.dmg` をダウンロード
 2. `.dmg` を開き、**ZoomacIt.app** を **Applications** フォルダにドラッグ
-3. **ターミナル** を開き、以下のコマンドを実行して検疫フラグを解除:
+3. 「Appleは、“ZoomacIt”にMacに損害を与えたり、プライバシーを侵害する可能性のあるマルウェアが含まれていないことを検証できませんでした。」という警告が表示された場合は、以下のコマンドで検疫フラグを解除できます。本リポジトリのコードの内容を確認の上、自己責任で実行してください。
    ```bash
    xattr -cr /Applications/ZoomacIt.app
    ```
-   *（Apple Developer ID で署名されていないため必要です）*
 4. Applications から ZoomacIt を起動
 5. プロンプトが表示されたら **画面収録** 権限を許可
 
