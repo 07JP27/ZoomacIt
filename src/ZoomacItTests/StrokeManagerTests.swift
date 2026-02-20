@@ -14,10 +14,26 @@ final class StrokeManagerTests: XCTestCase {
         manager.pushUndoSnapshot(nil)
         XCTAssertEqual(manager.undoLevels, 1)
 
-        // Pop returns the nil snapshot
+        // Pop returns the snapshot with nil finishedLayer and default backgroundMode
         let snapshot = manager.popUndoSnapshot()
-        XCTAssertTrue(true) // We got here without crashing
+        XCTAssertNotNil(snapshot, "Stack was not empty, should return a snapshot")
+        XCTAssertNil(snapshot?.finishedLayer, "Popped snapshot should have nil finishedLayer since we pushed nil")
         XCTAssertEqual(manager.undoLevels, 0)
+    }
+
+    func testPushAndPopSnapshotWithBackgroundMode() {
+        let manager = StrokeManager()
+
+        manager.pushUndoSnapshot(nil, backgroundMode: .whiteboard)
+        let snapshot = manager.popUndoSnapshot()
+        XCTAssertNotNil(snapshot)
+        // Verify backgroundMode is preserved through push/pop
+        switch snapshot?.backgroundMode {
+        case .whiteboard:
+            break // expected
+        default:
+            XCTFail("Expected whiteboard background mode")
+        }
     }
 
     func testUndoStackCap() {

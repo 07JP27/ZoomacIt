@@ -38,7 +38,7 @@ final class PermissionManager {
         // then revert to accessory (menu bar only).
         NSApp.setActivationPolicy(.regular)
         RunLoop.current.run(until: Date())
-        NSApp.activate()
+        NSApp.activate(ignoringOtherApps: true)
 
         let alert = NSAlert()
         alert.messageText = "ZoomacIt に権限が必要です"

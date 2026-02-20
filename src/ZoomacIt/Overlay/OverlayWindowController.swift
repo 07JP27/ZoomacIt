@@ -1,5 +1,6 @@
 import AppKit
 import CoreGraphics
+import CoreVideo
 import ScreenCaptureKit
 
 /// Manages the lifecycle of the overlay window used for Draw mode.
@@ -36,7 +37,7 @@ final class OverlayWindowController {
     private func presentOverlay(screen: NSScreen, backgroundImage: CGImage?) {
         let window = OverlayWindow(for: screen)
         let canvas = DrawingCanvasView(
-            frame: screen.frame,
+            frame: NSRect(origin: .zero, size: screen.frame.size),
             backgroundImage: backgroundImage
         )
         canvas.onDismiss = { [weak self] in
@@ -45,6 +46,7 @@ final class OverlayWindowController {
 
         window.contentView = canvas
         window.makeKeyAndOrderFront(nil)
+        window.makeFirstResponder(canvas)
 
         // Ensure the app is active so the window receives events
         NSApplication.shared.activate(ignoringOtherApps: true)
@@ -79,14 +81,14 @@ final class OverlayWindowController {
         scaleFactor: CGFloat
     ) async -> CGImage? {
         guard CGPreflightScreenCaptureAccess() else {
-            print("[OverlayWindowController] Screen Recording not permitted — using blank background.")
+            NSLog("[OverlayWindowController] Screen Recording not permitted — using blank background.")
             return nil
         }
 
         do {
             let availableContent = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
             guard let display = availableContent.displays.first(where: { $0.displayID == displayID }) else {
-                print("[OverlayWindowController] Display not found.")
+                NSLog("[OverlayWindowController] Display not found.")
                 return nil
             }
 
@@ -102,7 +104,7 @@ final class OverlayWindowController {
                 configuration: config
             )
         } catch {
-            print("[OverlayWindowController] Screen capture failed: \(error)")
+            NSLog("[OverlayWindowController] Screen capture failed: %@", error.localizedDescription)
             return nil
         }
     }

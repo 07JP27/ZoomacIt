@@ -73,19 +73,31 @@ final class DrawingCanvasView: NSView {
         // 3. Draw previewLayer (shape being dragged)
         if let preview = previewLayer {
             drawingState.currentNSColor.setStroke()
-            preview.lineWidth = drawingState.penWidth
-            preview.lineCapStyle = .round
-            preview.lineJoinStyle = .round
+            if drawingState.isHighlighterMode {
+                HighlighterRenderer.applyHighlighterStyle(to: preview, penWidth: drawingState.penWidth)
+                NSGraphicsContext.current?.cgContext.setBlendMode(.multiply)
+            } else {
+                preview.lineWidth = drawingState.penWidth
+                preview.lineCapStyle = .round
+                preview.lineJoinStyle = .round
+            }
             preview.stroke()
+            NSGraphicsContext.current?.cgContext.setBlendMode(.normal)
         }
 
         // 4. Draw activeFreehand (freehand path being drawn)
         if let freehand = activeFreehand {
             drawingState.currentNSColor.setStroke()
-            freehand.lineWidth = drawingState.penWidth
-            freehand.lineCapStyle = .round
-            freehand.lineJoinStyle = .round
+            if drawingState.isHighlighterMode {
+                HighlighterRenderer.applyHighlighterStyle(to: freehand, penWidth: drawingState.penWidth)
+                NSGraphicsContext.current?.cgContext.setBlendMode(.multiply)
+            } else {
+                freehand.lineWidth = drawingState.penWidth
+                freehand.lineCapStyle = .round
+                freehand.lineJoinStyle = .round
+            }
             freehand.stroke()
+            NSGraphicsContext.current?.cgContext.setBlendMode(.normal)
         }
     }
 
@@ -165,7 +177,7 @@ final class DrawingCanvasView: NSView {
         let shapeType = drawingState.currentShapeType(modifiers: modifiers)
 
         // Push current state for undo
-        strokeManager.pushUndoSnapshot(finishedLayer)
+        strokeManager.pushUndoSnapshot(finishedLayer, backgroundMode: drawingState.backgroundMode)
 
         // Composite the completed stroke onto finishedLayer
         finishedLayer = compositeStrokeOntoFinished(
@@ -212,24 +224,27 @@ final class DrawingCanvasView: NSView {
                     drawingState.isHighlighterMode = false
                 }
                 drawingState.activeColor = color
+                if drawingState.isTextMode {
+                    textInputController?.updateColor(drawingState.currentNSColor)
+                }
             }
 
         // Clear all
         case "E":
-            strokeManager.pushUndoSnapshot(finishedLayer)
+            strokeManager.pushUndoSnapshot(finishedLayer, backgroundMode: drawingState.backgroundMode)
             finishedLayer = nil
             setNeedsDisplay(bounds)
 
         // Whiteboard
         case "W":
-            strokeManager.pushUndoSnapshot(finishedLayer)
+            strokeManager.pushUndoSnapshot(finishedLayer, backgroundMode: drawingState.backgroundMode)
             drawingState.backgroundMode = .whiteboard
             finishedLayer = nil
             setNeedsDisplay(bounds)
 
         // Blackboard
         case "K":
-            strokeManager.pushUndoSnapshot(finishedLayer)
+            strokeManager.pushUndoSnapshot(finishedLayer, backgroundMode: drawingState.backgroundMode)
             drawingState.backgroundMode = .blackboard
             finishedLayer = nil
             setNeedsDisplay(bounds)
@@ -238,8 +253,9 @@ final class DrawingCanvasView: NSView {
         case "T":
             enterTextMode()
 
-        // Blur
+        // Blur (not yet fully wired — sets state for future integration)
         case "X":
+            NSLog("[DrawingCanvasView] Blur mode activated (rendering not yet implemented)")
             drawingState.isBlurMode = true
             drawingState.blurStrength = modifiers.contains(.shift) ? .strong : .weak
 
@@ -325,10 +341,18 @@ final class DrawingCanvasView: NSView {
 
         // Set stroke properties
         let color = drawingState.currentNSColor
-        bitmapContext.setStrokeColor(color.cgColor)
-        bitmapContext.setLineWidth(drawingState.penWidth)
-        bitmapContext.setLineCap(.round)
-        bitmapContext.setLineJoin(.round)
+        if drawingState.isHighlighterMode {
+            bitmapContext.setBlendMode(.multiply)
+            bitmapContext.setStrokeColor(color.cgColor)
+            bitmapContext.setLineWidth(drawingState.penWidth * 2.0)
+            bitmapContext.setLineCap(.square)
+            bitmapContext.setLineJoin(.round)
+        } else {
+            bitmapContext.setStrokeColor(color.cgColor)
+            bitmapContext.setLineWidth(drawingState.penWidth)
+            bitmapContext.setLineCap(.round)
+            bitmapContext.setLineJoin(.round)
+        }
 
         // Draw the stroke
         let path: CGPath
@@ -355,8 +379,9 @@ final class DrawingCanvasView: NSView {
     // MARK: - Undo
 
     private func performUndo() {
-        if let previous = strokeManager.popUndoSnapshot() {
-            finishedLayer = previous
+        if let snapshot = strokeManager.popUndoSnapshot() {
+            finishedLayer = snapshot.finishedLayer
+            drawingState.backgroundMode = snapshot.backgroundMode
         } else {
             finishedLayer = nil
         }
@@ -378,7 +403,7 @@ final class DrawingCanvasView: NSView {
 
     private func commitText() {
         guard let controller = textInputController else { return }
-        strokeManager.pushUndoSnapshot(finishedLayer)
+        strokeManager.pushUndoSnapshot(finishedLayer, backgroundMode: drawingState.backgroundMode)
         finishedLayer = controller.rasterizeAndComposite(onto: finishedLayer, canvasSize: bounds.size)
         controller.cleanup()
         textInputController = nil
