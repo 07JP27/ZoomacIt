@@ -10,12 +10,17 @@ final class HotkeyManager: @unchecked Sendable {
     /// Called when the Draw hotkey (⌃2) is triggered.
     var onDrawHotkey: (() -> Void)?
 
+    /// Called when the Break Timer hotkey (⌃3) is triggered.
+    var onBreakHotkey: (() -> Void)?
+
     private var hotKeyRef: EventHotKeyRef?
+    private var breakHotKeyRef: EventHotKeyRef?
     private var eventHandlerRef: EventHandlerRef?
 
     /// Signature used to identify our hot-key events ('ZmIt')
     private let hotKeySignature: OSType = 0x5A6D_4974 // 'ZmIt'
     private let drawHotKeyID: UInt32 = 1
+    private let breakHotKeyID: UInt32 = 2
 
     private init() {}
 
@@ -67,6 +72,24 @@ final class HotkeyManager: @unchecked Sendable {
         }
 
         NSLog("[HotkeyManager] Global hotkey ⌃2 registered.")
+
+        // Register ⌃3 (Control + 3, keyCode 0x14 = 20)
+        let breakKeyID = EventHotKeyID(signature: hotKeySignature, id: breakHotKeyID)
+        let breakStatus = RegisterEventHotKey(
+            UInt32(kVK_ANSI_3),
+            UInt32(controlKey),
+            breakKeyID,
+            GetApplicationEventTarget(),
+            0,
+            &breakHotKeyRef
+        )
+
+        guard breakStatus == noErr else {
+            NSLog("[HotkeyManager] Failed to register break hotkey: %d", breakStatus)
+            return
+        }
+
+        NSLog("[HotkeyManager] Global hotkey ⌃3 registered.")
     }
 
     func stop() {
@@ -74,11 +97,15 @@ final class HotkeyManager: @unchecked Sendable {
             UnregisterEventHotKey(ref)
             hotKeyRef = nil
         }
+        if let ref = breakHotKeyRef {
+            UnregisterEventHotKey(ref)
+            breakHotKeyRef = nil
+        }
         if let handler = eventHandlerRef {
             RemoveEventHandler(handler)
             eventHandlerRef = nil
         }
-        NSLog("[HotkeyManager] Hotkey unregistered.")
+        NSLog("[HotkeyManager] Hotkeys unregistered.")
     }
 
     // MARK: - Event Processing
@@ -97,9 +124,15 @@ final class HotkeyManager: @unchecked Sendable {
 
         guard status == noErr else { return }
 
-        if hotKeyID.signature == hotKeySignature && hotKeyID.id == drawHotKeyID {
+        guard hotKeyID.signature == hotKeySignature else { return }
+
+        if hotKeyID.id == drawHotKeyID {
             DispatchQueue.main.async { [weak self] in
                 self?.onDrawHotkey?()
+            }
+        } else if hotKeyID.id == breakHotKeyID {
+            DispatchQueue.main.async { [weak self] in
+                self?.onBreakHotkey?()
             }
         }
     }

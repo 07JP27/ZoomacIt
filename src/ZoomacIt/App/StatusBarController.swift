@@ -50,6 +50,11 @@ final class StatusBarController: NSObject {
         drawItem.target = self
         menu.addItem(drawItem)
 
+        let breakItem = NSMenuItem(title: "Break", action: #selector(breakAction), keyEquivalent: "3")
+        breakItem.keyEquivalentModifierMask = [.control]
+        breakItem.target = self
+        menu.addItem(breakItem)
+
         menu.addItem(.separator())
 
         let aboutItem = NSMenuItem(title: "About ZoomacIt", action: #selector(aboutAction), keyEquivalent: "")
@@ -70,6 +75,10 @@ final class StatusBarController: NSObject {
 
     @objc private func drawAction() {
         HotkeyManager.shared.onDrawHotkey?()
+    }
+
+    @objc private func breakAction() {
+        HotkeyManager.shared.onBreakHotkey?()
     }
 
     @objc private func aboutAction() {
