@@ -22,7 +22,6 @@ targets:
       base:
         INFOPLIST_FILE: ZoomacIt/Resources/Info.plist
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
-        CODE_SIGN_ENTITLEMENTS: ZoomacIt/Resources/ZoomacIt.entitlements
         PRODUCT_NAME: ZoomacIt
         COMBINE_HIDPI_IMAGES: true
         LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/../Frameworks"

@@ -176,7 +176,6 @@ mouseUp    → previewLayer を finishedLayer にラスタライズして焼き�
 | ファイル | 役割 |
 |---|---|
 | `Info.plist` | `LSUIElement = YES`（Dock 非表示）、`NSScreenCaptureUsageDescription`（Screen Recording 用途説明）、バンドル情報。 |
-| `ZoomacIt.entitlements` | `com.apple.security.app-sandbox = false`（CGEventTap / ScreenCaptureKit にはサンドボックス外が必要）、`cs.allow-unsigned-executable-memory = true`。 |
 | `Assets.xcassets/` | AppIcon（空スロット）。 |
 
 ---

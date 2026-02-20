@@ -48,7 +48,6 @@
 		167B3BE9B273B7B056C41CD5 /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
 		1F7CB4AB580AE896C4DAEE2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2601F1F38544CFA522261C7D /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
-		3A68BA00516F0ADFB4072230 /* ZoomacIt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ZoomacIt.entitlements; sourceTree = "<group>"; };
 		3AA294A8321CAB0BBDA54F11 /* Stroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
 		453513CAB75B5909A1521589 /* StrokeManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeManagerTests.swift; sourceTree = "<group>"; };
 		45593731F94EA53BB0FE31D8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -181,7 +180,6 @@
 			children = (
 				00930854C1D0CC9734D203CD /* Assets.xcassets */,
 				1F7CB4AB580AE896C4DAEE2C /* Info.plist */,
-				3A68BA00516F0ADFB4072230 /* ZoomacIt.entitlements */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -391,7 +389,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = ZoomacIt/Resources/ZoomacIt.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = ZoomacIt/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
@@ -422,7 +419,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = ZoomacIt/Resources/ZoomacIt.entitlements;
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = ZoomacIt/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
