@@ -67,12 +67,13 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
-      - name: Create PKG
-        id: pkg
+      - name: Create DMG
+        id: dmg
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           APP_PATH="build/Build/Products/Release/ZoomacIt.app"
-          PKG_NAME="ZoomacIt-v${VERSION}.pkg"
+          DMG_NAME="ZoomacIt-v${VERSION}.dmg"
+          STAGING_DIR="dmg-staging"
 
           # Verify .app exists
           if [ ! -d "$APP_PATH" ]; then
@@ -81,14 +82,22 @@ jobs:
             exit 1
           fi
 
-          # Create PKG installer
-          productbuild \
-            --component "$APP_PATH" /Applications \
-            "$PKG_NAME"
+          # Create staging directory with .app and Applications symlink
+          mkdir -p "$STAGING_DIR"
+          cp -R "$APP_PATH" "$STAGING_DIR/"
+          ln -s /Applications "$STAGING_DIR/Applications"
 
-          echo "pkg_name=$PKG_NAME" >> "$GITHUB_OUTPUT"
-          echo "Created: $PKG_NAME"
-          ls -lh "$PKG_NAME"
+          # Create DMG
+          hdiutil create \
+            -volname "ZoomacIt" \
+            -srcfolder "$STAGING_DIR" \
+            -ov \
+            -format UDZO \
+            "$DMG_NAME"
+
+          echo "dmg_name=$DMG_NAME" >> "$GITHUB_OUTPUT"
+          echo "Created: $DMG_NAME"
+          ls -lh "$DMG_NAME"
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
@@ -98,11 +107,12 @@ jobs:
           draft: false
           prerelease: false
           generate_release_notes: true
-          files: ${{ steps.pkg.outputs.pkg_name }}
+          files: ${{ steps.dmg.outputs.dmg_name }}
           body: |
             ## Installation
 
-            1. Download **${{ steps.pkg.outputs.pkg_name }}** below
-            2. Right-click the `.pkg` file → **Open** → Click **Open** in the dialog (required for unsigned apps)
-            3. Follow the installer to install ZoomacIt to Applications
-            4. Grant **Screen Recording** permission when prompted
+            1. Download **${{ steps.dmg.outputs.dmg_name }}** below
+            2. Open the `.dmg` file
+            3. Drag **ZoomacIt.app** to the **Applications** folder
+            4. Right-click ZoomacIt.app in Applications → **Open** → Click **Open** in the dialog (required for unsigned apps)
+            5. Grant **Screen Recording** permission when prompted

@@ -10,10 +10,10 @@ ZoomIt との機能互換を目指しており、システム全体で使える�
 
 ## インストール
 
-1. [Releases](https://github.com/07JP27/ZoomacIt/releases) から最新の `.pkg` をダウンロード
-2. `.pkg` ファイルを右クリック → **開く** → ダイアログで **開く** をクリック  
+1. [Releases](https://github.com/07JP27/ZoomacIt/releases) から最新の `.dmg` をダウンロード
+2. `.dmg` を開き、**ZoomacIt.app** を **Applications** フォルダにドラッグ
+3. Applications の ZoomacIt.app を右クリック → **開く** → ダイアログで **開く** をクリック  
    *（Apple Developer ID で署名されていないため必要です）*
-3. インストーラーに従って ZoomacIt を Applications にインストール
 4. プロンプトが表示されたら **画面収録** 権限を許可
 
 ## 現在の機能カバレッジ
