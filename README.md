@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="images/banner.png" width="300">
+  <img src="images/banner.png" width="500">
 </p>
 
 <p align="center">English | <a href="README_ja.md">日本語</a></p>
