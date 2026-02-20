@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="images/1024.png" width="128">
+  <img src="images/1024.png" width="200">
 </p>
 
-[English](README.md) | 日本語
+<p align="center"><a href="README.md">English</a> | 日本語</p>
 
 # ZoomacIt
 ZoomacIt は [Windows 版 ZoomIt](https://learn.microsoft.com/ja-jp/sysinternals/downloads/zoomit) にインスパイアされた、ネイティブ macOS メニューバーアプリです。
