@@ -24,7 +24,7 @@ The project aims for feature compatibility with ZoomIt, providing system-wide ho
 |---|---|
 |Zoom||
 |Draw|✅|
-|Text||
+|Text|✅|
 |DemoType||
 |Break Timer||
 |Snip||
@@ -61,7 +61,7 @@ Press **⌃2** (Control+2) to enter Draw mode. The screen freezes and you can dr
 
 | Key | Action |
 |---|---|
-| T | Text input mode (Escape to confirm) |
+| T | Text input mode |
 | X | Blur (weak) |
 | Shift + X | Blur (strong) |
 | ⌃ + scroll wheel | Change pen width |
@@ -77,7 +77,18 @@ Press **⌃2** (Control+2) to enter Draw mode. The screen freezes and you can dr
 | ⌘C | Copy to clipboard |
 | ⌘S | Save to file |
 | Space | Center cursor |
-| Escape / Right-click | Exit Draw mode |
+| Escape | Exit text mode (confirm text) / Exit Draw mode |
+| Right-click | Exit Draw mode |
+
+#### Text mode
+
+Press **T** to enter text mode. Click anywhere to place a text field and start typing.
+
+- **Click another position** — the current text is confirmed (rasterized) and a new text field is placed
+- **Escape** — confirms the current text and returns to pen mode (Draw mode stays active)
+- **Scroll wheel** — change font size
+- **Color keys** (R/G/B/O/Y/P) — change text color
+- **Right-click** — confirms the current text and exits Draw mode
 
 ## License
 

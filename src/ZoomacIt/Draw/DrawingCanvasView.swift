@@ -200,6 +200,10 @@ final class DrawingCanvasView: NSView {
     }
 
     override func rightMouseDown(with event: NSEvent) {
+        // If in text mode, commit current text first
+        if drawingState.isTextMode {
+            commitCurrentText()
+        }
         // Right-click exits draw mode
         onDismiss?()
     }
@@ -399,19 +403,32 @@ final class DrawingCanvasView: NSView {
     private func enterTextMode() {
         drawingState.isTextMode = true
         let controller = TextInputController(canvasView: self, drawingState: drawingState)
+        controller.onCommit = { [weak self] in
+            self?.commitText()
+        }
         textInputController = controller
     }
 
     private func handleTextModeClick(_ event: NSEvent) {
+        // Commit any existing text before placing a new text field
+        commitCurrentText()
         let point = convert(event.locationInWindow, from: nil)
         textInputController?.placeTextField(at: point)
     }
 
-    private func commitText() {
-        guard let controller = textInputController else { return }
+    /// Rasterize current text into finishedLayer without leaving text mode.
+    private func commitCurrentText() {
+        guard let controller = textInputController, controller.hasText else { return }
         strokeManager.pushUndoSnapshot(finishedLayer, backgroundMode: drawingState.backgroundMode)
         finishedLayer = controller.rasterizeAndComposite(onto: finishedLayer, canvasSize: bounds.size)
         controller.cleanup()
+        setNeedsDisplay(bounds)
+    }
+
+    /// Commit current text and exit text mode (return to pen mode).
+    private func commitText() {
+        commitCurrentText()
+        textInputController?.cleanup()
         textInputController = nil
         drawingState.isTextMode = false
         setNeedsDisplay(bounds)
