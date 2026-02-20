@@ -12,9 +12,12 @@ The project aims for feature compatibility with ZoomIt, providing system-wide ho
 
 1. Download the latest `.dmg` from [Releases](https://github.com/07JP27/ZoomacIt/releases)
 2. Open the `.dmg` file and drag **ZoomacIt.app** to the **Applications** folder
-3. Right-click ZoomacIt.app in Applications → **Open** → Click **Open** in the dialog  
-   *(Required because the app is not signed with an Apple Developer ID)*
-4. Grant **Screen Recording** permission when prompted
+3. If you see the warning "Apple could not verify "ZoomacIt" is free of malware that may harm your Mac or compromise your privacy", run the following command in **Terminal** to remove the quarantine flag. Please review the source code in this repository and run at your own risk.
+   ```bash
+   xattr -cr /Applications/ZoomacIt.app
+   ```
+4. Open ZoomacIt from Applications
+5. Grant **Screen Recording** permission when prompted
 
 ## Current feature coverage
 | Feature | Status |

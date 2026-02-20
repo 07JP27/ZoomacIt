@@ -67,13 +67,21 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
+      - name: Ad-hoc codesign
+        run: |
+          APP_PATH="build/Build/Products/Release/ZoomacIt.app"
+          # Re-sign with ad-hoc identity to seal all bundle resources
+          # (linker-signed binaries lack resource sealing, causing "damaged" errors)
+          codesign --force --deep -s - "$APP_PATH"
+          codesign --verify --deep --strict "$APP_PATH"
+          echo "Ad-hoc signing verified"
+
       - name: Create DMG
         id: dmg
         run: |
           VERSION="${{ steps.version.outputs.version }}"
           APP_PATH="build/Build/Products/Release/ZoomacIt.app"
           DMG_NAME="ZoomacIt-v${VERSION}.dmg"
-          STAGING_DIR="dmg-staging"
 
           # Verify .app exists
           if [ ! -d "$APP_PATH" ]; then
@@ -83,14 +91,14 @@ jobs:
           fi
 
           # Create staging directory with .app and Applications symlink
-          mkdir -p "$STAGING_DIR"
-          cp -R "$APP_PATH" "$STAGING_DIR/"
-          ln -s /Applications "$STAGING_DIR/Applications"
+          mkdir -p dmg-staging
+          cp -R "$APP_PATH" dmg-staging/
+          ln -s /Applications dmg-staging/Applications
 
-          # Create DMG
+          # Create compressed DMG
           hdiutil create \
             -volname "ZoomacIt" \
-            -srcfolder "$STAGING_DIR" \
+            -srcfolder dmg-staging \
             -ov \
             -format UDZO \
             "$DMG_NAME"
@@ -112,7 +120,12 @@ jobs:
             ## Installation
 
             1. Download **${{ steps.dmg.outputs.dmg_name }}** below
-            2. Open the `.dmg` file
-            3. Drag **ZoomacIt.app** to the **Applications** folder
-            4. Right-click ZoomacIt.app in Applications → **Open** → Click **Open** in the dialog (required for unsigned apps)
+            2. Open the `.dmg` file and drag **ZoomacIt.app** to the **Applications** folder
+            3. Open Terminal and run:
+               ```
+               xattr -cr /Applications/ZoomacIt.app
+               ```
+            4. Open ZoomacIt from Applications
             5. Grant **Screen Recording** permission when prompted
+
+            > **Note:** The `xattr -cr` command is required because the app is not signed with an Apple Developer ID. This removes the macOS quarantine flag so the app can launch.
