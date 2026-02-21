@@ -5,9 +5,12 @@
 <p align="center">English | <a href="README_ja.md">日本語</a></p>
 
 ---
-
 ZoomacIt is a native macOS menu bar app inspired by [ZoomIt for Windows](https://learn.microsoft.com/en-us/sysinternals/downloads/zoomit).
 The project aims for feature compatibility with ZoomIt, providing system-wide hotkeys, smooth zooming, and on-screen annotation while minimizing required permissions.
+
+<video src="images/demo_s.mov" autoplay loop muted playsinline width="600"></video>
+
+[🎥 Watch in high resolution](images/demo.mp4)
 
 ## Installation
 
@@ -33,6 +36,12 @@ The project aims for feature compatibility with ZoomIt, providing system-wide ho
 |Record||
 
 ## Feature details
+
+Each feature can be launched via a global hotkey or from the menu bar icon.
+Click the menu bar icon to open the menu shown below.
+
+<img src="images/app_bar.png" width="200">
+
 ### Zoom
 
 Press **⌃1** (Control+1) to enter Zoom mode. The screen is captured and you can zoom in/out and pan around.
