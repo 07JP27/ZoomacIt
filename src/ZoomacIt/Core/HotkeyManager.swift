@@ -10,15 +10,20 @@ final class HotkeyManager: @unchecked Sendable {
     /// Called when the Draw hotkey (⌃2) is triggered.
     var onDrawHotkey: (() -> Void)?
 
+    /// Called when the Still Zoom hotkey (⌃1) is triggered.
+    var onZoomHotkey: (() -> Void)?
+
     /// Called when the Break Timer hotkey (⌃3) is triggered.
     var onBreakHotkey: (() -> Void)?
 
     private var hotKeyRef: EventHotKeyRef?
+    private var zoomHotKeyRef: EventHotKeyRef?
     private var breakHotKeyRef: EventHotKeyRef?
     private var eventHandlerRef: EventHandlerRef?
 
     /// Signature used to identify our hot-key events ('ZmIt')
     private let hotKeySignature: OSType = 0x5A6D_4974 // 'ZmIt'
+    private let zoomHotKeyID: UInt32 = 0
     private let drawHotKeyID: UInt32 = 1
     private let breakHotKeyID: UInt32 = 2
 
@@ -53,6 +58,25 @@ final class HotkeyManager: @unchecked Sendable {
             NSLog("[HotkeyManager] Failed to install event handler: %d", status)
             return
         }
+
+        // Register ⌃1 (Control + 1, keyCode 0x12 = 18)
+        let zoomKeyID = EventHotKeyID(signature: hotKeySignature, id: zoomHotKeyID)
+        let zoomStatus = RegisterEventHotKey(
+            UInt32(kVK_ANSI_1),
+            UInt32(controlKey),
+            zoomKeyID,
+            GetApplicationEventTarget(),
+            0,
+            &zoomHotKeyRef
+        )
+
+        guard zoomStatus == noErr else {
+            NSLog("[HotkeyManager] Failed to register zoom hotkey: %d", zoomStatus)
+            stop()
+            return
+        }
+
+        NSLog("[HotkeyManager] Global hotkey ⌃1 registered.")
 
         // Register ⌃2 (Control + 2, keyCode 0x13 = 19)
         let hotKeyID = EventHotKeyID(signature: hotKeySignature, id: drawHotKeyID)
@@ -93,6 +117,10 @@ final class HotkeyManager: @unchecked Sendable {
     }
 
     func stop() {
+        if let ref = zoomHotKeyRef {
+            UnregisterEventHotKey(ref)
+            zoomHotKeyRef = nil
+        }
         if let ref = hotKeyRef {
             UnregisterEventHotKey(ref)
             hotKeyRef = nil
@@ -126,7 +154,11 @@ final class HotkeyManager: @unchecked Sendable {
 
         guard hotKeyID.signature == hotKeySignature else { return }
 
-        if hotKeyID.id == drawHotKeyID {
+        if hotKeyID.id == zoomHotKeyID {
+            DispatchQueue.main.async { [weak self] in
+                self?.onZoomHotkey?()
+            }
+        } else if hotKeyID.id == drawHotKeyID {
             DispatchQueue.main.async { [weak self] in
                 self?.onDrawHotkey?()
             }

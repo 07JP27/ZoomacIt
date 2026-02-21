@@ -9,14 +9,25 @@ final class OverlayWindowController {
 
     private var overlayWindow: OverlayWindow?
     private var canvasView: DrawingCanvasView?
+    private let backgroundImageOverride: CGImage?
 
     /// The captured screen image at the moment Draw mode was activated.
     private var screenCapture: CGImage?
 
+    init(backgroundImageOverride: CGImage? = nil) {
+        self.backgroundImageOverride = backgroundImageOverride
+    }
+
     // MARK: - Public
 
     func showOverlay() {
-        guard let screen = NSScreen.main else { return }
+        guard let screen = NSScreen.screenContainingMouse ?? NSScreen.main else { return }
+
+        if let backgroundImageOverride {
+            self.screenCapture = backgroundImageOverride
+            self.presentOverlay(screen: screen, backgroundImage: backgroundImageOverride)
+            return
+        }
 
         let screenNumber = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID ?? CGMainDisplayID()
         let scaleFactor = screen.backingScaleFactor
@@ -70,7 +81,7 @@ final class OverlayWindowController {
 
     // MARK: - Screen Capture
 
-    private static func captureScreenImage(
+    static func captureScreenImage(
         displayID: CGDirectDisplayID,
         width: CGFloat,
         height: CGFloat,
