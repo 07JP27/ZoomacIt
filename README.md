@@ -23,7 +23,7 @@ The project aims for feature compatibility with ZoomIt, providing system-wide ho
 ## Current feature coverage
 | Feature | Status |
 |---|---|
-|Zoom||
+|Zoom|✅|
 |Draw|✅|
 |Text|✅|
 |DemoType||
@@ -32,6 +32,24 @@ The project aims for feature compatibility with ZoomIt, providing system-wide ho
 |Record||
 
 ## Feature details
+### Zoom
+
+Press **⌃1** (Control+1) to enter Zoom mode. The screen is captured and you can zoom in/out and pan around.
+
+#### Controls
+
+| Input | Action |
+|---|---|
+| Mouse move | Pan |
+| Scroll wheel / ↑↓ | Zoom in / out |
+| Click | Enter Draw mode (zoomed view becomes the drawing canvas) |
+| Escape | Exit Zoom mode (or return to Zoom if entered from Draw) |
+| Right-click | Exit Zoom mode |
+
+#### Zoom → Draw → Zoom flow
+
+When you click in Zoom mode, you enter Draw mode on top of the zoomed view. Pressing **Escape** in Draw mode returns to Zoom mode (2-step dismiss, similar to text mode). Pressing **Escape** again exits Zoom entirely.
+
 ### Draw
 
 Press **⌃2** (Control+2) to enter Draw mode. The screen freezes and you can draw on top of it.

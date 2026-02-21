@@ -15,6 +15,9 @@ final class StillZoomWindowController {
     private var zoomView: StillZoomView?
 
     private(set) var sourceImage: CGImage?
+    /// Zoom state captured on dismiss, readable after dismiss returns.
+    private(set) var lastPanCenter: CGPoint?
+    private(set) var lastZoomLevel: CGFloat?
 
     func showZoomOverlay() {
         NSLog("[StillZoomWindowController] showZoomOverlay called")
@@ -48,7 +51,25 @@ final class StillZoomWindowController {
         }
     }
 
+    /// Re-enter zoom using a previously captured image (e.g. when returning from Draw mode).
+    func showZoomOverlay(withCapturedImage image: CGImage, panCenter: CGPoint? = nil, zoomLevel: CGFloat? = nil) {
+        NSLog("[StillZoomWindowController] showZoomOverlay with pre-captured image")
+        guard let screen = NSScreen.screenContainingMouse ?? NSScreen.main else {
+            NSLog("[StillZoomWindowController] No screen found")
+            onShowFailed?()
+            return
+        }
+        let scaleFactor = screen.backingScaleFactor
+        self.sourceImage = image
+        self.presentOverlay(on: screen, image: image, scaleFactor: scaleFactor,
+                            skipEntryAnimation: true,
+                            initialPanCenter: panCenter,
+                            initialZoomLevel: zoomLevel ?? 2.0)
+    }
+
     func dismiss() {
+        lastPanCenter = zoomView?.panCenter
+        lastZoomLevel = zoomView?.zoomLevel
         zoomWindow?.orderOut(nil)
         zoomWindow?.close()
         zoomWindow = nil
@@ -61,13 +82,18 @@ final class StillZoomWindowController {
         zoomView?.currentZoomedSnapshot() ?? sourceImage
     }
 
-    private func presentOverlay(on screen: NSScreen, image: CGImage, scaleFactor: CGFloat) {
+    private func presentOverlay(on screen: NSScreen, image: CGImage, scaleFactor: CGFloat,
+                                 skipEntryAnimation: Bool = false,
+                                 initialPanCenter: CGPoint? = nil,
+                                 initialZoomLevel: CGFloat = 2.0) {
         let window = OverlayWindow(for: screen)
         let view = StillZoomView(
             frame: NSRect(origin: .zero, size: screen.frame.size),
             sourceImage: image,
-            initialZoomLevel: 2.0,
-            screenScaleFactor: scaleFactor
+            initialZoomLevel: initialZoomLevel,
+            initialPanCenter: initialPanCenter,
+            screenScaleFactor: scaleFactor,
+            skipEntryAnimation: skipEntryAnimation
         )
 
         view.onDismiss = { [weak self] in
@@ -75,7 +101,6 @@ final class StillZoomWindowController {
         }
 
         view.onEnterDrawMode = { [weak self] zoomedSnapshot in
-            self?.dismiss()
             self?.onEnterDrawMode?(zoomedSnapshot)
         }
 

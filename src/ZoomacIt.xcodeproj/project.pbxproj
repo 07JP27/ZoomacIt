@@ -257,6 +257,10 @@
 						DevelopmentTeam = T74PC5F324;
 						ProvisioningStyle = Manual;
 					};
+					F4563A3822D6E1B8C7E1A9CD = {
+						DevelopmentTeam = T74PC5F324;
+						ProvisioningStyle = Manual;
+					};
 				};
 			};
 			buildConfigurationList = 81525D8438500A556DFBDE89 /* Build configuration list for PBXProject "ZoomacIt" */;
@@ -406,7 +410,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = T74PC5F324;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -439,7 +446,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = T74PC5F324;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

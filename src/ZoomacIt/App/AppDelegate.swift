@@ -8,6 +8,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var overlayController: OverlayWindowController?
     private var zoomController: StillZoomWindowController?
     private var breakTimerController: BreakTimerWindowController?
+    /// Stores the full-resolution source image when transitioning from Zoom → Draw,
+    /// so that Escape from Draw can return to Zoom mode.
+    private var zoomSourceForDrawReturn: CGImage?
+    private var zoomPanCenterForDrawReturn: CGPoint?
+    private var zoomLevelForDrawReturn: CGFloat?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSLog("[AppDelegate] applicationDidFinishLaunching")
@@ -33,13 +38,17 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private func toggleDrawMode() {
         if let zoomController {
             let captured = zoomController.snapshotImageForDrawTransition()
+            self.zoomSourceForDrawReturn = zoomController.sourceImage
             zoomController.dismiss()
+            self.zoomPanCenterForDrawReturn = zoomController.lastPanCenter
+            self.zoomLevelForDrawReturn = zoomController.lastZoomLevel
             self.zoomController = nil
             presentDrawMode(backgroundImage: captured)
             return
         }
 
         if let controller = overlayController {
+            zoomSourceForDrawReturn = nil  // ⌃2 toggle = full exit, don't return to zoom
             controller.dismiss()
             overlayController = nil
         } else {
@@ -56,6 +65,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// Called from OverlayWindowController when the user exits draw mode (Escape / right-click)
     func drawModeDidEnd() {
         overlayController = nil
+        if let savedImage = zoomSourceForDrawReturn {
+            zoomSourceForDrawReturn = nil
+            restoreZoomMode(withImage: savedImage)
+        }
     }
 
     // MARK: - Still Zoom
@@ -71,27 +84,51 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         if let drawController = overlayController {
             NSLog("[AppDelegate] Draw active — dismissing before zoom")
+            zoomSourceForDrawReturn = nil  // switching to fresh zoom, don't restore
             drawController.dismiss()
             overlayController = nil
         }
 
         let controller = StillZoomWindowController()
+        setupZoomCallbacks(controller)
+        controller.showZoomOverlay()
+        zoomController = controller
+        NSLog("[AppDelegate] zoomController assigned")
+    }
+
+    private func setupZoomCallbacks(_ controller: StillZoomWindowController) {
         controller.onDismiss = { [weak self] in
             NSLog("[AppDelegate] Zoom onDismiss callback")
             self?.zoomController = nil
         }
         controller.onEnterDrawMode = { [weak self] snapshot in
+            guard let self else { return }
             NSLog("[AppDelegate] Zoom -> Draw transition")
-            self?.zoomController = nil
-            self?.presentDrawMode(backgroundImage: snapshot)
+            self.zoomSourceForDrawReturn = self.zoomController?.sourceImage
+            self.zoomController?.dismiss()
+            self.zoomPanCenterForDrawReturn = self.zoomController?.lastPanCenter
+            self.zoomLevelForDrawReturn = self.zoomController?.lastZoomLevel
+            self.zoomController = nil
+            self.presentDrawMode(backgroundImage: snapshot)
         }
         controller.onShowFailed = { [weak self] in
             NSLog("[AppDelegate] Zoom show failed (permission denied?)")
             self?.zoomController = nil
         }
-        controller.showZoomOverlay()
+    }
+
+    private func restoreZoomMode(withImage source: CGImage) {
+        NSLog("[AppDelegate] Restoring zoom mode from Draw")
+        let controller = StillZoomWindowController()
+        setupZoomCallbacks(controller)
+        controller.showZoomOverlay(
+            withCapturedImage: source,
+            panCenter: zoomPanCenterForDrawReturn,
+            zoomLevel: zoomLevelForDrawReturn
+        )
         zoomController = controller
-        NSLog("[AppDelegate] zoomController assigned")
+        zoomPanCenterForDrawReturn = nil
+        zoomLevelForDrawReturn = nil
     }
 
     // MARK: - Break Timer

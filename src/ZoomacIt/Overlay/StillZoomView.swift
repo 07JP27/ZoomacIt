@@ -13,24 +13,28 @@ final class StillZoomView: NSView {
 
     private let sourceImage: CGImage
     private let screenScaleFactor: CGFloat
-    private var zoomLevel: CGFloat
+    private(set) var zoomLevel: CGFloat
     private let targetInitialZoom: CGFloat
     private let minimumZoom: CGFloat = 1.0
     private let maximumZoom: CGFloat = 8.0
 
     /// Pan center in source image pixel space.
-    private var panCenter: CGPoint
+    private(set) var panCenter: CGPoint
 
     /// Normalized [0,1] rect of source image currently visible in view.
     private var visibleContentsRect: CGRect = .zero
+    private let skipEntryAnimation: Bool
 
-    init(frame: NSRect, sourceImage: CGImage, initialZoomLevel: CGFloat = 2.0, screenScaleFactor: CGFloat) {
+    init(frame: NSRect, sourceImage: CGImage, initialZoomLevel: CGFloat = 2.0,
+         initialPanCenter: CGPoint? = nil, screenScaleFactor: CGFloat,
+         skipEntryAnimation: Bool = false) {
         self.sourceImage = sourceImage
         self.screenScaleFactor = screenScaleFactor
+        self.skipEntryAnimation = skipEntryAnimation
         self.targetInitialZoom = max(min(initialZoomLevel, maximumZoom), minimumZoom)
-        // Start at 1.0 (full screen) for the entry animation
-        self.zoomLevel = 1.0
-        self.panCenter = CGPoint(
+        // Start at target zoom immediately when skipping animation, otherwise 1.0 for entry animation
+        self.zoomLevel = skipEntryAnimation ? max(min(initialZoomLevel, maximumZoom), minimumZoom) : 1.0
+        self.panCenter = initialPanCenter ?? CGPoint(
             x: CGFloat(sourceImage.width) * 0.5,
             y: CGFloat(sourceImage.height) * 0.5
         )
@@ -56,9 +60,10 @@ final class StillZoomView: NSView {
             layer.contentsGravity = .resizeAspectFill
             layer.magnificationFilter = .linear
         }
-        // Show full screen first, then animate zoom in
         updateLayerContentsRect()
-        animateInitialZoom()
+        if !skipEntryAnimation {
+            animateInitialZoom()
+        }
     }
 
     private func animateInitialZoom() {
@@ -164,9 +169,14 @@ final class StillZoomView: NSView {
         let sourceWidth = CGFloat(sourceImage.width)
         let sourceHeight = CGFloat(sourceImage.height)
 
+        // visibleContentsRect uses CALayer coordinate system (origin at bottom-left),
+        // but CGImage.cropping uses image coordinate system (origin at top-left).
+        // Flip Y: imageY = 1.0 - layerY - height
+        let flippedOriginY = 1.0 - visibleContentsRect.origin.y - visibleContentsRect.size.height
+
         let cropRect = CGRect(
             x: visibleContentsRect.origin.x * sourceWidth,
-            y: visibleContentsRect.origin.y * sourceHeight,
+            y: flippedOriginY * sourceHeight,
             width: visibleContentsRect.size.width * sourceWidth,
             height: visibleContentsRect.size.height * sourceHeight
         )
