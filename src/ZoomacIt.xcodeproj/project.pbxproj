@@ -12,6 +12,7 @@
 		1EAA0D96B867DF66AF0A6D2A /* BreakTimerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD499A142CC237EF664DD96 /* BreakTimerWindow.swift */; };
 		1EF7046471522CBF02EE3D9D /* StrokeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7EC7D8734530BA2E376139 /* StrokeManager.swift */; };
 		26292806CB72F8D077354D37 /* BreakTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B27C880479A92E16A621C7B /* BreakTimerView.swift */; };
+		339CC2FB51A6EF14F65F3FA0 /* ZoomMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D668C866412DF33D52B15D /* ZoomMath.swift */; };
 		398052FC99D2C2CD71B1DFC5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BB99CA77A8C7A975390CA9 /* AppDelegate.swift */; };
 		3ECA67329DFFE9622AF916FB /* HighlighterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD20BCB0F5497D5789C75AF /* HighlighterRenderer.swift */; };
 		3F26DF307478E72BC3652D92 /* NSBezierPath+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F32C327FD3231AE4777979 /* NSBezierPath+Extensions.swift */; };
@@ -21,11 +22,14 @@
 		7B4FDA5C58C43A27DA1A201B /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DED7AFD9439A1BCE15FFFAC /* StatusBarController.swift */; };
 		862780FF803ABA4C039BC6B7 /* BreakTimerWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3023CD2A9E7BBC51D21E79 /* BreakTimerWindowController.swift */; };
 		89CCEAA1BB96EE5C5323B494 /* FreehandRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABECEA7A773ED6A7EAE57DC /* FreehandRendererTests.swift */; };
+		8C86FC94752D7A7E397DE877 /* ZoomMathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122958CC072CEF51A4973BAD /* ZoomMathTests.swift */; };
 		8EB5433F06804DD1E27E51DF /* ShapeRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8699BCE233A5E7F09663017F /* ShapeRendererTests.swift */; };
+		9DF3FA34ED77F2109586D4B5 /* StillZoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0969B89076B7BC986452B /* StillZoomView.swift */; };
 		A43592DDACECF5B06B176B5B /* BlurRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F090455D6F911163D0815F3 /* BlurRenderer.swift */; };
 		BDA90D7BFA5D8BEB00DCDB50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00930854C1D0CC9734D203CD /* Assets.xcassets */; };
 		BFE4A25ECEF31F988FA3CBC0 /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2601F1F38544CFA522261C7D /* HotkeyManager.swift */; };
 		C3267D6C7B3527E75BC44373 /* BreakTimerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD11F607239F9F22444F64A /* BreakTimerState.swift */; };
+		C4AB6F7D6D54525206A767EE /* StillZoomWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CA4E00EAC24379AB71E2EC /* StillZoomWindowController.swift */; };
 		C851D93A53C172EA7A4F10C6 /* BreakTimerStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35CEE9FA480AD8EA3412F68 /* BreakTimerStateTests.swift */; };
 		C93442BB6C4635032200E48B /* ShapeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478A14C839BA1275E186312E /* ShapeRenderer.swift */; };
 		CB7DAA6D3BA711D13B9C0D94 /* FreehandRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068AF06DCD4187879DA06178 /* FreehandRenderer.swift */; };
@@ -49,7 +53,10 @@
 
 /* Begin PBXFileReference section */
 		00930854C1D0CC9734D203CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		01CA4E00EAC24379AB71E2EC /* StillZoomWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StillZoomWindowController.swift; sourceTree = "<group>"; };
+		02D0969B89076B7BC986452B /* StillZoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StillZoomView.swift; sourceTree = "<group>"; };
 		068AF06DCD4187879DA06178 /* FreehandRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreehandRenderer.swift; sourceTree = "<group>"; };
+		122958CC072CEF51A4973BAD /* ZoomMathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomMathTests.swift; sourceTree = "<group>"; };
 		167B3BE9B273B7B056C41CD5 /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
 		1B27C880479A92E16A621C7B /* BreakTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakTimerView.swift; sourceTree = "<group>"; };
 		1F7CB4AB580AE896C4DAEE2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -66,6 +73,7 @@
 		68A34CBC6D716010D6E3DA63 /* DrawingStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingStateTests.swift; sourceTree = "<group>"; };
 		6CD11F607239F9F22444F64A /* BreakTimerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakTimerState.swift; sourceTree = "<group>"; };
 		7DED7AFD9439A1BCE15FFFAC /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+		81D668C866412DF33D52B15D /* ZoomMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomMath.swift; sourceTree = "<group>"; };
 		8699BCE233A5E7F09663017F /* ShapeRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeRendererTests.swift; sourceTree = "<group>"; };
 		8E069EC8EF00483692203882 /* DrawingCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingCanvasView.swift; sourceTree = "<group>"; };
 		9059A7F84AC48FE489FC4064 /* OverlayWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowController.swift; sourceTree = "<group>"; };
@@ -138,6 +146,9 @@
 				BE3023CD2A9E7BBC51D21E79 /* BreakTimerWindowController.swift */,
 				167B3BE9B273B7B056C41CD5 /* OverlayWindow.swift */,
 				9059A7F84AC48FE489FC4064 /* OverlayWindowController.swift */,
+				02D0969B89076B7BC986452B /* StillZoomView.swift */,
+				01CA4E00EAC24379AB71E2EC /* StillZoomWindowController.swift */,
+				81D668C866412DF33D52B15D /* ZoomMath.swift */,
 			);
 			path = Overlay;
 			sourceTree = "<group>";
@@ -150,6 +161,7 @@
 				4ABECEA7A773ED6A7EAE57DC /* FreehandRendererTests.swift */,
 				8699BCE233A5E7F09663017F /* ShapeRendererTests.swift */,
 				453513CAB75B5909A1521589 /* StrokeManagerTests.swift */,
+				122958CC072CEF51A4973BAD /* ZoomMathTests.swift */,
 			);
 			path = ZoomacItTests;
 			sourceTree = "<group>";
@@ -246,6 +258,16 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					2B167134B4525154CEC0F541 = {
+						DevelopmentTeam = T74PC5F324;
+						ProvisioningStyle = Manual;
+					};
+					F4563A3822D6E1B8C7E1A9CD = {
+						DevelopmentTeam = T74PC5F324;
+						ProvisioningStyle = Manual;
+					};
+				};
 			};
 			buildConfigurationList = 81525D8438500A556DFBDE89 /* Build configuration list for PBXProject "ZoomacIt" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -288,6 +310,7 @@
 				89CCEAA1BB96EE5C5323B494 /* FreehandRendererTests.swift in Sources */,
 				8EB5433F06804DD1E27E51DF /* ShapeRendererTests.swift in Sources */,
 				7A1095C1C52F1230FDBE9403 /* StrokeManagerTests.swift in Sources */,
+				8C86FC94752D7A7E397DE877 /* ZoomMathTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -313,9 +336,12 @@
 				EFB76DD8BEEDF74D7AB326DD /* OverlayWindowController.swift in Sources */,
 				C93442BB6C4635032200E48B /* ShapeRenderer.swift in Sources */,
 				7B4FDA5C58C43A27DA1A201B /* StatusBarController.swift in Sources */,
+				9DF3FA34ED77F2109586D4B5 /* StillZoomView.swift in Sources */,
+				C4AB6F7D6D54525206A767EE /* StillZoomWindowController.swift in Sources */,
 				41011F5512E5B70E02211DF4 /* Stroke.swift in Sources */,
 				1EF7046471522CBF02EE3D9D /* StrokeManager.swift in Sources */,
 				F5CC9D2C9692AEFD40DA3C32 /* TextInputController.swift in Sources */,
+				339CC2FB51A6EF14F65F3FA0 /* ZoomMath.swift in Sources */,
 				F9EEAA4E36082073D7CDBDF7 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -392,7 +418,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = T74PC5F324;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -409,7 +438,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = T74PC5F324;
 				INFOPLIST_FILE = ZoomacIt/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.x07jp27.ZoomacIt;
@@ -422,7 +454,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = T74PC5F324;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -439,7 +474,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = T74PC5F324;
 				INFOPLIST_FILE = ZoomacIt/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.x07jp27.ZoomacIt;

@@ -45,6 +45,13 @@ final class StatusBarController: NSObject {
     private func buildMenu() -> NSMenu {
         let menu = NSMenu()
 
+        let zoomItem = NSMenuItem(title: "Zoom", action: #selector(zoomAction), keyEquivalent: "1")
+        zoomItem.keyEquivalentModifierMask = [.control]
+        zoomItem.target = self
+        menu.addItem(zoomItem)
+
+        menu.addItem(.separator())
+
         let drawItem = NSMenuItem(title: "Draw", action: #selector(drawAction), keyEquivalent: "2")
         drawItem.keyEquivalentModifierMask = [.control]
         drawItem.target = self
@@ -72,6 +79,10 @@ final class StatusBarController: NSObject {
     }
 
     // MARK: - Actions
+
+    @objc private func zoomAction() {
+        HotkeyManager.shared.onZoomHotkey?()
+    }
 
     @objc private func drawAction() {
         HotkeyManager.shared.onDrawHotkey?()
