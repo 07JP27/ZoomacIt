@@ -50,8 +50,6 @@ final class StatusBarController: NSObject {
         zoomItem.target = self
         menu.addItem(zoomItem)
 
-        menu.addItem(.separator())
-
         let drawItem = NSMenuItem(title: "Draw", action: #selector(drawAction), keyEquivalent: "2")
         drawItem.keyEquivalentModifierMask = [.control]
         drawItem.target = self

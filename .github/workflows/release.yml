@@ -121,11 +121,9 @@ jobs:
 
             1. Download **${{ steps.dmg.outputs.dmg_name }}** below
             2. Open the `.dmg` file and drag **ZoomacIt.app** to the **Applications** folder
-            3. Open Terminal and run:
+            3. If you see the warning "Apple could not verify "ZoomacIt" is free of malware that may harm your Mac or compromise your privacy", run the following command in **Terminal** to remove the quarantine flag. Please review the source code in this repository and run at your own risk.
                ```
                xattr -cr /Applications/ZoomacIt.app
                ```
             4. Open ZoomacIt from Applications
             5. Grant **Screen Recording** permission when prompted
-
-            > **Note:** The `xattr -cr` command is required because the app is not signed with an Apple Developer ID. This removes the macOS quarantine flag so the app can launch.
