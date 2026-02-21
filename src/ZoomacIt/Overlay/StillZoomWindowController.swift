@@ -50,7 +50,6 @@ final class StillZoomWindowController {
                 self.presentOverlay(on: screen, image: captured, scaleFactor: scaleFactor)
             } catch {
                 NSLog("[StillZoomWindowController] Screen capture failed: %@", error.localizedDescription)
-                self.showPermissionAlert()
                 self.onShowFailed?()
             }
         }
@@ -118,22 +117,6 @@ final class StillZoomWindowController {
         zoomWindow = window
         zoomView = view
         NSLog("[StillZoomWindowController] Zoom overlay presented.")
-    }
-
-    private func showPermissionAlert() {
-        let alert = NSAlert()
-        alert.messageText = "Screen Recording Permission Required"
-        alert.informativeText = "ZoomacIt needs Screen Recording permission to capture the screen for Zoom mode.\n\nPlease enable it in System Settings → Privacy & Security → Screen Recording, then try again."
-        alert.alertStyle = .warning
-        alert.addButton(withTitle: "Open System Settings")
-        alert.addButton(withTitle: "Cancel")
-
-        let response = alert.runModal()
-        if response == .alertFirstButtonReturn {
-            if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture") {
-                NSWorkspace.shared.open(url)
-            }
-        }
     }
 
     // MARK: - Screen Capture
