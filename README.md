@@ -23,7 +23,8 @@ The project aims for feature compatibility with ZoomIt, providing system-wide ho
 ## Current feature coverage
 | Feature | Status |
 |---|---|
-|Zoom|✅|
+|Zoom (Still Zoom)|✅|
+|Zoom (Live Zoom)||
 |Draw|✅|
 |Text|✅|
 |DemoType||
