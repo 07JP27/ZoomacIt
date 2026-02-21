@@ -47,7 +47,20 @@ final class StillZoomWindowController {
                 )
                 NSLog("[StillZoomWindowController] Capture succeeded: %dx%d", captured.width, captured.height)
                 self.sourceImage = captured
-                self.presentOverlay(on: screen, image: captured, scaleFactor: scaleFactor)
+
+                // Convert current mouse position to image pixel coordinates
+                let mouseScreen = NSEvent.mouseLocation
+                let mouseInView = CGPoint(
+                    x: mouseScreen.x - screen.frame.origin.x,
+                    y: mouseScreen.y - screen.frame.origin.y
+                )
+                let mousePanCenter = CGPoint(
+                    x: mouseInView.x * scaleFactor,
+                    y: mouseInView.y * scaleFactor
+                )
+
+                self.presentOverlay(on: screen, image: captured, scaleFactor: scaleFactor,
+                                    initialPanCenter: mousePanCenter)
             } catch {
                 NSLog("[StillZoomWindowController] Screen capture failed: %@", error.localizedDescription)
                 self.onShowFailed?()
