@@ -31,12 +31,11 @@ final class StillZoomView: NSView {
         self.sourceImage = sourceImage
         self.screenScaleFactor = screenScaleFactor
         self.skipEntryAnimation = skipEntryAnimation
-        self.targetInitialZoom = max(min(initialZoomLevel, maximumZoom), minimumZoom)
+        self.targetInitialZoom = ZoomMath.clampZoomLevel(initialZoomLevel, minimum: minimumZoom, maximum: maximumZoom)
         // Start at target zoom immediately when skipping animation, otherwise 1.0 for entry animation
-        self.zoomLevel = skipEntryAnimation ? max(min(initialZoomLevel, maximumZoom), minimumZoom) : 1.0
-        self.panCenter = initialPanCenter ?? CGPoint(
-            x: CGFloat(sourceImage.width) * 0.5,
-            y: CGFloat(sourceImage.height) * 0.5
+        self.zoomLevel = skipEntryAnimation ? self.targetInitialZoom : 1.0
+        self.panCenter = initialPanCenter ?? ZoomMath.defaultPanCenter(
+            for: CGSize(width: sourceImage.width, height: sourceImage.height)
         )
         super.init(frame: frame)
         wantsLayer = true
@@ -104,13 +103,16 @@ final class StillZoomView: NSView {
     override func keyDown(with event: NSEvent) {
         guard let characters = event.charactersIgnoringModifiers else { return }
 
+        let upArrow = String(UnicodeScalar(NSUpArrowFunctionKey)!)
+        let downArrow = String(UnicodeScalar(NSDownArrowFunctionKey)!)
+
         switch characters {
         case "\u{1B}": // Escape
             onDismiss?()
-        case NSUpArrowFunctionKey.description:
+        case upArrow:
             zoomLevel = min(zoomLevel + 0.2, maximumZoom)
             updateLayerContentsRect(animated: true)
-        case NSDownArrowFunctionKey.description:
+        case downArrow:
             zoomLevel = max(zoomLevel - 0.2, minimumZoom)
             updateLayerContentsRect(animated: true)
         default:
@@ -139,20 +141,10 @@ final class StillZoomView: NSView {
     // MARK: - Helpers
 
     private func updateLayerContentsRect(animated: Bool = false, duration: CFTimeInterval = 0.12) {
-        let visibleWidth = 1.0 / zoomLevel
-        let visibleHeight = 1.0 / zoomLevel
-
-        let normalizedCenterX = panCenter.x / CGFloat(sourceImage.width)
-        let normalizedCenterY = panCenter.y / CGFloat(sourceImage.height)
-
-        let originX = clamp(normalizedCenterX - visibleWidth * 0.5, lower: 0, upper: 1 - visibleWidth)
-        let originY = clamp(normalizedCenterY - visibleHeight * 0.5, lower: 0, upper: 1 - visibleHeight)
-
-        visibleContentsRect = CGRect(
-            x: originX,
-            y: originY,
-            width: visibleWidth,
-            height: visibleHeight
+        visibleContentsRect = ZoomMath.visibleContentsRect(
+            zoomLevel: zoomLevel,
+            panCenter: panCenter,
+            imageSize: CGSize(width: sourceImage.width, height: sourceImage.height)
         )
 
         if animated {
@@ -169,19 +161,12 @@ final class StillZoomView: NSView {
         let sourceWidth = CGFloat(sourceImage.width)
         let sourceHeight = CGFloat(sourceImage.height)
 
-        // visibleContentsRect uses CALayer coordinate system (origin at bottom-left),
-        // but CGImage.cropping uses image coordinate system (origin at top-left).
-        // Flip Y: imageY = 1.0 - layerY - height
-        let flippedOriginY = 1.0 - visibleContentsRect.origin.y - visibleContentsRect.size.height
-
-        let cropRect = CGRect(
-            x: visibleContentsRect.origin.x * sourceWidth,
-            y: flippedOriginY * sourceHeight,
-            width: visibleContentsRect.size.width * sourceWidth,
-            height: visibleContentsRect.size.height * sourceHeight
+        let crop = ZoomMath.cropRect(
+            contentsRect: visibleContentsRect,
+            sourceSize: CGSize(width: sourceWidth, height: sourceHeight)
         )
 
-        guard let cropped = sourceImage.cropping(to: cropRect.integral) else {
+        guard let cropped = sourceImage.cropping(to: crop) else {
             return nil
         }
 
@@ -206,7 +191,4 @@ final class StillZoomView: NSView {
         return context.makeImage()
     }
 
-    private func clamp(_ value: CGFloat, lower: CGFloat, upper: CGFloat) -> CGFloat {
-        min(max(value, lower), upper)
-    }
 }

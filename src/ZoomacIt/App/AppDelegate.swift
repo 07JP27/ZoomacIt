@@ -39,9 +39,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if let zoomController {
             let captured = zoomController.snapshotImageForDrawTransition()
             self.zoomSourceForDrawReturn = zoomController.sourceImage
+            // Capture state before dismiss(), since dismiss() triggers onDismiss which nils self.zoomController
+            let savedPan = zoomController.panCenter
+            let savedZoom = zoomController.zoomLevel
             zoomController.dismiss()
-            self.zoomPanCenterForDrawReturn = zoomController.lastPanCenter
-            self.zoomLevelForDrawReturn = zoomController.lastZoomLevel
+            self.zoomPanCenterForDrawReturn = savedPan
+            self.zoomLevelForDrawReturn = savedZoom
             self.zoomController = nil
             presentDrawMode(backgroundImage: captured)
             return
@@ -104,10 +107,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         controller.onEnterDrawMode = { [weak self] snapshot in
             guard let self else { return }
             NSLog("[AppDelegate] Zoom -> Draw transition")
-            self.zoomSourceForDrawReturn = self.zoomController?.sourceImage
-            self.zoomController?.dismiss()
-            self.zoomPanCenterForDrawReturn = self.zoomController?.lastPanCenter
-            self.zoomLevelForDrawReturn = self.zoomController?.lastZoomLevel
+            // Capture controller and its state before dismiss(), since onDismiss nils self.zoomController
+            let zoom = self.zoomController
+            self.zoomSourceForDrawReturn = zoom?.sourceImage
+            let savedPan = zoom?.panCenter
+            let savedZoom = zoom?.zoomLevel
+            zoom?.dismiss()
+            self.zoomPanCenterForDrawReturn = savedPan
+            self.zoomLevelForDrawReturn = savedZoom
             self.zoomController = nil
             self.presentDrawMode(backgroundImage: snapshot)
         }

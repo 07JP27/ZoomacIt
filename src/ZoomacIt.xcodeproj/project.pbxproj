@@ -12,6 +12,7 @@
 		1EAA0D96B867DF66AF0A6D2A /* BreakTimerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD499A142CC237EF664DD96 /* BreakTimerWindow.swift */; };
 		1EF7046471522CBF02EE3D9D /* StrokeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D7EC7D8734530BA2E376139 /* StrokeManager.swift */; };
 		26292806CB72F8D077354D37 /* BreakTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B27C880479A92E16A621C7B /* BreakTimerView.swift */; };
+		339CC2FB51A6EF14F65F3FA0 /* ZoomMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D668C866412DF33D52B15D /* ZoomMath.swift */; };
 		398052FC99D2C2CD71B1DFC5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BB99CA77A8C7A975390CA9 /* AppDelegate.swift */; };
 		3ECA67329DFFE9622AF916FB /* HighlighterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD20BCB0F5497D5789C75AF /* HighlighterRenderer.swift */; };
 		3F26DF307478E72BC3652D92 /* NSBezierPath+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F32C327FD3231AE4777979 /* NSBezierPath+Extensions.swift */; };
@@ -21,6 +22,7 @@
 		7B4FDA5C58C43A27DA1A201B /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DED7AFD9439A1BCE15FFFAC /* StatusBarController.swift */; };
 		862780FF803ABA4C039BC6B7 /* BreakTimerWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3023CD2A9E7BBC51D21E79 /* BreakTimerWindowController.swift */; };
 		89CCEAA1BB96EE5C5323B494 /* FreehandRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABECEA7A773ED6A7EAE57DC /* FreehandRendererTests.swift */; };
+		8C86FC94752D7A7E397DE877 /* ZoomMathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122958CC072CEF51A4973BAD /* ZoomMathTests.swift */; };
 		8EB5433F06804DD1E27E51DF /* ShapeRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8699BCE233A5E7F09663017F /* ShapeRendererTests.swift */; };
 		9DF3FA34ED77F2109586D4B5 /* StillZoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0969B89076B7BC986452B /* StillZoomView.swift */; };
 		A43592DDACECF5B06B176B5B /* BlurRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F090455D6F911163D0815F3 /* BlurRenderer.swift */; };
@@ -54,6 +56,7 @@
 		01CA4E00EAC24379AB71E2EC /* StillZoomWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StillZoomWindowController.swift; sourceTree = "<group>"; };
 		02D0969B89076B7BC986452B /* StillZoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StillZoomView.swift; sourceTree = "<group>"; };
 		068AF06DCD4187879DA06178 /* FreehandRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreehandRenderer.swift; sourceTree = "<group>"; };
+		122958CC072CEF51A4973BAD /* ZoomMathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomMathTests.swift; sourceTree = "<group>"; };
 		167B3BE9B273B7B056C41CD5 /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
 		1B27C880479A92E16A621C7B /* BreakTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakTimerView.swift; sourceTree = "<group>"; };
 		1F7CB4AB580AE896C4DAEE2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -70,6 +73,7 @@
 		68A34CBC6D716010D6E3DA63 /* DrawingStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingStateTests.swift; sourceTree = "<group>"; };
 		6CD11F607239F9F22444F64A /* BreakTimerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakTimerState.swift; sourceTree = "<group>"; };
 		7DED7AFD9439A1BCE15FFFAC /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
+		81D668C866412DF33D52B15D /* ZoomMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomMath.swift; sourceTree = "<group>"; };
 		8699BCE233A5E7F09663017F /* ShapeRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeRendererTests.swift; sourceTree = "<group>"; };
 		8E069EC8EF00483692203882 /* DrawingCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingCanvasView.swift; sourceTree = "<group>"; };
 		9059A7F84AC48FE489FC4064 /* OverlayWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowController.swift; sourceTree = "<group>"; };
@@ -144,6 +148,7 @@
 				9059A7F84AC48FE489FC4064 /* OverlayWindowController.swift */,
 				02D0969B89076B7BC986452B /* StillZoomView.swift */,
 				01CA4E00EAC24379AB71E2EC /* StillZoomWindowController.swift */,
+				81D668C866412DF33D52B15D /* ZoomMath.swift */,
 			);
 			path = Overlay;
 			sourceTree = "<group>";
@@ -156,6 +161,7 @@
 				4ABECEA7A773ED6A7EAE57DC /* FreehandRendererTests.swift */,
 				8699BCE233A5E7F09663017F /* ShapeRendererTests.swift */,
 				453513CAB75B5909A1521589 /* StrokeManagerTests.swift */,
+				122958CC072CEF51A4973BAD /* ZoomMathTests.swift */,
 			);
 			path = ZoomacItTests;
 			sourceTree = "<group>";
@@ -304,6 +310,7 @@
 				89CCEAA1BB96EE5C5323B494 /* FreehandRendererTests.swift in Sources */,
 				8EB5433F06804DD1E27E51DF /* ShapeRendererTests.swift in Sources */,
 				7A1095C1C52F1230FDBE9403 /* StrokeManagerTests.swift in Sources */,
+				8C86FC94752D7A7E397DE877 /* ZoomMathTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +341,7 @@
 				41011F5512E5B70E02211DF4 /* Stroke.swift in Sources */,
 				1EF7046471522CBF02EE3D9D /* StrokeManager.swift in Sources */,
 				F5CC9D2C9692AEFD40DA3C32 /* TextInputController.swift in Sources */,
+				339CC2FB51A6EF14F65F3FA0 /* ZoomMath.swift in Sources */,
 				F9EEAA4E36082073D7CDBDF7 /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

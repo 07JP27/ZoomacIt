@@ -15,6 +15,11 @@ final class StillZoomWindowController {
     private var zoomView: StillZoomView?
 
     private(set) var sourceImage: CGImage?
+
+    /// Current zoom state — readable before dismiss() to capture state.
+    var panCenter: CGPoint? { zoomView?.panCenter }
+    var zoomLevel: CGFloat? { zoomView?.zoomLevel }
+
     /// Zoom state captured on dismiss, readable after dismiss returns.
     private(set) var lastPanCenter: CGPoint?
     private(set) var lastZoomLevel: CGFloat?
