@@ -449,12 +449,7 @@ final class DrawingCanvasView: NSView {
     // MARK: - Export
 
     private func copyToClipboard() async {
-        NSLog("[DrawingCanvasView] copyToClipboard called")
-        guard let image = await renderFinalImage() else {
-            NSLog("[DrawingCanvasView] copyToClipboard: renderFinalImage returned nil")
-            return
-        }
-        NSLog("[DrawingCanvasView] copyToClipboard: image %dx%d", image.width, image.height)
+        guard let image = await renderFinalImage() else { return }
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         let nsImage = NSImage(cgImage: image, size: bounds.size)
@@ -492,11 +487,7 @@ final class DrawingCanvasView: NSView {
     /// When in live draw mode (no backgroundImage), captures the current desktop on demand.
     private func renderFinalImage() async -> CGImage? {
         let size = bounds.size
-        NSLog("[DrawingCanvasView] renderFinalImage: size=%.0fx%.0f, bgMode=%d, hasBgImage=%d", size.width, size.height, drawingState.backgroundMode == .transparent ? 0 : (drawingState.backgroundMode == .whiteboard ? 1 : 2), backgroundImage != nil ? 1 : 0)
-        guard let context = CGContext.createBitmapContext(size: size) else {
-            NSLog("[DrawingCanvasView] renderFinalImage: failed to create bitmap context")
-            return nil
-        }
+        guard let context = CGContext.createBitmapContext(size: size) else { return nil }
 
         // Background
         switch drawingState.backgroundMode {
@@ -537,13 +528,9 @@ final class DrawingCanvasView: NSView {
             return nil
         }
 
-        guard let screen = window?.screen ?? NSScreen.main else {
-            NSLog("[DrawingCanvasView] No screen available for capture.")
-            return nil
-        }
+        guard let screen = window?.screen ?? NSScreen.main else { return nil }
         let screenNumber = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID ?? CGMainDisplayID()
         let scaleFactor = screen.backingScaleFactor
-        NSLog("[DrawingCanvasView] On-demand capture: display=%d, scale=%.1f, screen=%.0fx%.0f", screenNumber, scaleFactor, screen.frame.width, screen.frame.height)
 
         do {
             let availableContent = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
@@ -555,7 +542,6 @@ final class DrawingCanvasView: NSView {
             // Exclude our overlay window from the capture
             let overlayWindowID = window?.windowNumber ?? 0
             let excludedWindows = availableContent.windows.filter { $0.windowID == CGWindowID(overlayWindowID) }
-            NSLog("[DrawingCanvasView] Overlay windowNumber=%d, excluded %d window(s), total available=%d", overlayWindowID, excludedWindows.count, availableContent.windows.count)
 
             let filter = SCContentFilter(display: display, excludingWindows: excludedWindows)
             let config = SCStreamConfiguration()
@@ -564,12 +550,10 @@ final class DrawingCanvasView: NSView {
             config.pixelFormat = kCVPixelFormatType_32BGRA
             config.showsCursor = false
 
-            let image = try await SCScreenshotManager.captureImage(
+            return try await SCScreenshotManager.captureImage(
                 contentFilter: filter,
                 configuration: config
             )
-            NSLog("[DrawingCanvasView] Capture succeeded: %dx%d", image.width, image.height)
-            return image
         } catch {
             NSLog("[DrawingCanvasView] On-demand capture failed: %@", error.localizedDescription)
             return nil

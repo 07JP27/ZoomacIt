@@ -11,9 +11,6 @@ final class OverlayWindowController {
     private var canvasView: DrawingCanvasView?
     private let backgroundImageOverride: CGImage?
 
-    /// The captured screen image at the moment Draw mode was activated.
-    private var screenCapture: CGImage?
-
     init(backgroundImageOverride: CGImage? = nil) {
         self.backgroundImageOverride = backgroundImageOverride
     }
@@ -25,7 +22,6 @@ final class OverlayWindowController {
 
         if let backgroundImageOverride {
             // Zoom → Draw transition: use the frozen zoomed snapshot as background
-            self.screenCapture = backgroundImageOverride
             self.presentOverlay(screen: screen, backgroundImage: backgroundImageOverride)
             return
         }
@@ -62,7 +58,6 @@ final class OverlayWindowController {
         overlayWindow?.close()
         overlayWindow = nil
         canvasView = nil
-        screenCapture = nil
 
         // Notify the app delegate
         if let appDelegate = NSApplication.shared.delegate as? AppDelegate {
