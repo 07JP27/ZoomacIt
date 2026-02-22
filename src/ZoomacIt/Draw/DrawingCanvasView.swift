@@ -291,13 +291,13 @@ final class DrawingCanvasView: NSView {
 
         // Copy to clipboard (⌘C)
         case "C" where modifiers.contains(.command):
-            Task { @MainActor in
+            Task {
                 await copyToClipboard()
             }
 
         // Save to file (⌘S)
         case "S" where modifiers.contains(.command):
-            Task { @MainActor in
+            Task {
                 await saveToFile()
             }
 
@@ -468,7 +468,11 @@ final class DrawingCanvasView: NSView {
         savePanel.allowedContentTypes = [.png]
         savePanel.nameFieldStringValue = "ZoomacIt-draw.png"
 
-        let response = savePanel.runModal()
+        let response = await withCheckedContinuation { continuation in
+            savePanel.begin { panelResponse in
+                continuation.resume(returning: panelResponse)
+            }
+        }
 
         // Restore overlay
         window.makeKeyAndOrderFront(nil)
