@@ -11,9 +11,6 @@ final class OverlayWindowController {
     private var canvasView: DrawingCanvasView?
     private let backgroundImageOverride: CGImage?
 
-    /// The captured screen image at the moment Draw mode was activated.
-    private var screenCapture: CGImage?
-
     init(backgroundImageOverride: CGImage? = nil) {
         self.backgroundImageOverride = backgroundImageOverride
     }
@@ -24,25 +21,15 @@ final class OverlayWindowController {
         guard let screen = NSScreen.screenContainingMouse ?? NSScreen.main else { return }
 
         if let backgroundImageOverride {
-            self.screenCapture = backgroundImageOverride
+            // Zoom → Draw transition: use the frozen zoomed snapshot as background
             self.presentOverlay(screen: screen, backgroundImage: backgroundImageOverride)
             return
         }
 
-        let screenNumber = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID ?? CGMainDisplayID()
-        let scaleFactor = screen.backingScaleFactor
-        let screenFrame = screen.frame
-
-        Task { @MainActor in
-            let captured = await Self.captureScreenImage(
-                displayID: screenNumber,
-                width: screenFrame.width,
-                height: screenFrame.height,
-                scaleFactor: scaleFactor
-            )
-            self.screenCapture = captured
-            self.presentOverlay(screen: screen, backgroundImage: captured)
-        }
+        // Direct Draw entry (⌃2): transparent canvas over live desktop — no capture needed.
+        // OverlayWindow is already isOpaque=false / backgroundColor=.clear,
+        // so the desktop shows through when DrawingCanvasView draws nothing for the background.
+        self.presentOverlay(screen: screen, backgroundImage: nil)
     }
 
     private func presentOverlay(screen: NSScreen, backgroundImage: CGImage?) {
@@ -71,7 +58,6 @@ final class OverlayWindowController {
         overlayWindow?.close()
         overlayWindow = nil
         canvasView = nil
-        screenCapture = nil
 
         // Notify the app delegate
         if let appDelegate = NSApplication.shared.delegate as? AppDelegate {

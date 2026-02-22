@@ -68,7 +68,7 @@ final class DrawingState {
     // MARK: - Background Mode
 
     enum BackgroundMode {
-        case transparent  // draw on top of captured screen
+        case transparent  // draw on transparent canvas (live desktop visible; frozen capture in Zoom→Draw)
         case whiteboard
         case blackboard
     }
