@@ -20,14 +20,18 @@ enum HighlighterRenderer {
     }
 
     /// Renders a highlighter stroke directly into a CGContext.
+    /// - Parameter useMultiplyBlend: When `true` (default), uses `.multiply` blend mode for realistic
+    ///   color overlay on opaque backgrounds. When `false`, uses `.normal` blend mode — required for
+    ///   transparent backgrounds where `.multiply` produces invisible strokes.
     static func renderHighlighterStroke(
         path: CGPath,
         color: NSColor,
         penWidth: CGFloat,
+        useMultiplyBlend: Bool = true,
         into context: CGContext
     ) {
         context.saveGState()
-        context.setBlendMode(.multiply)
+        context.setBlendMode(useMultiplyBlend ? .multiply : .normal)
         context.setStrokeColor(color.withAlphaComponent(highlighterAlpha).cgColor)
         context.setLineWidth(penWidth * 2.0)
         context.setLineCap(.square)

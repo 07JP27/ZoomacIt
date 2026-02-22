@@ -1,5 +1,6 @@
 import AppKit
 import CoreGraphics
+import ScreenCaptureKit
 
 /// The main NSView subclass that implements the 3-layer compositing architecture
 /// for Draw mode rendering.
@@ -20,7 +21,9 @@ final class DrawingCanvasView: NSView {
     let drawingState = DrawingState()
     private let strokeManager = StrokeManager()
 
-    /// The screen capture at Draw mode entry (drawn as background).
+    /// Background image for Draw mode.
+    /// - `nil` in live draw mode (transparent canvas, desktop shows through)
+    /// - Set when entering via Zoom→Draw transition (frozen zoomed snapshot)
     private var backgroundImage: CGImage?
 
     // MARK: - 3-Layer Architecture
@@ -81,7 +84,9 @@ final class DrawingCanvasView: NSView {
             drawingState.currentNSColor.setStroke()
             if drawingState.isHighlighterMode {
                 HighlighterRenderer.applyHighlighterStyle(to: preview, penWidth: drawingState.penWidth)
-                NSGraphicsContext.current?.cgContext.setBlendMode(.multiply)
+                // .multiply is invisible on transparent pixels; use .normal when no background image
+                let blendMode: CGBlendMode = (backgroundImage != nil) ? .multiply : .normal
+                NSGraphicsContext.current?.cgContext.setBlendMode(blendMode)
             } else {
                 preview.lineWidth = drawingState.penWidth
                 preview.lineCapStyle = .round
@@ -96,7 +101,8 @@ final class DrawingCanvasView: NSView {
             drawingState.currentNSColor.setStroke()
             if drawingState.isHighlighterMode {
                 HighlighterRenderer.applyHighlighterStyle(to: freehand, penWidth: drawingState.penWidth)
-                NSGraphicsContext.current?.cgContext.setBlendMode(.multiply)
+                let blendMode: CGBlendMode = (backgroundImage != nil) ? .multiply : .normal
+                NSGraphicsContext.current?.cgContext.setBlendMode(blendMode)
             } else {
                 freehand.lineWidth = drawingState.penWidth
                 freehand.lineCapStyle = .round
@@ -285,11 +291,15 @@ final class DrawingCanvasView: NSView {
 
         // Copy to clipboard (⌘C)
         case "C" where modifiers.contains(.command):
-            copyToClipboard()
+            Task { @MainActor in
+                await copyToClipboard()
+            }
 
         // Save to file (⌘S)
         case "S" where modifiers.contains(.command):
-            saveToFile()
+            Task { @MainActor in
+                await saveToFile()
+            }
 
         default:
             break
@@ -352,7 +362,9 @@ final class DrawingCanvasView: NSView {
         // Set stroke properties
         let color = drawingState.currentNSColor
         if drawingState.isHighlighterMode {
-            bitmapContext.setBlendMode(.multiply)
+            // .multiply is invisible on transparent pixels; use .normal when no background image
+            let blendMode: CGBlendMode = (backgroundImage != nil) ? .multiply : .normal
+            bitmapContext.setBlendMode(blendMode)
             bitmapContext.setStrokeColor(color.cgColor)
             bitmapContext.setLineWidth(drawingState.penWidth * 2.0)
             bitmapContext.setLineCap(.square)
@@ -436,44 +448,68 @@ final class DrawingCanvasView: NSView {
 
     // MARK: - Export
 
-    private func copyToClipboard() {
-        guard let image = renderFinalImage() else { return }
+    private func copyToClipboard() async {
+        NSLog("[DrawingCanvasView] copyToClipboard called")
+        guard let image = await renderFinalImage() else {
+            NSLog("[DrawingCanvasView] copyToClipboard: renderFinalImage returned nil")
+            return
+        }
+        NSLog("[DrawingCanvasView] copyToClipboard: image %dx%d", image.width, image.height)
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         let nsImage = NSImage(cgImage: image, size: bounds.size)
         pasteboard.writeObjects([nsImage])
     }
 
-    private func saveToFile() {
-        guard let image = renderFinalImage() else { return }
+    private func saveToFile() async {
+        guard let image = await renderFinalImage() else { return }
+        guard let window = self.window else { return }
+
+        // Hide the overlay so the save panel is accessible.
+        // The rendered image is already captured, so the data is safe.
+        window.orderOut(nil)
 
         let savePanel = NSSavePanel()
         savePanel.allowedContentTypes = [.png]
         savePanel.nameFieldStringValue = "ZoomacIt-draw.png"
 
-        savePanel.begin { [weak self] response in
-            guard response == .OK, let url = savePanel.url else { return }
-            guard let self else { return }
+        let response = savePanel.runModal()
 
-            let nsImage = NSImage(cgImage: image, size: self.bounds.size)
-            guard let tiffData = nsImage.tiffRepresentation,
-                  let bitmap = NSBitmapImageRep(data: tiffData),
-                  let pngData = bitmap.representation(using: .png, properties: [:]) else { return }
+        // Restore overlay
+        window.makeKeyAndOrderFront(nil)
 
-            try? pngData.write(to: url)
-        }
+        guard response == .OK, let url = savePanel.url else { return }
+
+        let nsImage = NSImage(cgImage: image, size: self.bounds.size)
+        guard let tiffData = nsImage.tiffRepresentation,
+              let bitmap = NSBitmapImageRep(data: tiffData),
+              let pngData = bitmap.representation(using: .png, properties: [:]) else { return }
+
+        try? pngData.write(to: url)
     }
 
     /// Renders the full canvas (background + finishedLayer) as a CGImage.
-    private func renderFinalImage() -> CGImage? {
+    /// When in live draw mode (no backgroundImage), captures the current desktop on demand.
+    private func renderFinalImage() async -> CGImage? {
         let size = bounds.size
-        guard let context = CGContext.createBitmapContext(size: size) else { return nil }
+        NSLog("[DrawingCanvasView] renderFinalImage: size=%.0fx%.0f, bgMode=%d, hasBgImage=%d", size.width, size.height, drawingState.backgroundMode == .transparent ? 0 : (drawingState.backgroundMode == .whiteboard ? 1 : 2), backgroundImage != nil ? 1 : 0)
+        guard let context = CGContext.createBitmapContext(size: size) else {
+            NSLog("[DrawingCanvasView] renderFinalImage: failed to create bitmap context")
+            return nil
+        }
 
         // Background
         switch drawingState.backgroundMode {
         case .transparent:
             if let bg = backgroundImage {
+                // Zoom→Draw transition: use frozen snapshot
                 context.draw(bg, in: CGRect(origin: .zero, size: size))
+            } else {
+                // Live draw mode: capture desktop on demand (excluding our overlay)
+                if let captured = await captureDesktopExcludingOverlay() {
+                    context.draw(captured, in: CGRect(origin: .zero, size: size))
+                }
+                // If capture fails (no permission), export as transparent PNG
             }
         case .whiteboard:
             context.setFillColor(NSColor.white.cgColor)
@@ -489,5 +525,54 @@ final class DrawingCanvasView: NSView {
         }
 
         return context.makeImage()
+    }
+
+    // MARK: - On-Demand Desktop Capture
+
+    /// Captures the current desktop excluding the overlay window.
+    /// Uses ScreenCaptureKit's excludingWindows filter to avoid flicker.
+    private func captureDesktopExcludingOverlay() async -> CGImage? {
+        guard CGPreflightScreenCaptureAccess() else {
+            NSLog("[DrawingCanvasView] Screen Recording not permitted — exporting strokes only.")
+            return nil
+        }
+
+        guard let screen = window?.screen ?? NSScreen.main else {
+            NSLog("[DrawingCanvasView] No screen available for capture.")
+            return nil
+        }
+        let screenNumber = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID ?? CGMainDisplayID()
+        let scaleFactor = screen.backingScaleFactor
+        NSLog("[DrawingCanvasView] On-demand capture: display=%d, scale=%.1f, screen=%.0fx%.0f", screenNumber, scaleFactor, screen.frame.width, screen.frame.height)
+
+        do {
+            let availableContent = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
+            guard let display = availableContent.displays.first(where: { $0.displayID == screenNumber }) else {
+                NSLog("[DrawingCanvasView] Display not found for on-demand capture.")
+                return nil
+            }
+
+            // Exclude our overlay window from the capture
+            let overlayWindowID = window?.windowNumber ?? 0
+            let excludedWindows = availableContent.windows.filter { $0.windowID == CGWindowID(overlayWindowID) }
+            NSLog("[DrawingCanvasView] Overlay windowNumber=%d, excluded %d window(s), total available=%d", overlayWindowID, excludedWindows.count, availableContent.windows.count)
+
+            let filter = SCContentFilter(display: display, excludingWindows: excludedWindows)
+            let config = SCStreamConfiguration()
+            config.width = Int(screen.frame.width * scaleFactor)
+            config.height = Int(screen.frame.height * scaleFactor)
+            config.pixelFormat = kCVPixelFormatType_32BGRA
+            config.showsCursor = false
+
+            let image = try await SCScreenshotManager.captureImage(
+                contentFilter: filter,
+                configuration: config
+            )
+            NSLog("[DrawingCanvasView] Capture succeeded: %dx%d", image.width, image.height)
+            return image
+        } catch {
+            NSLog("[DrawingCanvasView] On-demand capture failed: %@", error.localizedDescription)
+            return nil
+        }
     }
 }

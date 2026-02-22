@@ -24,25 +24,16 @@ final class OverlayWindowController {
         guard let screen = NSScreen.screenContainingMouse ?? NSScreen.main else { return }
 
         if let backgroundImageOverride {
+            // Zoom → Draw transition: use the frozen zoomed snapshot as background
             self.screenCapture = backgroundImageOverride
             self.presentOverlay(screen: screen, backgroundImage: backgroundImageOverride)
             return
         }
 
-        let screenNumber = screen.deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? CGDirectDisplayID ?? CGMainDisplayID()
-        let scaleFactor = screen.backingScaleFactor
-        let screenFrame = screen.frame
-
-        Task { @MainActor in
-            let captured = await Self.captureScreenImage(
-                displayID: screenNumber,
-                width: screenFrame.width,
-                height: screenFrame.height,
-                scaleFactor: scaleFactor
-            )
-            self.screenCapture = captured
-            self.presentOverlay(screen: screen, backgroundImage: captured)
-        }
+        // Direct Draw entry (⌃2): transparent canvas over live desktop — no capture needed.
+        // OverlayWindow is already isOpaque=false / backgroundColor=.clear,
+        // so the desktop shows through when DrawingCanvasView draws nothing for the background.
+        self.presentOverlay(screen: screen, backgroundImage: nil)
     }
 
     private func presentOverlay(screen: NSScreen, backgroundImage: CGImage?) {
