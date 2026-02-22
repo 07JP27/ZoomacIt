@@ -7,7 +7,6 @@ final class DrawingStateTests: XCTestCase {
         let state = DrawingState()
         XCTAssertEqual(state.penWidth, 3.0)
         XCTAssertFalse(state.isHighlighterMode)
-        XCTAssertFalse(state.isBlurMode)
         XCTAssertFalse(state.isTextMode)
         XCTAssertFalse(state.isTabHeld)
     }

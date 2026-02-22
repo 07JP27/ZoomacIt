@@ -125,7 +125,6 @@ Draw 層はアプリの中核。**3層合成アーキテクチャ**に基づい�
 | `FreehandRenderer.swift` | Catmull-Rom スプライン補間によるフリーハンドパスのスムージング。生のマウス座標を滑らかな3次ベジェ曲線に変換。 |
 | `StrokeManager.swift` | `CGImage` スナップショットによる Undo スタック管理。上限30レベル。 |
 | `HighlighterRenderer.swift` | 半透明ハイライターストロークの描画補助。Multiply ブレンドモードでリアルなマーカー表現。 |
-| `BlurRenderer.swift` | `CIGaussianBlur` を使用したぼかし描画（X / Shift+X）。元の画面キャプチャから対象領域を切り出してぼかす。 |
 | `TextInputController.swift` | T キーで起動するテキスト入力モード。`NSTextView` をオーバーレイ上に配置し、Escape 確定時にオフスクリーン `CGBitmapContext` にレンダリングして `finishedLayer` に焼き込む。 |
 
 **設計ポイント — 修飾キーによるシェイプ切替:**
@@ -151,13 +150,12 @@ mouseUp    → previewLayer を finishedLayer にラスタライズして焼き�
 
 | ファイル | 役割 |
 |---|---|
-| `Stroke.swift` | 1本のストロークを表す構造体。ポイント配列・色・太さ・シェイプ種別・ハイライター/ぼかしフラグを保持。 |
-| `DrawingState.swift` | 描画の現在状態（ミュータブル）。アクティブな色・ペン幅・ハイライターモード・ぼかしモード・テキストモード・Tab キー状態・背景モード（透明/ホワイトボード/ブラックボード）を管理。修飾キーから `ShapeType` を導出する `currentShapeType(modifiers:)` メソッドを提供。 |
+| `Stroke.swift` | 1本のストロークを表す構造体。ポイント配列・色・太さ・シェイプ種別・ハイライターフラグを保持。 |
+| `DrawingState.swift` | 描画の現在状態（ミュータブル）。アクティブな色・ペン幅・ハイライターモード・テキストモード・Tab キー状態・背景モード（透明/ホワイトボード/ブラックボード）を管理。修飾キーから `ShapeType` を導出する `currentShapeType(modifiers:)` メソッドを提供。 |
 
 **補助型:**
 - `ShapeType` — `freehand / line / rectangle / ellipse / arrow`
 - `PenColor` — `red / green / blue / orange / yellow / pink`（キー文字からのマッピング付き）
-- `BlurStrength` — `weak (10pt) / strong (30pt)`
 
 ---
 

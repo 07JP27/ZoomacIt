@@ -91,8 +91,6 @@ Press **⌃2** (Control+2) to enter Draw mode. The screen freezes and you can dr
 | Key | Action |
 |---|---|
 | T | Text input mode |
-| X | Blur (weak) *(coming soon)* |
-| Shift + X | Blur (strong) *(coming soon)* |
 | ⌃ + scroll wheel | Change pen width |
 | E | Erase all |
 | W | Whiteboard background |
