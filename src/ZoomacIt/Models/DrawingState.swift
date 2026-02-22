@@ -29,19 +29,6 @@ enum PenColor: Sendable {
     }
 }
 
-/// Blur effect strength.
-enum BlurStrength: Sendable {
-    case weak
-    case strong
-
-    var radius: CGFloat {
-        switch self {
-        case .weak:   return 10.0
-        case .strong: return 30.0
-        }
-    }
-}
-
 /// Mutable drawing state that drives the rendering.
 final class DrawingState {
 
@@ -50,11 +37,6 @@ final class DrawingState {
     var activeColor: PenColor = .red
     var penWidth: CGFloat = 3.0
     var isHighlighterMode: Bool = false
-
-    // MARK: - Blur
-
-    var isBlurMode: Bool = false
-    var blurStrength: BlurStrength = .weak
 
     // MARK: - Text Mode
 

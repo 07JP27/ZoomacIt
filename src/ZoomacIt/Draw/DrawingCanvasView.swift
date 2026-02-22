@@ -139,6 +139,7 @@ final class DrawingCanvasView: NSView {
 
         let point = convert(event.locationInWindow, from: nil)
         dragOrigin = point
+
         freehandPoints = [point]
         isDragging = true
 
@@ -151,6 +152,7 @@ final class DrawingCanvasView: NSView {
         guard isDragging else { return }
 
         let currentPoint = convert(event.locationInWindow, from: nil)
+
         let modifiers = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
         let shapeType = drawingState.currentShapeType(modifiers: modifiers)
 
@@ -268,12 +270,6 @@ final class DrawingCanvasView: NSView {
         // Text mode
         case "T":
             enterTextMode()
-
-        // Blur (not yet fully wired — sets state for future integration)
-        case "X":
-            NSLog("[DrawingCanvasView] Blur mode activated (rendering not yet implemented)")
-            drawingState.isBlurMode = true
-            drawingState.blurStrength = modifiers.contains(.shift) ? .strong : .weak
 
         // Tab key for ellipse (track as key, not modifier)
         case "\t":

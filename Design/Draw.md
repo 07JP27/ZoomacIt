@@ -50,13 +50,6 @@ ZoomItのシェイプ切替は **ツールバーや状態切替ではない**。
 `Shift + 色キー` でハイライターモードになる。  
 同じ色キーを Shift なしで押すと通常ペンに戻る。
 
-#### Blur（ぼかし）
-
-| キー | 効果 |
-|---|---|
-| X | ぼかし（弱）|
-| Shift + X | ぼかし（強）|
-
 ---
 
 ### C. ペンサイズの変更
@@ -139,7 +132,6 @@ keyDown    →
   ├ W/K          : 背景色レイヤーをfinishedLayerに書込み
   ├ T            : textModeに切替
   ├ E            : finishedLayer全消去
-  ├ X/Shift+X    : blurMode切替
   └ Space        : カーソルを中央へ
 ```
 
