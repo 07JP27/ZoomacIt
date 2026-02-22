@@ -9,13 +9,13 @@ struct SettingsView: View {
         VStack(spacing: 0) {
             TabView {
                 GeneralTab()
-                    .tabItem { Label("General", systemImage: "keyboard") }
+                    .tabItem { Text("General") }
                 DrawTab()
-                    .tabItem { Label("Draw", systemImage: "pencil.tip") }
+                    .tabItem { Text("Draw") }
                 ZoomTab()
-                    .tabItem { Label("Zoom", systemImage: "magnifyingglass") }
+                    .tabItem { Text("Zoom") }
                 BreakTimerTab()
-                    .tabItem { Label("Break Timer", systemImage: "timer") }
+                    .tabItem { Text("Break Timer") }
             }
             .frame(minWidth: 480, minHeight: 320)
 
