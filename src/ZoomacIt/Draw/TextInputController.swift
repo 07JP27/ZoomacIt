@@ -9,7 +9,7 @@ final class TextInputController: NSObject, NSTextViewDelegate {
     private weak var canvasView: NSView?
     private let drawingState: DrawingState
     private var textView: NSTextView?
-    private var fontSize: CGFloat = 24.0
+    private var fontSize: CGFloat = Settings.shared.defaultFontSize
 
     /// Called when the user presses Escape inside the text view.
     /// The owner (DrawingCanvasView) should call commitText() in response.
@@ -44,7 +44,7 @@ final class TextInputController: NSObject, NSTextViewDelegate {
         textView.drawsBackground = false
         textView.insertionPointColor = drawingState.activeColor.nsColor
         textView.textColor = drawingState.activeColor.nsColor
-        textView.font = NSFont.systemFont(ofSize: fontSize, weight: .medium)
+        textView.font = NSFont.systemFont(ofSize: fontSize, weight: Settings.shared.fontWeight.nsFontWeight)
 
         // Allow the text view to grow as the user types
         textView.isVerticallyResizable = true
@@ -65,7 +65,7 @@ final class TextInputController: NSObject, NSTextViewDelegate {
     /// Adjust the font size (called from scroll wheel events).
     func adjustFontSize(delta: CGFloat) {
         fontSize = max(8, min(200, fontSize + delta))
-        textView?.font = NSFont.systemFont(ofSize: fontSize, weight: .medium)
+        textView?.font = NSFont.systemFont(ofSize: fontSize, weight: Settings.shared.fontWeight.nsFontWeight)
     }
 
     /// Update the text color (called when color keys are pressed in text mode).

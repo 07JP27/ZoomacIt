@@ -1,13 +1,23 @@
 import AppKit
+import Carbon.HIToolbox
 
 @MainActor
 final class StatusBarController: NSObject {
 
     private var statusItem: NSStatusItem?
+    var onPreferences: (() -> Void)?
 
     override init() {
         super.init()
         setupStatusItem()
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(settingsDidReset),
+            name: .settingsDidReset, object: nil
+        )
+    }
+
+    @objc private func settingsDidReset() {
+        rebuildMenu()
     }
 
     // MARK: - Setup
@@ -45,22 +55,32 @@ final class StatusBarController: NSObject {
     private func buildMenu() -> NSMenu {
         let menu = NSMenu()
 
-        let zoomItem = NSMenuItem(title: "Zoom", action: #selector(zoomAction), keyEquivalent: "1")
-        zoomItem.keyEquivalentModifierMask = [.control]
+        let s = Settings.shared
+
+        let zoomItem = NSMenuItem(title: "Zoom", action: #selector(zoomAction),
+                                  keyEquivalent: Settings.keyCodeToMenuCharacter(s.zoomHotkeyKeyCode))
+        zoomItem.keyEquivalentModifierMask = Settings.carbonToNSEventModifiers(s.zoomHotkeyModifiers)
         zoomItem.target = self
         menu.addItem(zoomItem)
 
-        let drawItem = NSMenuItem(title: "Draw", action: #selector(drawAction), keyEquivalent: "2")
-        drawItem.keyEquivalentModifierMask = [.control]
+        let drawItem = NSMenuItem(title: "Draw", action: #selector(drawAction),
+                                  keyEquivalent: Settings.keyCodeToMenuCharacter(s.drawHotkeyKeyCode))
+        drawItem.keyEquivalentModifierMask = Settings.carbonToNSEventModifiers(s.drawHotkeyModifiers)
         drawItem.target = self
         menu.addItem(drawItem)
 
-        let breakItem = NSMenuItem(title: "Break", action: #selector(breakAction), keyEquivalent: "3")
-        breakItem.keyEquivalentModifierMask = [.control]
+        let breakItem = NSMenuItem(title: "Break", action: #selector(breakAction),
+                                   keyEquivalent: Settings.keyCodeToMenuCharacter(s.breakHotkeyKeyCode))
+        breakItem.keyEquivalentModifierMask = Settings.carbonToNSEventModifiers(s.breakHotkeyModifiers)
         breakItem.target = self
         menu.addItem(breakItem)
 
         menu.addItem(.separator())
+
+        let prefsItem = NSMenuItem(title: "Preferences…", action: #selector(preferencesAction), keyEquivalent: ",")
+        prefsItem.keyEquivalentModifierMask = [.command]
+        prefsItem.target = self
+        menu.addItem(prefsItem)
 
         let aboutItem = NSMenuItem(title: "About ZoomacIt", action: #selector(aboutAction), keyEquivalent: "")
         aboutItem.target = self
@@ -90,6 +110,10 @@ final class StatusBarController: NSObject {
         HotkeyManager.shared.onBreakHotkey?()
     }
 
+    @objc private func preferencesAction() {
+        onPreferences?()
+    }
+
     @objc private func aboutAction() {
         let credits = NSAttributedString(
             string: "https://github.com/07JP27/ZoomacIt",
@@ -107,5 +131,10 @@ final class StatusBarController: NSObject {
 
     @objc private func quitAction() {
         NSApplication.shared.terminate(nil)
+    }
+
+    /// Rebuild the menu to reflect updated hotkey settings.
+    func rebuildMenu() {
+        statusItem?.menu = buildMenu()
     }
 }

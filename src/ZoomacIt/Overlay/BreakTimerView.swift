@@ -161,7 +161,7 @@ final class BreakTimerView: NSView {
                 ctx.saveGState()
                 ctx.draw(image, in: bounds)
                 // Overlay semi-transparent black to darken
-                ctx.setFillColor(NSColor.black.withAlphaComponent(0.6).cgColor)
+                ctx.setFillColor(NSColor.black.withAlphaComponent(Settings.shared.breakTimerBackgroundFadeDarkness).cgColor)
                 ctx.fill(bounds)
                 ctx.restoreGState()
             } else {
