@@ -540,8 +540,13 @@ final class DrawingCanvasView: NSView {
             }
 
             // Exclude our overlay window from the capture
-            let overlayWindowID = window?.windowNumber ?? 0
-            let excludedWindows = availableContent.windows.filter { $0.windowID == CGWindowID(overlayWindowID) }
+            let excludedWindows: [SCWindow]
+            if let overlayWindowNumber = window?.windowNumber, overlayWindowNumber > 0 {
+                excludedWindows = availableContent.windows.filter { $0.windowID == CGWindowID(overlayWindowNumber) }
+            } else {
+                NSLog("[DrawingCanvasView] Overlay windowNumber unavailable; proceeding without exclusion.")
+                excludedWindows = []
+            }
 
             let filter = SCContentFilter(display: display, excludingWindows: excludedWindows)
             let config = SCStreamConfiguration()
