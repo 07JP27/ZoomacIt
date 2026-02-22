@@ -390,4 +390,5 @@ final class Settings: @unchecked Sendable {
 
 extension Notification.Name {
     static let settingsDidReset = Notification.Name("settingsDidReset")
+    static let hotkeysDidChange = Notification.Name("hotkeysDidChange")
 }

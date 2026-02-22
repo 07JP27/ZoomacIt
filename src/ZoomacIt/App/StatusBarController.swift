@@ -14,9 +14,17 @@ final class StatusBarController: NSObject {
             self, selector: #selector(settingsDidReset),
             name: .settingsDidReset, object: nil
         )
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(hotkeysDidChange),
+            name: .hotkeysDidChange, object: nil
+        )
     }
 
     @objc private func settingsDidReset() {
+        rebuildMenu()
+    }
+
+    @objc private func hotkeysDidChange() {
         rebuildMenu()
     }
 

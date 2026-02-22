@@ -29,9 +29,9 @@ struct GeneralTab: View {
     }
 
     private func reregisterHotkeys() {
-        DispatchQueue.main.async {
-            HotkeyManager.shared.reregisterHotkeys()
-        }
+        HotkeyManager.shared.reregisterHotkeys()
+        // Notify StatusBarController to update menu hotkey labels
+        NotificationCenter.default.post(name: .hotkeysDidChange, object: nil)
     }
 }
 

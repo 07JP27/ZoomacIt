@@ -17,8 +17,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSLog("[AppDelegate] applicationDidFinishLaunching")
-        // Ensure defaults are registered before anything reads Settings
-        Settings.shared.registerDefaults()
 
         statusBarController = StatusBarController()
         statusBarController?.onPreferences = { [weak self] in

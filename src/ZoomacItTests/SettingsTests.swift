@@ -3,20 +3,14 @@ import XCTest
 
 final class SettingsTests: XCTestCase {
 
-    /// Use a separate UserDefaults suite to avoid polluting the app's real defaults.
-    private var testDefaults: UserDefaults!
-    private let suiteName = "com.x07jp27.ZoomacIt.SettingsTests"
+    /// These tests exercise `Settings.shared` which uses `UserDefaults.standard`.
+    /// `resetToDefaults()` in `tearDown()` prevents state leaking between tests.
 
     override func setUp() {
         super.setUp()
-        testDefaults = UserDefaults(suiteName: suiteName)!
-        // Clear any leftover values from previous test runs
-        testDefaults.removePersistentDomain(forName: suiteName)
     }
 
     override func tearDown() {
-        testDefaults.removePersistentDomain(forName: suiteName)
-        testDefaults = nil
         // Reset shared Settings to registered defaults
         Settings.shared.resetToDefaults()
         super.tearDown()
