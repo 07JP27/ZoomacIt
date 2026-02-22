@@ -10,11 +10,11 @@ enum HighlighterRenderer {
     /// The actual alpha is applied through the color (see DrawingState.currentNSColor).
     ///
     /// Highlighter strokes are rendered with:
-    /// - Wider line width (2x the current pen width)
+    /// - Wider line width (4x the current pen width)
     /// - Square line cap for a marker-like appearance
     /// - Multiply blend mode for realistic color overlay
     static func applyHighlighterStyle(to path: NSBezierPath, penWidth: CGFloat) {
-        path.lineWidth = penWidth * 2.0
+        path.lineWidth = penWidth * 4.0
         path.lineCapStyle = .square
         path.lineJoinStyle = .round
     }
