@@ -29,7 +29,6 @@ https://github.com/user-attachments/assets/5f7563e4-584b-4bab-99c4-70f7d3265f54
 |Zoom (Still Zoom)|✅|
 |Zoom (Live Zoom)||
 |Draw|✅|
-|Text|✅|
 |DemoType||
 |Break Timer|✅|
 |Snip||

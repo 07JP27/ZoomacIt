@@ -25,7 +25,7 @@ final class StillZoomView: NSView {
     private var visibleContentsRect: CGRect = .zero
     private let skipEntryAnimation: Bool
 
-    init(frame: NSRect, sourceImage: CGImage, initialZoomLevel: CGFloat = 2.0,
+    init(frame: NSRect, sourceImage: CGImage, initialZoomLevel: CGFloat = Settings.shared.defaultZoomLevel,
          initialPanCenter: CGPoint? = nil, screenScaleFactor: CGFloat,
          skipEntryAnimation: Bool = false) {
         self.sourceImage = sourceImage
@@ -70,7 +70,11 @@ final class StillZoomView: NSView {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) { [weak self] in
             guard let self else { return }
             self.zoomLevel = self.targetInitialZoom
-            self.updateLayerContentsRect(animated: true, duration: 0.35)
+            if Settings.shared.zoomAnimationEnabled {
+                self.updateLayerContentsRect(animated: true, duration: 0.35)
+            } else {
+                self.updateLayerContentsRect()
+            }
         }
     }
 
@@ -97,7 +101,7 @@ final class StillZoomView: NSView {
         } else if event.scrollingDeltaY < 0 {
             zoomLevel = max(zoomLevel - 0.2, minimumZoom)
         }
-        updateLayerContentsRect(animated: true)
+        updateLayerContentsRect(animated: Settings.shared.zoomAnimationEnabled)
     }
 
     override func keyDown(with event: NSEvent) {
@@ -111,10 +115,10 @@ final class StillZoomView: NSView {
             onDismiss?()
         case upArrow:
             zoomLevel = min(zoomLevel + 0.2, maximumZoom)
-            updateLayerContentsRect(animated: true)
+            updateLayerContentsRect(animated: Settings.shared.zoomAnimationEnabled)
         case downArrow:
             zoomLevel = max(zoomLevel - 0.2, minimumZoom)
-            updateLayerContentsRect(animated: true)
+            updateLayerContentsRect(animated: Settings.shared.zoomAnimationEnabled)
         default:
             super.keyDown(with: event)
         }

@@ -81,7 +81,7 @@ final class StillZoomWindowController {
         self.presentOverlay(on: screen, image: image, scaleFactor: scaleFactor,
                             skipEntryAnimation: true,
                             initialPanCenter: panCenter,
-                            initialZoomLevel: zoomLevel ?? 2.0)
+                            initialZoomLevel: zoomLevel ?? Settings.shared.defaultZoomLevel)
     }
 
     func dismiss() {
@@ -102,7 +102,7 @@ final class StillZoomWindowController {
     private func presentOverlay(on screen: NSScreen, image: CGImage, scaleFactor: CGFloat,
                                  skipEntryAnimation: Bool = false,
                                  initialPanCenter: CGPoint? = nil,
-                                 initialZoomLevel: CGFloat = 2.0) {
+                                 initialZoomLevel: CGFloat = Settings.shared.defaultZoomLevel) {
         let window = OverlayWindow(for: screen)
         let view = StillZoomView(
             frame: NSRect(origin: .zero, size: screen.frame.size),

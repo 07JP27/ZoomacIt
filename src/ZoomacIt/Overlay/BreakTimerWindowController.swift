@@ -1,4 +1,5 @@
 import AppKit
+import AudioToolbox
 import ScreenCaptureKit
 
 /// Manages the lifecycle of the Break Timer overlay window.
@@ -7,8 +8,17 @@ final class BreakTimerWindowController {
 
     private var timerWindow: BreakTimerWindow?
     private var timerView: BreakTimerView?
-    private var timerSource: DispatchSourceTimer?
+    private var countdownTimer: Timer?
     private var state: BreakTimerState
+    private var playingSound: NSSound?  // retain while playing
+
+    /// Sound used for test playback from Settings. Static so it can be stopped.
+    private static var testSound: NSSound?
+
+    /// Whether a test sound is currently playing.
+    static var isTestSoundPlaying: Bool {
+        testSound?.isPlaying ?? false
+    }
 
     /// True while the timer is visible.
     var isActive: Bool { timerWindow != nil }
@@ -26,6 +36,7 @@ final class BreakTimerWindowController {
         }
 
         NSLog("[BreakTimerController] Starting break timer: %d seconds", state.defaultDuration)
+        state.reloadFromSettings()
         state.remainingSeconds = state.defaultDuration
         state.elapsedSinceExpiration = 0
 
@@ -51,8 +62,12 @@ final class BreakTimerWindowController {
     func dismiss() {
         NSLog("[BreakTimerController] Dismissing break timer.")
 
-        timerSource?.cancel()
-        timerSource = nil
+        countdownTimer?.invalidate()
+        countdownTimer = nil
+
+        // Stop any expiration sound still playing
+        playingSound?.stop()
+        playingSound = nil
 
         timerWindow?.orderOut(nil)
         timerWindow?.close()
@@ -97,9 +112,8 @@ final class BreakTimerWindowController {
     }
 
     private func startCountdown() {
-        let source = DispatchSource.makeTimerSource(queue: .main)
-        source.schedule(deadline: .now() + .seconds(1), repeating: .seconds(1))
-        source.setEventHandler { [weak self] in
+        countdownTimer?.invalidate()
+        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             guard let self else { return }
             let justExpired = self.state.tick()
 
@@ -110,23 +124,60 @@ final class BreakTimerWindowController {
 
             self.timerView?.needsDisplay = true
         }
-        source.resume()
-        timerSource = source
         NSLog("[BreakTimerController] Countdown started.")
     }
 
     private func playExpirationSound() {
-        guard state.playSoundOnExpiration else { return }
-
+        guard state.playSoundOnExpiration else {
+            NSLog("[BreakTimerController] Sound disabled, skipping.")
+            return
+        }
         if let url = state.soundFileURL {
             if let sound = NSSound(contentsOf: url, byReference: true) {
+                playingSound = sound
                 sound.play()
-                NSLog("[BreakTimerController] Playing custom expiration sound.")
+                NSLog("[BreakTimerController] Playing custom sound from %@.", url.lastPathComponent)
+            } else {
+                NSLog("[BreakTimerController] Failed to load sound from %@, playing default.", url.absoluteString)
+                Self.playDefaultSound()
             }
         } else {
-            NSSound.beep()
-            NSLog("[BreakTimerController] Playing system beep.")
+            Self.playDefaultSound()
         }
+    }
+
+    /// Play a test sound from Settings. Stops any previously playing test sound first.
+    static func playTestSound(fileURL: URL?) {
+        stopTestSound()
+        if let url = fileURL {
+            if let sound = NSSound(contentsOf: url, byReference: true) {
+                testSound = sound
+                sound.play()
+                NSLog("[BreakTimerController] Test: playing custom sound from %@.", url.lastPathComponent)
+            } else {
+                NSLog("[BreakTimerController] Test: failed to load sound from %@, playing default.", url.absoluteString)
+                playDefaultSound()
+            }
+        } else {
+            playDefaultSound()
+        }
+    }
+
+    /// Stop the currently playing test sound.
+    static func stopTestSound() {
+        testSound?.stop()
+        testSound = nil
+    }
+
+    /// Play the default expiration alert sound.
+    private static func playDefaultSound() {
+        // Try named system sounds first (more reliable than NSSound.beep / AudioServices)
+        if let glass = NSSound(named: "Glass") {
+            glass.play()
+        } else {
+            AudioServicesPlayAlertSound(kSystemSoundID_UserPreferredAlert)
+        }
+        NSLog("[BreakTimerController] Playing default alert sound.")
     }
 
     // MARK: - Screen Capture

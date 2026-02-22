@@ -59,11 +59,11 @@ final class HotkeyManager: @unchecked Sendable {
             return
         }
 
-        // Register ⌃1 (Control + 1, keyCode 0x12 = 18)
+        // Register Zoom hotkey
         let zoomKeyID = EventHotKeyID(signature: hotKeySignature, id: zoomHotKeyID)
         let zoomStatus = RegisterEventHotKey(
-            UInt32(kVK_ANSI_1),
-            UInt32(controlKey),
+            Settings.shared.zoomHotkeyKeyCode,
+            Settings.shared.zoomHotkeyModifiers,
             zoomKeyID,
             GetApplicationEventTarget(),
             0,
@@ -76,13 +76,15 @@ final class HotkeyManager: @unchecked Sendable {
             return
         }
 
-        NSLog("[HotkeyManager] Global hotkey ⌃1 registered.")
+        NSLog("[HotkeyManager] Zoom hotkey registered: %@",
+              Settings.hotkeyDisplayString(keyCode: Settings.shared.zoomHotkeyKeyCode,
+                                           modifiers: Settings.shared.zoomHotkeyModifiers))
 
-        // Register ⌃2 (Control + 2, keyCode 0x13 = 19)
+        // Register Draw hotkey
         let hotKeyID = EventHotKeyID(signature: hotKeySignature, id: drawHotKeyID)
         let regStatus = RegisterEventHotKey(
-            UInt32(kVK_ANSI_2),
-            UInt32(controlKey),
+            Settings.shared.drawHotkeyKeyCode,
+            Settings.shared.drawHotkeyModifiers,
             hotKeyID,
             GetApplicationEventTarget(),
             0,
@@ -90,18 +92,20 @@ final class HotkeyManager: @unchecked Sendable {
         )
 
         guard regStatus == noErr else {
-            NSLog("[HotkeyManager] Failed to register hotkey: %d", regStatus)
+            NSLog("[HotkeyManager] Failed to register draw hotkey: %d", regStatus)
             stop()
             return
         }
 
-        NSLog("[HotkeyManager] Global hotkey ⌃2 registered.")
+        NSLog("[HotkeyManager] Draw hotkey registered: %@",
+              Settings.hotkeyDisplayString(keyCode: Settings.shared.drawHotkeyKeyCode,
+                                           modifiers: Settings.shared.drawHotkeyModifiers))
 
-        // Register ⌃3 (Control + 3, keyCode 0x14 = 20)
+        // Register Break Timer hotkey
         let breakKeyID = EventHotKeyID(signature: hotKeySignature, id: breakHotKeyID)
         let breakStatus = RegisterEventHotKey(
-            UInt32(kVK_ANSI_3),
-            UInt32(controlKey),
+            Settings.shared.breakHotkeyKeyCode,
+            Settings.shared.breakHotkeyModifiers,
             breakKeyID,
             GetApplicationEventTarget(),
             0,
@@ -113,7 +117,9 @@ final class HotkeyManager: @unchecked Sendable {
             return
         }
 
-        NSLog("[HotkeyManager] Global hotkey ⌃3 registered.")
+        NSLog("[HotkeyManager] Break hotkey registered: %@",
+              Settings.hotkeyDisplayString(keyCode: Settings.shared.breakHotkeyKeyCode,
+                                           modifiers: Settings.shared.breakHotkeyModifiers))
     }
 
     func stop() {
@@ -134,6 +140,12 @@ final class HotkeyManager: @unchecked Sendable {
             eventHandlerRef = nil
         }
         NSLog("[HotkeyManager] Hotkeys unregistered.")
+    }
+
+    /// Re-register all hotkeys with current Settings values.
+    func reregisterHotkeys() {
+        stop()
+        start()
     }
 
     // MARK: - Event Processing

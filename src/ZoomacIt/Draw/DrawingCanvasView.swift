@@ -362,7 +362,7 @@ final class DrawingCanvasView: NSView {
             let blendMode: CGBlendMode = (backgroundImage != nil) ? .multiply : .normal
             bitmapContext.setBlendMode(blendMode)
             bitmapContext.setStrokeColor(color.cgColor)
-            bitmapContext.setLineWidth(drawingState.penWidth * 4.0)
+            bitmapContext.setLineWidth(drawingState.penWidth * Settings.shared.highlighterWidthMultiplier)
             bitmapContext.setLineCap(.square)
             bitmapContext.setLineJoin(.round)
         } else {

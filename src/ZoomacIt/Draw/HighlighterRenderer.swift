@@ -4,7 +4,7 @@ import AppKit
 enum HighlighterRenderer {
 
     /// The alpha value used for highlighter strokes.
-    static let highlighterAlpha: CGFloat = 0.35
+    static var highlighterAlpha: CGFloat { Settings.shared.highlighterOpacity }
 
     /// Creates a highlighter-style NSBezierPath with the appropriate visual settings.
     /// The actual alpha is applied through the color (see DrawingState.currentNSColor).
@@ -14,7 +14,7 @@ enum HighlighterRenderer {
     /// - Square line cap for a marker-like appearance
     /// - Multiply blend mode for realistic color overlay
     static func applyHighlighterStyle(to path: NSBezierPath, penWidth: CGFloat) {
-        path.lineWidth = penWidth * 4.0
+        path.lineWidth = penWidth * Settings.shared.highlighterWidthMultiplier
         path.lineCapStyle = .square
         path.lineJoinStyle = .round
     }
@@ -29,7 +29,7 @@ enum HighlighterRenderer {
         context.saveGState()
         context.setBlendMode(.multiply)
         context.setStrokeColor(color.withAlphaComponent(highlighterAlpha).cgColor)
-        context.setLineWidth(penWidth * 2.0)
+        context.setLineWidth(penWidth * Settings.shared.highlighterWidthMultiplier)
         context.setLineCap(.square)
         context.setLineJoin(.round)
         context.addPath(path)

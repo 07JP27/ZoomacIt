@@ -13,10 +13,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var zoomSourceForDrawReturn: CGImage?
     private var zoomPanCenterForDrawReturn: CGPoint?
     private var zoomLevelForDrawReturn: CGFloat?
+    private var settingsWindowController: SettingsWindowController?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSLog("[AppDelegate] applicationDidFinishLaunching")
+
         statusBarController = StatusBarController()
+        statusBarController?.onPreferences = { [weak self] in
+            self?.showPreferences()
+        }
         hotkeyManager.onZoomHotkey = { [weak self] in
             self?.toggleStillZoomMode()
         }
@@ -154,5 +159,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// Called from BreakTimerWindowController when the timer is dismissed.
     func breakTimerDidEnd() {
         breakTimerController = nil
+    }
+
+    // MARK: - Preferences
+
+    private func showPreferences() {
+        if settingsWindowController == nil {
+            settingsWindowController = SettingsWindowController()
+        }
+        settingsWindowController?.showWindow()
+        // Rebuild menu when settings may have changed (hotkey labels)
+        statusBarController?.rebuildMenu()
     }
 }

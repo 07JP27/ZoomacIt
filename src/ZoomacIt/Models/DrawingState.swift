@@ -1,7 +1,7 @@
 import AppKit
 
 /// Available pen/text colors.
-enum PenColor: Sendable {
+enum PenColor: String, Sendable, CaseIterable {
     case red, green, blue, orange, yellow, pink
 
     var nsColor: NSColor {
@@ -34,8 +34,8 @@ final class DrawingState {
 
     // MARK: - Pen Properties
 
-    var activeColor: PenColor = .red
-    var penWidth: CGFloat = 3.0
+    var activeColor: PenColor = Settings.shared.defaultPenColor
+    var penWidth: CGFloat = Settings.shared.defaultPenWidth
     var isHighlighterMode: Bool = false
 
     // MARK: - Text Mode
@@ -61,7 +61,7 @@ final class DrawingState {
     /// The NSColor to use for drawing, applying highlighter alpha if needed.
     var currentNSColor: NSColor {
         let base = activeColor.nsColor
-        return isHighlighterMode ? base.withAlphaComponent(0.35) : base
+        return isHighlighterMode ? base.withAlphaComponent(Settings.shared.highlighterOpacity) : base
     }
 
     /// Determine the current shape type based on modifier flags and Tab key state.

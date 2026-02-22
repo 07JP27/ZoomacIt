@@ -32,7 +32,7 @@ enum BreakTimerPosition: Int, Sendable, CaseIterable {
 }
 
 /// Background mode for the break timer screen.
-enum BreakTimerBackground: Sendable {
+enum BreakTimerBackground: String, Sendable, CaseIterable {
     case black
     case fadedDesktop
     // Phase 2: case customImage(URL)
@@ -43,11 +43,11 @@ final class BreakTimerState {
 
     // MARK: - Timer
 
-    /// Default countdown duration in seconds (persisted via UserDefaults in Phase 2).
-    var defaultDuration: Int = 600 // 10 minutes
+    /// Default countdown duration in seconds.
+    var defaultDuration: Int = Settings.shared.breakTimerDefaultDuration
 
     /// Seconds remaining in the countdown. Stops at 0.
-    var remainingSeconds: Int = 600
+    var remainingSeconds: Int = Settings.shared.breakTimerDefaultDuration
 
     /// Whether the timer has reached zero.
     var isExpired: Bool { remainingSeconds <= 0 }
@@ -58,29 +58,40 @@ final class BreakTimerState {
     // MARK: - Appearance
 
     /// Timer text color — reuses PenColor from Draw.
-    var timerColor: PenColor = .red
+    var timerColor: PenColor = Settings.shared.breakTimerColor
 
     /// Position on the 3×3 grid.
     var position: BreakTimerPosition = .center
 
     /// Timer text opacity (0.1 … 1.0).
-    var opacity: CGFloat = 1.0
+    var opacity: CGFloat = Settings.shared.breakTimerOpacity
 
     /// Background mode.
-    var background: BreakTimerBackground = .black
+    var background: BreakTimerBackground = Settings.shared.breakTimerBackground
 
     // MARK: - Options
 
     /// Show elapsed time after expiration.
-    var showElapsed: Bool = true
+    var showElapsed: Bool = Settings.shared.breakTimerShowElapsed
 
     /// Play a sound when time expires.
-    var playSoundOnExpiration: Bool = false
+    var playSoundOnExpiration: Bool = Settings.shared.breakTimerPlaySound
 
     /// Custom sound file URL (nil = system default).
-    var soundFileURL: URL?
+    var soundFileURL: URL? = Settings.shared.breakTimerSoundFile
 
     // MARK: - Methods
+
+    /// Reload all properties from current Settings values.
+    func reloadFromSettings() {
+        defaultDuration = Settings.shared.breakTimerDefaultDuration
+        timerColor = Settings.shared.breakTimerColor
+        opacity = Settings.shared.breakTimerOpacity
+        background = Settings.shared.breakTimerBackground
+        showElapsed = Settings.shared.breakTimerShowElapsed
+        playSoundOnExpiration = Settings.shared.breakTimerPlaySound
+        soundFileURL = Settings.shared.breakTimerSoundFile
+    }
 
     /// Adjust remaining time by the given number of minutes.
     /// Clamps to a minimum of 0 seconds.
