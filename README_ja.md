@@ -146,10 +146,38 @@ https://github.com/user-attachments/assets/5f7563e4-584b-4bab-99c4-70f7d3265f54
 make build       # デバッグビルド
 make test        # ユニットテストの実行
 make run         # ビルドしてアプリを起動
-make release     # リリースビルド
+make release     # リリースビルド（Developer ID 署名付き）
+make notarize    # リリースビルド + Apple 公証
+make dmg VERSION=1.0.0  # 公証 + 配布用 DMG 作成
 make clean       # ビルド成果物のクリーンアップ
 make generate    # .xcodeproj を再生成（src/project.yml 編集後）
 ```
+
+### コード署名と公証
+
+macOS の Gatekeeper は、インターネットからダウンロードされた未署名のアプリをブロックします。Gatekeeper の警告を回避して ZoomacIt を配布するには、Developer ID 証明書で署名し、Apple の公証を受ける必要があります。
+
+`.env.example` を `.env` にコピーし、認証情報を入力してください：
+
+```bash
+cp .env.example .env
+```
+
+| 変数 | 説明 |
+| --- | --- |
+| `APPLE_ID` | Apple ID のメールアドレス |
+| `TEAM_ID` | Apple Developer Team ID（`project.yml` のコード署名にも使用） |
+| `APP_PASSWORD` | appleid.apple.com で生成した[アプリ用パスワード](https://support.apple.com/ja-jp/102654) |
+
+次のコマンドを実行します：
+
+```bash
+make dmg VERSION=1.0.0
+```
+
+Developer ID で署名されたリリースバイナリをビルドし、Apple に公証を申請し、公証チケットをステープルし、配布用 DMG にパッケージします。
+
+> **注意:** 公証には [Apple Developer Program](https://developer.apple.com/programs/) のメンバーシップが必要です。`.env` ファイルは gitignore に含まれており、コミットしないでください。
 
 ## ライセンス
 

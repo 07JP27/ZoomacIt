@@ -55,6 +55,8 @@ jobs:
       - name: Generate Xcode project
         working-directory: src
         run: xcodegen generate
+        env:
+          TEAM_ID: "-"
 
       - name: Build
         run: |

@@ -146,10 +146,38 @@ The project uses Swift 6 + AppKit, targeting macOS 26+. The Xcode project is gen
 make build       # Debug build
 make test        # Run unit tests
 make run         # Build and launch the app
-make release     # Release build
+make release     # Release build (Developer ID signed)
+make notarize    # Release build + Apple notarization
+make dmg VERSION=1.0.0  # Notarize + create distributable DMG
 make clean       # Clean build artifacts
 make generate    # Regenerate .xcodeproj (after editing src/project.yml)
 ```
+
+### Code signing and notarization
+
+macOS Gatekeeper blocks unsigned apps downloaded from the internet. To distribute ZoomacIt without requiring users to bypass Gatekeeper warnings, the app must be signed with a Developer ID certificate and notarized by Apple.
+
+Copy `.env.example` to `.env` and fill in your credentials:
+
+```bash
+cp .env.example .env
+```
+
+| Variable | Description |
+| --- | --- |
+| `APPLE_ID` | Your Apple ID email address |
+| `TEAM_ID` | Your Apple Developer Team ID (also used in `project.yml` for code signing) |
+| `APP_PASSWORD` | An [app-specific password](https://support.apple.com/en-us/102654) generated at appleid.apple.com |
+
+Then run:
+
+```bash
+make dmg VERSION=1.0.0
+```
+
+This builds a Release binary signed with your Developer ID, submits it to Apple for notarization, staples the notarization ticket, and packages the result into a distributable DMG.
+
+> **Note:** Notarization requires an [Apple Developer Program](https://developer.apple.com/programs/) membership. The `.env` file is gitignored and must never be committed.
 
 ## License
 
