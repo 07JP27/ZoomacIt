@@ -27,7 +27,7 @@ targets:
         LD_RUNPATH_SEARCH_PATHS: "$(inherited) @executable_path/../Frameworks"
         CODE_SIGN_STYLE: Manual
         CODE_SIGN_IDENTITY: "Apple Development"
-        DEVELOPMENT_TEAM: T74PC5F324
+        DEVELOPMENT_TEAM: M9Y77E7ZX5
 
   ZoomacItTests:
     type: bundle.unit-test
@@ -43,4 +43,4 @@ targets:
         BUNDLE_LOADER: "$(TEST_HOST)"
         CODE_SIGN_STYLE: Manual
         CODE_SIGN_IDENTITY: "Apple Development"
-        DEVELOPMENT_TEAM: T74PC5F324
+        DEVELOPMENT_TEAM: M9Y77E7ZX5

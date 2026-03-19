@@ -292,17 +292,16 @@
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					2B167134B4525154CEC0F541 = {
-						DevelopmentTeam = T74PC5F324;
+						DevelopmentTeam = M9Y77E7ZX5;
 						ProvisioningStyle = Manual;
 					};
 					F4563A3822D6E1B8C7E1A9CD = {
-						DevelopmentTeam = T74PC5F324;
+						DevelopmentTeam = M9Y77E7ZX5;
 						ProvisioningStyle = Manual;
 					};
 				};
 			};
 			buildConfigurationList = 81525D8438500A556DFBDE89 /* Build configuration list for PBXProject "ZoomacIt" */;
-			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -312,6 +311,7 @@
 			mainGroup = F162245C03ED2E732C5F6001;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
+			productRefGroup = E585D150D222C84A8FEBE773 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -461,7 +461,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = T74PC5F324;
+				DEVELOPMENT_TEAM = M9Y77E7ZX5;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -481,7 +481,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = T74PC5F324;
+				DEVELOPMENT_TEAM = M9Y77E7ZX5;
 				INFOPLIST_FILE = ZoomacIt/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.x07jp27.ZoomacIt;
@@ -497,7 +497,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = T74PC5F324;
+				DEVELOPMENT_TEAM = M9Y77E7ZX5;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -517,7 +517,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = T74PC5F324;
+				DEVELOPMENT_TEAM = M9Y77E7ZX5;
 				INFOPLIST_FILE = ZoomacIt/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.x07jp27.ZoomacIt;
