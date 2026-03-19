@@ -194,4 +194,57 @@ final class BreakTimerStateTests: XCTestCase {
         XCTAssertEqual(origin.x, 1920 - 200 - 40) // right - textWidth - margin
         XCTAssertEqual(origin.y, 40) // margin
     }
+
+    // MARK: - Reload from Settings
+
+    func testReloadFromSettings() {
+        let state = BreakTimerState()
+
+        // Change settings
+        Settings.shared.breakTimerDefaultDuration = 300
+        Settings.shared.breakTimerColor = .blue
+        Settings.shared.breakTimerOpacity = 0.5
+        Settings.shared.breakTimerBackground = .fadedDesktop
+        Settings.shared.breakTimerShowElapsed = false
+        Settings.shared.breakTimerPlaySound = true
+
+        // Before reload, state still has old values
+        XCTAssertEqual(state.defaultDuration, 600)
+
+        // After reload, all properties should match Settings
+        state.reloadFromSettings()
+        XCTAssertEqual(state.defaultDuration, 300)
+        XCTAssertEqual(state.timerColor, .blue)
+        XCTAssertEqual(state.opacity, 0.5)
+        XCTAssertEqual(state.background, .fadedDesktop)
+        XCTAssertFalse(state.showElapsed)
+        XCTAssertTrue(state.playSoundOnExpiration)
+
+        // Clean up
+        Settings.shared.resetToDefaults()
+    }
+
+    // MARK: - Position on Different Screen Sizes
+
+    func testPositionCenterOnUltrawide() {
+        let screenFrame = NSRect(x: 0, y: 0, width: 3440, height: 1440)
+        let textSize = NSSize(width: 200, height: 100)
+        let origin = BreakTimerPosition.center.origin(forTextSize: textSize, in: screenFrame)
+        XCTAssertEqual(origin.x, (3440 - 200) / 2)
+        XCTAssertEqual(origin.y, (1440 - 100) / 2)
+    }
+
+    func testPositionCenterOnSmallScreen() {
+        let screenFrame = NSRect(x: 0, y: 0, width: 800, height: 600)
+        let textSize = NSSize(width: 200, height: 100)
+        let origin = BreakTimerPosition.center.origin(forTextSize: textSize, in: screenFrame)
+        XCTAssertEqual(origin.x, (800 - 200) / 2)
+        XCTAssertEqual(origin.y, (600 - 100) / 2)
+    }
+
+    // MARK: - BreakTimerBackground
+
+    func testBreakTimerBackgroundAllCases() {
+        XCTAssertEqual(BreakTimerBackground.allCases.count, 2)
+    }
 }

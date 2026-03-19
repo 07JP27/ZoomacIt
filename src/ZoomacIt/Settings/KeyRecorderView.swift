@@ -176,7 +176,7 @@ class KeyRecorderNSView: NSView {
 
         let attrs: [NSAttributedString.Key: Any] = [
             .font: NSFont.systemFont(ofSize: 13, weight: isRecording ? .regular : .medium),
-            .foregroundColor: isRecording ? NSColor.secondaryLabelColor : NSColor.labelColor,
+            .foregroundColor: isRecording ? NSColor.secondaryLabelColor : NSColor.labelColor
         ]
         let textSize = (displayText as NSString).size(withAttributes: attrs)
         let textOrigin = NSPoint(

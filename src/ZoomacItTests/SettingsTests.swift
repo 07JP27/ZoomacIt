@@ -1,4 +1,5 @@
 import XCTest
+import Carbon.HIToolbox
 @testable import ZoomacIt
 
 final class SettingsTests: XCTestCase {
@@ -158,5 +159,111 @@ final class SettingsTests: XCTestCase {
         XCTAssertEqual(FontWeightOption.medium.rawValue, "medium")
         XCTAssertEqual(FontWeightOption(rawValue: "bold"), .bold)
         XCTAssertNil(FontWeightOption(rawValue: "nonexistent"))
+    }
+
+    // MARK: - Modifier Conversion
+
+    func testCarbonToNSModifiersControl() {
+        let flags = Settings.carbonToNSEventModifiers(UInt32(controlKey))
+        XCTAssertTrue(flags.contains(.control))
+        XCTAssertFalse(flags.contains(.option))
+        XCTAssertFalse(flags.contains(.shift))
+        XCTAssertFalse(flags.contains(.command))
+    }
+
+    func testCarbonToNSModifiersOption() {
+        let flags = Settings.carbonToNSEventModifiers(UInt32(optionKey))
+        XCTAssertTrue(flags.contains(.option))
+    }
+
+    func testCarbonToNSModifiersShift() {
+        let flags = Settings.carbonToNSEventModifiers(UInt32(shiftKey))
+        XCTAssertTrue(flags.contains(.shift))
+    }
+
+    func testCarbonToNSModifiersCommand() {
+        let flags = Settings.carbonToNSEventModifiers(UInt32(cmdKey))
+        XCTAssertTrue(flags.contains(.command))
+    }
+
+    func testCarbonToNSModifiersCombined() {
+        let carbon = UInt32(controlKey) | UInt32(shiftKey)
+        let flags = Settings.carbonToNSEventModifiers(carbon)
+        XCTAssertTrue(flags.contains(.control))
+        XCTAssertTrue(flags.contains(.shift))
+        XCTAssertFalse(flags.contains(.option))
+        XCTAssertFalse(flags.contains(.command))
+    }
+
+    func testCarbonToNSModifiersEmpty() {
+        let flags = Settings.carbonToNSEventModifiers(0)
+        XCTAssertTrue(flags.isEmpty)
+    }
+
+    func testNSEventToCarbonModifiersControl() {
+        let carbon = Settings.nsEventToCarbonModifiers(.control)
+        XCTAssertNotEqual(carbon & UInt32(controlKey), 0)
+    }
+
+    func testNSEventToCarbonModifiersCombined() {
+        let flags: NSEvent.ModifierFlags = [.control, .option, .shift, .command]
+        let carbon = Settings.nsEventToCarbonModifiers(flags)
+        XCTAssertNotEqual(carbon & UInt32(controlKey), 0)
+        XCTAssertNotEqual(carbon & UInt32(optionKey), 0)
+        XCTAssertNotEqual(carbon & UInt32(shiftKey), 0)
+        XCTAssertNotEqual(carbon & UInt32(cmdKey), 0)
+    }
+
+    func testNSEventToCarbonModifiersEmpty() {
+        let carbon = Settings.nsEventToCarbonModifiers([])
+        XCTAssertEqual(carbon, 0)
+    }
+
+    func testModifierConversionRoundTrip() {
+        let originalCarbon = UInt32(controlKey) | UInt32(shiftKey)
+        let nsFlags = Settings.carbonToNSEventModifiers(originalCarbon)
+        let roundTripped = Settings.nsEventToCarbonModifiers(nsFlags)
+        XCTAssertEqual(roundTripped, originalCarbon)
+    }
+
+    func testModifierConversionRoundTripAllModifiers() {
+        let allCarbon = UInt32(controlKey) | UInt32(optionKey) | UInt32(shiftKey) | UInt32(cmdKey)
+        let nsFlags = Settings.carbonToNSEventModifiers(allCarbon)
+        let roundTripped = Settings.nsEventToCarbonModifiers(nsFlags)
+        XCTAssertEqual(roundTripped, allCarbon)
+    }
+
+    // MARK: - keyCodeToMenuCharacter
+
+    func testKeyCodeToMenuCharacterLetter() {
+        let char = Settings.keyCodeToMenuCharacter(0) // kVK_ANSI_A
+        XCTAssertEqual(char, "a")
+    }
+
+    func testKeyCodeToMenuCharacterNumber() {
+        let char = Settings.keyCodeToMenuCharacter(18) // kVK_ANSI_1
+        XCTAssertEqual(char, "1")
+    }
+
+    func testKeyCodeToMenuCharacterSpecial() {
+        let char = Settings.keyCodeToMenuCharacter(126) // kVK_UpArrow
+        XCTAssertEqual(char, "↑")
+    }
+
+    func testKeyCodeToMenuCharacterFunctionKey() {
+        let char = Settings.keyCodeToMenuCharacter(122) // kVK_F1
+        XCTAssertEqual(char, "f1")
+    }
+
+    // MARK: - Hotkey Independence
+
+    func testHotkeyIndependentPersistence() {
+        Settings.shared.zoomHotkeyKeyCode = 0  // A
+        Settings.shared.drawHotkeyKeyCode = 11 // B
+        Settings.shared.breakHotkeyKeyCode = 8 // C
+
+        XCTAssertEqual(Settings.shared.zoomHotkeyKeyCode, 0)
+        XCTAssertEqual(Settings.shared.drawHotkeyKeyCode, 11)
+        XCTAssertEqual(Settings.shared.breakHotkeyKeyCode, 8)
     }
 }

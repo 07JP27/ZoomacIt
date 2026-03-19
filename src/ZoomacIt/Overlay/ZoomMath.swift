@@ -36,7 +36,7 @@ enum ZoomMath {
         return CGRect(
             x: contentsRect.origin.x * sourceSize.width,
             y: flippedOriginY * sourceSize.height,
-            width:  contentsRect.size.width  * sourceSize.width,
+            width: contentsRect.size.width * sourceSize.width,
             height: contentsRect.size.height * sourceSize.height
         ).integral
     }

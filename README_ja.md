@@ -138,6 +138,19 @@ https://github.com/user-attachments/assets/5f7563e4-584b-4bab-99c4-70f7d3265f54
 - メニューバーアイコン → **Break** からも起動できます
 - ドローモード（⌃2）と休憩タイマー（⌃3）は同時に使用できます
 
+## 開発
+
+本プロジェクトは Swift 6 + AppKit を使用し、macOS 26+ をターゲットとしています。Xcode プロジェクトは [xcodegen](https://github.com/yonaskolb/XcodeGen) により `src/project.yml` から生成されます。
+
+```bash
+make build       # デバッグビルド
+make test        # ユニットテストの実行
+make run         # ビルドしてアプリを起動
+make release     # リリースビルド
+make clean       # ビルド成果物のクリーンアップ
+make generate    # .xcodeproj を再生成（src/project.yml 編集後）
+```
+
 ## ライセンス
 
 本プロジェクトは [GNU General Public License v3.0](LICENSE) の下で公開されています。

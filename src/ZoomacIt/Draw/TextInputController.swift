@@ -51,7 +51,8 @@ final class TextInputController: NSObject, NSTextViewDelegate {
         textView.isHorizontallyResizable = true
         textView.maxSize = NSSize(width: canvas.bounds.width - point.x, height: canvas.bounds.height - point.y)
         textView.textContainer?.widthTracksTextView = false
-        textView.textContainer?.containerSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
+        textView.textContainer?.containerSize = NSSize(
+            width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
 
         // Set delegate to intercept Escape key
         textView.delegate = self
