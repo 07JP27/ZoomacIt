@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(swiftlint lint:*)",
+      "Bash(make build:*)",
+      "Bash(make test:*)"
+    ]
+  }
+}

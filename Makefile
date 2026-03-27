@@ -24,7 +24,7 @@ run: build
 
 release:
 	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Release -derivedDataPath $(BUILD_DIR) \
-		CODE_SIGN_IDENTITY="Developer ID Application: Sascha Corti ($(TEAM_ID))" \
+		CODE_SIGN_IDENTITY="Developer ID Application: $(DEVELOPER_NAME) ($(TEAM_ID))" \
 		CODE_SIGN_STYLE=Manual \
 		DEVELOPMENT_TEAM=$(TEAM_ID) \
 		OTHER_CODE_SIGN_FLAGS="--timestamp --options=runtime" \

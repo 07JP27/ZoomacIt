@@ -312,11 +312,11 @@
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					2B167134B4525154CEC0F541 = {
-						DevelopmentTeam = M9Y77E7ZX5;
+						DevelopmentTeam = T74PC5F324;
 						ProvisioningStyle = Manual;
 					};
 					F4563A3822D6E1B8C7E1A9CD = {
-						DevelopmentTeam = M9Y77E7ZX5;
+						DevelopmentTeam = T74PC5F324;
 						ProvisioningStyle = Manual;
 					};
 				};
