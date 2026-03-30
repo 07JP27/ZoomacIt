@@ -1,5 +1,6 @@
 import SwiftUI
 import Carbon.HIToolbox
+import ServiceManagement
 
 /// Hotkey settings tab with key recorder controls.
 struct GeneralTab: View {
@@ -11,12 +12,21 @@ struct GeneralTab: View {
     @AppStorage(Settings.Keys.breakHotkeyKeyCode) private var breakKeyCode: Int = Int(kVK_ANSI_3)
     @AppStorage(Settings.Keys.breakHotkeyModifiers) private var breakModifiers: Int = Int(controlKey)
 
+    @State private var launchAtLogin: Bool = SMAppService.mainApp.status == .enabled
+
     var body: some View {
         Form {
             Section("Hotkeys") {
                 HotkeyRow(label: "Zoom", keyCode: $zoomKeyCode, modifiers: $zoomModifiers)
                 HotkeyRow(label: "Draw", keyCode: $drawKeyCode, modifiers: $drawModifiers)
                 HotkeyRow(label: "Break Timer", keyCode: $breakKeyCode, modifiers: $breakModifiers)
+            }
+
+            Section {
+                Toggle("Launch at Login", isOn: $launchAtLogin)
+                    .onChange(of: launchAtLogin) { _, newValue in
+                        setLaunchAtLogin(newValue)
+                    }
             }
         }
         .formStyle(.grouped)
@@ -26,6 +36,20 @@ struct GeneralTab: View {
         .onChange(of: drawModifiers) { _, _ in reregisterHotkeys() }
         .onChange(of: breakKeyCode) { _, _ in reregisterHotkeys() }
         .onChange(of: breakModifiers) { _, _ in reregisterHotkeys() }
+    }
+
+    private func setLaunchAtLogin(_ enabled: Bool) {
+        do {
+            if enabled {
+                try SMAppService.mainApp.register()
+            } else {
+                try SMAppService.mainApp.unregister()
+            }
+        } catch {
+            NSLog("[GeneralTab] Failed to \(enabled ? "enable" : "disable") launch at login: \(error)")
+            // Revert toggle to match actual OS state
+            launchAtLogin = SMAppService.mainApp.status == .enabled
+        }
     }
 
     private func reregisterHotkeys() {
