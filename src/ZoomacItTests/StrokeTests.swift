@@ -35,7 +35,7 @@ final class StrokeTests: XCTestCase {
     }
 
     func testPartialInitialization() {
-        let stroke = Stroke(shapeType: .arrow, lineWidth: 8.0)
+        let stroke = Stroke(lineWidth: 8.0, shapeType: .arrow)
         XCTAssertTrue(stroke.points.isEmpty)
         XCTAssertEqual(stroke.shapeType, .arrow)
         XCTAssertEqual(stroke.lineWidth, 8.0)
