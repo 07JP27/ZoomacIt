@@ -19,7 +19,6 @@
 		398052FC99D2C2CD71B1DFC5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BB99CA77A8C7A975390CA9 /* AppDelegate.swift */; };
 		3A2D22CCA8562451A68C76E7 /* SettingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21CAEB2FA51070F7C3BCA3EC /* SettingsTests.swift */; };
 		3ECA67329DFFE9622AF916FB /* HighlighterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD20BCB0F5497D5789C75AF /* HighlighterRenderer.swift */; };
-		3F26DF307478E72BC3652D92 /* NSBezierPath+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F32C327FD3231AE4777979 /* NSBezierPath+Extensions.swift */; };
 		407536072A77EEE413110305 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36559530A20E76797485A4D4 /* Settings.swift */; };
 		41011F5512E5B70E02211DF4 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA294A8321CAB0BBDA54F11 /* Stroke.swift */; };
 		62B9C3FC42F88FE77EB06D9E /* DrawingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F716B76F77ECE1104368663A /* DrawingState.swift */; };
@@ -27,7 +26,6 @@
 		792274BFCD677E75A47C4FB5 /* KeyRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4861D0131871D035CC07327 /* KeyRecorderView.swift */; };
 		7A1095C1C52F1230FDBE9403 /* StrokeManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453513CAB75B5909A1521589 /* StrokeManagerTests.swift */; };
 		7B4FDA5C58C43A27DA1A201B /* StatusBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DED7AFD9439A1BCE15FFFAC /* StatusBarController.swift */; };
-		7DB5AA72B1A0EF252BA8C4A0 /* NSBezierPathExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E207CC1B6670D99DD299EC55 /* NSBezierPathExtensionsTests.swift */; };
 		839745DED3A5B203A6A1FE49 /* StrokeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C8A2C544CC0510AA2EA9A06 /* StrokeTests.swift */; };
 		862780FF803ABA4C039BC6B7 /* BreakTimerWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE3023CD2A9E7BBC51D21E79 /* BreakTimerWindowController.swift */; };
 		89CCEAA1BB96EE5C5323B494 /* FreehandRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4ABECEA7A773ED6A7EAE57DC /* FreehandRendererTests.swift */; };
@@ -112,8 +110,6 @@
 		C35CEE9FA480AD8EA3412F68 /* BreakTimerStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakTimerStateTests.swift; sourceTree = "<group>"; };
 		C4861D0131871D035CC07327 /* KeyRecorderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyRecorderView.swift; sourceTree = "<group>"; };
 		CF0B1156D71050ABD1623796 /* CGContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGContext+Extensions.swift"; sourceTree = "<group>"; };
-		E207CC1B6670D99DD299EC55 /* NSBezierPathExtensionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSBezierPathExtensionsTests.swift; sourceTree = "<group>"; };
-		E5F32C327FD3231AE4777979 /* NSBezierPath+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSBezierPath+Extensions.swift"; sourceTree = "<group>"; };
 		E670EBEBFE36CE4EF3BFEDDD /* NSScreen+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSScreen+Extensions.swift"; sourceTree = "<group>"; };
 		F716B76F77ECE1104368663A /* DrawingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -136,7 +132,6 @@
 			isa = PBXGroup;
 			children = (
 				CF0B1156D71050ABD1623796 /* CGContext+Extensions.swift */,
-				E5F32C327FD3231AE4777979 /* NSBezierPath+Extensions.swift */,
 				E670EBEBFE36CE4EF3BFEDDD /* NSScreen+Extensions.swift */,
 			);
 			path = Utilities;
@@ -205,7 +200,6 @@
 				3091F75DCC9B6EA27DC8FA61 /* FontWeightOptionTests.swift */,
 				4ABECEA7A773ED6A7EAE57DC /* FreehandRendererTests.swift */,
 				1292E2C0A68D01827A3396D0 /* HighlighterRendererTests.swift */,
-				E207CC1B6670D99DD299EC55 /* NSBezierPathExtensionsTests.swift */,
 				7286484084AB512E3F4C7433 /* PenColorTests.swift */,
 				21CAEB2FA51070F7C3BCA3EC /* SettingsTests.swift */,
 				8699BCE233A5E7F09663017F /* ShapeRendererTests.swift */,
@@ -312,16 +306,17 @@
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					2B167134B4525154CEC0F541 = {
-						DevelopmentTeam = T74PC5F324;
+						DevelopmentTeam = "-";
 						ProvisioningStyle = Manual;
 					};
 					F4563A3822D6E1B8C7E1A9CD = {
-						DevelopmentTeam = T74PC5F324;
+						DevelopmentTeam = "-";
 						ProvisioningStyle = Manual;
 					};
 				};
 			};
 			buildConfigurationList = 81525D8438500A556DFBDE89 /* Build configuration list for PBXProject "ZoomacIt" */;
+			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -331,7 +326,6 @@
 			mainGroup = F162245C03ED2E732C5F6001;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = E585D150D222C84A8FEBE773 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -363,7 +357,6 @@
 				2EA788919BF0547417E7E24E /* FontWeightOptionTests.swift in Sources */,
 				89CCEAA1BB96EE5C5323B494 /* FreehandRendererTests.swift in Sources */,
 				8A686087B160C1E5DB5A386C /* HighlighterRendererTests.swift in Sources */,
-				7DB5AA72B1A0EF252BA8C4A0 /* NSBezierPathExtensionsTests.swift in Sources */,
 				2C3F2ED00271AF06F7EA5958 /* PenColorTests.swift in Sources */,
 				3A2D22CCA8562451A68C76E7 /* SettingsTests.swift in Sources */,
 				8EB5433F06804DD1E27E51DF /* ShapeRendererTests.swift in Sources */,
@@ -392,7 +385,6 @@
 				3ECA67329DFFE9622AF916FB /* HighlighterRenderer.swift in Sources */,
 				BFE4A25ECEF31F988FA3CBC0 /* HotkeyManager.swift in Sources */,
 				792274BFCD677E75A47C4FB5 /* KeyRecorderView.swift in Sources */,
-				3F26DF307478E72BC3652D92 /* NSBezierPath+Extensions.swift in Sources */,
 				19840E05A102F6B23E08C60C /* NSScreen+Extensions.swift in Sources */,
 				E9920C14A86002F653920D7E /* OverlayWindow.swift in Sources */,
 				EFB76DD8BEEDF74D7AB326DD /* OverlayWindowController.swift in Sources */,
@@ -487,7 +479,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = M9Y77E7ZX5;
+				DEVELOPMENT_TEAM = "-";
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -507,7 +499,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = M9Y77E7ZX5;
+				DEVELOPMENT_TEAM = "-";
 				INFOPLIST_FILE = ZoomacIt/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.x07jp27.ZoomacIt;
@@ -523,7 +515,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = M9Y77E7ZX5;
+				DEVELOPMENT_TEAM = "-";
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -543,7 +535,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = M9Y77E7ZX5;
+				DEVELOPMENT_TEAM = "-";
 				INFOPLIST_FILE = ZoomacIt/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.x07jp27.ZoomacIt;
