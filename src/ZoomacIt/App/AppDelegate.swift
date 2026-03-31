@@ -91,10 +91,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
 
         if let drawController = overlayController {
-            NSLog("[AppDelegate] Draw active — dismissing before zoom")
-            zoomSourceForDrawReturn = nil  // switching to fresh zoom, don't restore
+            let wasZoomedBeforeDraw = zoomSourceForDrawReturn != nil
+            zoomSourceForDrawReturn = nil  // don't restore zoom via drawModeDidEnd
             drawController.dismiss()
             overlayController = nil
+            if wasZoomedBeforeDraw {
+                NSLog("[AppDelegate] Draw active (from zoom) — toggling zoom off")
+                return
+            }
+            NSLog("[AppDelegate] Draw active (standalone) — dismissing before zoom")
         }
 
         let controller = StillZoomWindowController()
