@@ -23,10 +23,7 @@ struct GeneralTab: View {
             }
 
             Section {
-                Toggle("Launch at Login", isOn: $launchAtLogin)
-                    .onChange(of: launchAtLogin) { _, newValue in
-                        setLaunchAtLogin(newValue)
-                    }
+                Toggle("Launch at Login", isOn: launchAtLoginBinding)
             }
         }
         .formStyle(.grouped)
@@ -38,18 +35,22 @@ struct GeneralTab: View {
         .onChange(of: breakModifiers) { _, _ in reregisterHotkeys() }
     }
 
-    private func setLaunchAtLogin(_ enabled: Bool) {
-        do {
-            if enabled {
-                try SMAppService.mainApp.register()
-            } else {
-                try SMAppService.mainApp.unregister()
+    private var launchAtLoginBinding: Binding<Bool> {
+        Binding(
+            get: { launchAtLogin },
+            set: { newValue in
+                do {
+                    if newValue {
+                        try SMAppService.mainApp.register()
+                    } else {
+                        try SMAppService.mainApp.unregister()
+                    }
+                    launchAtLogin = newValue
+                } catch {
+                    NSLog("[GeneralTab] Failed to \(newValue ? "enable" : "disable") launch at login: \(error)")
+                }
             }
-        } catch {
-            NSLog("[GeneralTab] Failed to \(enabled ? "enable" : "disable") launch at login: \(error)")
-            // Revert toggle to match actual OS state
-            launchAtLogin = SMAppService.mainApp.status == .enabled
-        }
+        )
     }
 
     private func reregisterHotkeys() {
