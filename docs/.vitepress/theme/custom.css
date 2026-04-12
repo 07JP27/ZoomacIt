@@ -1,5 +1,9 @@
 :root {
   --vp-home-hero-name-color: #008CFF;
+  --vp-c-brand-1: #008CFF;
+  --vp-c-brand-2: #0077d9;
+  --vp-c-brand-3: #0066bd;
+  --vp-c-brand-soft: rgba(0, 140, 255, 0.14);
 }
 
 .VPNavBarTitle .title {
