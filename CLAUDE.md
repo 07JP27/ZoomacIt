@@ -47,7 +47,7 @@ On `mouseUp`: current stroke rasterized into `finishedLayer` via `CGBitmapContex
 - **Entry point**: Explicit `main.swift` with `NSApp.run()`. Do NOT add `@main` to AppDelegate — it fails to synthesize correctly.
 - **Hotkeys**: Carbon `RegisterEventHotKey`, NOT `CGEventTap`. CGEventTap requires Accessibility permission which invalidates on every rebuild. Default: ⌃1=Zoom, ⌃2=Draw, ⌃3=Break Timer.
 - **LSUIElement**: `Info.plist` has `LSUIElement=true` (no Dock icon). Plist is manual — xcodegen's `info:` directive was removed because it overwrites required keys.
-- **Code signing**: `project.yml` uses `CODE_SIGN_STYLE: Manual` and `DEVELOPMENT_TEAM: ${TEAM_ID}` (from `.env`). Do not remove — TCC (Screen Recording) requires stable team identity. Run `make generate` after changing `TEAM_ID`.
+- **Code signing**: `project.yml` hard-codes `CODE_SIGN_STYLE: Manual` and `DEVELOPMENT_TEAM: T74PC5F324`. Do not remove or externalize — TCC (Screen Recording) requires stable team identity.
 - **App launch**: Use `open ZoomacIt.app`, not direct binary. Direct execution makes the terminal app the "responsible process" for TCC permissions.
 - **NSFunctionKey comparison**: Use `String(UnicodeScalar(NSUpArrowFunctionKey)!)`, not `.description` (which returns decimal string, never matches).
 - **dismiss() ordering**: Capture needed state into locals **before** calling `dismiss()` — it triggers `onDismiss?()` which may nil out references.

@@ -175,7 +175,7 @@ cp .env.example .env
 | 変数 | 説明 |
 | --- | --- |
 | `APPLE_ID` | Apple ID のメールアドレス |
-| `TEAM_ID` | Apple Developer Team ID（`project.yml` のコード署名にも使用） |
+| `TEAM_ID` | Apple Developer Team ID（`make release` / `make notarize` で使用） |
 | `APP_PASSWORD` | appleid.apple.com で生成した[アプリ用パスワード](https://support.apple.com/ja-jp/102654) |
 
 次のコマンドを実行します：

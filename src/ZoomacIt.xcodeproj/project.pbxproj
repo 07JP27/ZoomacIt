@@ -306,11 +306,11 @@
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					2B167134B4525154CEC0F541 = {
-						DevelopmentTeam = "-";
+						DevelopmentTeam = T74PC5F324;
 						ProvisioningStyle = Manual;
 					};
 					F4563A3822D6E1B8C7E1A9CD = {
-						DevelopmentTeam = "-";
+						DevelopmentTeam = T74PC5F324;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -479,7 +479,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "-";
+				DEVELOPMENT_TEAM = T74PC5F324;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -499,7 +499,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "-";
+				DEVELOPMENT_TEAM = T74PC5F324;
 				INFOPLIST_FILE = ZoomacIt/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.x07jp27.ZoomacIt;
@@ -515,7 +515,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "-";
+				DEVELOPMENT_TEAM = T74PC5F324;
 				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -535,7 +535,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Manual;
 				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = "-";
+				DEVELOPMENT_TEAM = T74PC5F324;
 				INFOPLIST_FILE = ZoomacIt/Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.x07jp27.ZoomacIt;
