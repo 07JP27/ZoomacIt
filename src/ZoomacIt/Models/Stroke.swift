@@ -1,7 +1,7 @@
 import AppKit
 
 /// The type of shape being drawn.
-enum ShapeType: Sendable, Equatable {
+enum ShapeType: Sendable {
     case freehand
     case line
     case rectangle
