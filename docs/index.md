@@ -3,7 +3,7 @@ layout: home
 
 hero:
   name: ZoomacIt
-  text: Zoom, Draw & Timer for macOS
+  text: Presentation Tool for macOS
   tagline: A native macOS menu bar app inspired by ZoomIt for Windows. System-wide hotkeys, smooth zooming, and on-screen annotation with minimal permissions.
   image:
     src: /images/banner.png

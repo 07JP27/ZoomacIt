@@ -3,7 +3,7 @@ layout: home
 
 hero:
   name: ZoomacIt
-  text: macOS 用ズーム・ドロー・タイマー
+  text: macOS 用プレゼンテーションツール
   tagline: Windows ZoomIt にインスパイアされたネイティブ macOS メニューバーアプリ。システム全体で使えるホットキー、スムーズなズーム、画面上へのアノテーション機能を最小限の権限で提供。
   image:
     src: /images/banner.png

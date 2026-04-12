@@ -1,0 +1,49 @@
+:root {
+  --vp-home-hero-name-color: #008CFF;
+}
+
+.VPNavBarTitle .title {
+  font-size: 24px !important;
+  font-weight: 600 !important;
+}
+
+.VPNavBar .logo {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+.VPHero .text {
+  font-size: 24px !important;
+  line-height: 1.2 !important;
+}
+
+@media (min-width: 640px) {
+  .VPHero .text {
+    font-size: 28px !important;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHero .text {
+    font-size: 32px !important;
+  }
+}
+
+.VPHero .VPImage {
+  max-width: 320px;
+  max-height: 320px;
+}
+
+@media (min-width: 640px) {
+  .VPHero .VPImage {
+    max-width: 400px;
+    max-height: 400px;
+  }
+}
+
+@media (min-width: 960px) {
+  .VPHero .VPImage {
+    max-width: 480px;
+    max-height: 480px;
+  }
+}
