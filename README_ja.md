@@ -14,142 +14,53 @@
 <p align="center"><a href="README.md">English</a> | 日本語</p>
 
 ---
+
 ZoomacIt は [Windows 版 ZoomIt](https://learn.microsoft.com/ja-jp/sysinternals/downloads/zoomit) にインスパイアされた、ネイティブ macOS メニューバーアプリです。
 ZoomIt との機能互換を目指しており、システム全体で使えるホットキー、スムーズなズーム、画面上へのアノテーション機能を、最小限の権限で提供します。
+
+> **📖 インストール方法・使い方・キーボードショートカットをお探しですか？**
+> **[ZoomacIt ドキュメントサイト](https://zoomacit.07jp27.net/ja/)** をご覧ください。
 
 https://github.com/user-attachments/assets/5f7563e4-584b-4bab-99c4-70f7d3265f54
 
 [🎥 高画質で見る](images/demo.mp4)
 
-## インストール
+## 機能カバレッジ
 
-1. [Releases](https://github.com/07JP27/ZoomacIt/releases) から最新の `.dmg` をダウンロード
-2. `.dmg` を開き、**ZoomacIt.app** を **Applications** フォルダにドラッグ
-3. 「Appleは、“ZoomacIt”にMacに損害を与えたり、プライバシーを侵害する可能性のあるマルウェアが含まれていないことを検証できませんでした。」という警告が表示された場合は、以下のコマンドで検疫フラグを解除できます。本リポジトリのコードの内容を確認の上、自己責任で実行してください。
-   ```bash
-   xattr -cr /Applications/ZoomacIt.app
-   ```
-4. Applications から ZoomacIt を起動
-5. プロンプトが表示されたら **画面収録** 権限を許可
-
-## 現在の機能カバレッジ
 | 機能 | 状態 |
 |---|---|
-|ズーム（静止画ズーム）|✅|
-|ズーム（ライブズーム）||
-|ドロー|✅|
-|デモタイプ||
-|休憩タイマー|✅|
-|スニップ||
-|録画||
+| ズーム（静止画ズーム） | ✅ |
+| ズーム（ライブズーム） | |
+| ドロー | ✅ |
+| デモタイプ | |
+| 休憩タイマー | ✅ |
+| スニップ | |
+| 録画 | |
 
-## 機能詳細
+## アーキテクチャ
 
-各機能はグローバルホットキーまたはメニューバーのアイコンから起動できます。
-メニューバーのアイコンをクリックすると、以下のようなメニューが表示されます。
+純粋な **Swift 6 + AppKit**（SwiftUI は Settings UI のみ使用）。macOS 26+。外部依存なし。Xcode プロジェクトは [xcodegen](https://github.com/yonaskolb/XcodeGen) により `src/project.yml` から生成されます。
 
-<img src="images/app_bar.png" width="200">
+| レイヤー | ディレクトリ | 役割 |
+|---|---|---|
+| **App** | `src/ZoomacIt/App/` | エントリーポイント (`main.swift`)、`AppDelegate`、`StatusBarController`（メニューバー） |
+| **Core** | `src/ZoomacIt/Core/` | `HotkeyManager` — Carbon `RegisterEventHotKey` API |
+| **Overlay** | `src/ZoomacIt/Overlay/` | フルスクリーンオーバーレイウィンドウ、ズームコントローラー、`ZoomMath` |
+| **Draw** | `src/ZoomacIt/Draw/` | `DrawingCanvasView`（3レイヤー合成）、レンダラー、`StrokeManager` |
+| **Settings** | `src/ZoomacIt/Settings/` | SwiftUI ベースの設定画面（ホットキーカスタマイズ） |
+| **Models / Utils** | `src/ZoomacIt/Models/`、`Utilities/` | 状態モデル (`DrawingState`、`Stroke`、`Settings`)、拡張 |
 
-### ズーム
-
-**⌃1**（Control+1）を押すとズームモードに入ります。画面がキャプチャされ、ズームイン・アウトやパンが可能です。
-
-#### 操作
-
-| 入力 | アクション |
-|---|---|
-| マウス移動 | パン |
-| スクロールホイール / ↑↓ | ズームイン / ズームアウト |
-| クリック | ドローモードに入る（ズーム中の画面が描画キャンバスになります） |
-| Escape | ズームモードを終了（ドローから入った場合はズームに戻る） |
-| 右クリック | ズームモードを終了 |
-
-#### ズーム → ドロー → ズームの流れ
-
-ズームモード中にクリックすると、ズーム中の画面の上でドローモードに入ります。ドローモードで **Escape** を押すとズームモードに戻ります（テキストモードと同様の2段階解除）。もう一度 **Escape** を押すとズームを完全に終了します。
-
-### ドロー
-
-**⌃2**（Control+2）を押すとドローモードに入ります。画面がフリーズし、その上に描画できます。
-
-#### 描画
-
-| 入力 | アクション |
-|---|---|
-| ドラッグ | フリーハンド描画 |
-| Shift + ドラッグ | 直線 |
-| Control + ドラッグ | 矩形 |
-| Tab + ドラッグ | 楕円 |
-| Shift + Control + ドラッグ | 矢印 |
-
-#### 色
-
-| キー | 色 |
-|---|---|
-| R | 赤（デフォルト） |
-| G | 緑 |
-| B | 青 |
-| O | オレンジ |
-| Y | 黄 |
-| P | ピンク |
-| Shift + 色キー | 蛍光ペンモード |
-
-#### ツール
-
-| キー | アクション |
-|---|---|
-| T | テキスト入力モード |
-| ⌃ + スクロールホイール | ペン幅の変更 |
-| E | すべて消去 |
-| W | ホワイトボード背景 |
-| K | ブラックボード背景 |
-
-#### アクション
-
-| キー | アクション |
-|---|---|
-| ⌘Z | 元に戻す |
-| ⌘C | クリップボードにコピー |
-| ⌘S | ファイルに保存 |
-| Space | カーソルを中央に移動 |
-| Escape | テキストモード終了（テキスト確定）/ ドローモード終了 |
-| 右クリック | ドローモード終了 |
-
-#### テキストモード
-
-**T** を押すとテキストモードに入ります。任意の場所をクリックしてテキストフィールドを配置し、入力を開始します。
-
-- **別の位置をクリック** — 現在のテキストが確定（ラスタライズ）され、新しいテキストフィールドが配置されます
-- **Escape** — 現在のテキストを確定し、ペンモードに戋ります（ドローモードは継続）
-- **スクロールホイール** — フォントサイズ変更
-- **色キー**（R/G/B/O/Y/P）— テキストの色を変更
-- **右クリック** — 現在のテキストを確定してドローモードを終了
-
-### 休憩タイマー
-
-**⌃3**（Control+3）を押すと休憩タイマーを開始します。全画面のカウントダウンが表示され、デフォルトの時間（10分）で即座にカウントダウンが始まります。
-
-#### タイマー操作
-
-| 入力 | アクション |
-|---|---|
-| ↑ | 1分追加 |
-| ↓ | 1分減少 |
-| R / G / B / O / Y / P | タイマーの文字色を変更 |
-| Escape | タイマーを終了 |
-
-#### 動作
-
-- ホットキーを押した瞬間にタイマーが開始します（確認ダイアログなし）
-- カウントダウン中でも ↑/↓ で時間を調整できます
-- タイマーが **0:00** になっても画面は消えず、経過時間が下に表示されます（例: `0:00 (1:15)`）
-- 他のアプリに切り替えてもタイマーはバックグラウンドで継続動作します
-- メニューバーアイコン → **Break** からも起動できます
-- ドローモード（⌃2）と休憩タイマー（⌃3）は同時に使用できます
+詳細な設計ドキュメントは [`Design/`](Design/) にあります。
 
 ## 開発
 
-本プロジェクトは Swift 6 + AppKit を使用し、macOS 26+ をターゲットとしています。Xcode プロジェクトは [xcodegen](https://github.com/yonaskolb/XcodeGen) により `src/project.yml` から生成されます。
+### 前提条件
+
+- macOS 26+
+- Xcode（Swift 6 ツールチェーン）
+- [xcodegen](https://github.com/yonaskolb/XcodeGen)（`brew install xcodegen`）— `src/project.yml` を編集する場合のみ必要
+
+### ビルドコマンド
 
 ```bash
 make build       # デバッグビルド
@@ -160,6 +71,8 @@ make notarize    # リリースビルド + Apple 公証
 make dmg VERSION=1.0.0  # 公証 + 配布用 DMG 作成
 make clean       # ビルド成果物のクリーンアップ
 make generate    # .xcodeproj を再生成（src/project.yml 編集後）
+make docs        # ドキュメントサイトのローカル開発サーバーを起動
+make docs-build  # ドキュメントサイトをビルド
 ```
 
 ### コード署名と公証
@@ -177,6 +90,7 @@ cp .env.example .env
 | `APPLE_ID` | Apple ID のメールアドレス |
 | `TEAM_ID` | Apple Developer Team ID（`make release` / `make notarize` で使用） |
 | `APP_PASSWORD` | appleid.apple.com で生成した[アプリ用パスワード](https://support.apple.com/ja-jp/102654) |
+| `DEVELOPER_NAME` | Developer ID 証明書に記載されている名前 |
 
 次のコマンドを実行します：
 
@@ -187,6 +101,15 @@ make dmg VERSION=1.0.0
 Developer ID で署名されたリリースバイナリをビルドし、Apple に公証を申請し、公証チケットをステープルし、配布用 DMG にパッケージします。
 
 > **注意:** 公証には [Apple Developer Program](https://developer.apple.com/programs/) のメンバーシップが必要です。`.env` ファイルは gitignore に含まれており、コミットしないでください。
+
+## コントリビュート
+
+コントリビュートを歓迎します！以下のガイドラインに従ってください：
+
+1. 大きな変更を行う場合は、まず Issue を作成して議論してください
+2. リポジトリをフォークし、フィーチャーブランチを作成してください
+3. プルリクエストを送信する前に `make test` を実行してください
+4. 既存のコードスタイルに従ってください（Swift 6 strict concurrency、UI クラスには `@MainActor`、ログは `NSLog`）
 
 ## ライセンス
 
