@@ -102,15 +102,6 @@ This builds a Release binary signed with your Developer ID, submits it to Apple 
 
 > **Note:** Notarization requires an [Apple Developer Program](https://developer.apple.com/programs/) membership. The `.env` file is gitignored and must never be committed.
 
-## Contributing
-
-Contributions are welcome! Please:
-
-1. Open an issue first to discuss significant changes
-2. Fork the repository and create a feature branch
-3. Run `make test` before submitting a pull request
-4. Follow the existing code style (Swift 6 strict concurrency, `@MainActor` on UI classes, `NSLog` for logging)
-
 ## License
 
 This project is licensed under the [GNU General Public License v3.0](LICENSE).

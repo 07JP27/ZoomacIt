@@ -102,15 +102,6 @@ Developer ID で署名されたリリースバイナリをビルドし、Apple �
 
 > **注意:** 公証には [Apple Developer Program](https://developer.apple.com/programs/) のメンバーシップが必要です。`.env` ファイルは gitignore に含まれており、コミットしないでください。
 
-## コントリビュート
-
-コントリビュートを歓迎します！以下のガイドラインに従ってください：
-
-1. 大きな変更を行う場合は、まず Issue を作成して議論してください
-2. リポジトリをフォークし、フィーチャーブランチを作成してください
-3. プルリクエストを送信する前に `make test` を実行してください
-4. 既存のコードスタイルに従ってください（Swift 6 strict concurrency、UI クラスには `@MainActor`、ログは `NSLog`）
-
 ## ライセンス
 
 本プロジェクトは [GNU General Public License v3.0](LICENSE) の下で公開されています。
