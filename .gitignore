@@ -24,3 +24,8 @@ DerivedData/
 .build/
 Packages/
 .vscode/settings.json
+
+# VitePress / Docs
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+docs/node_modules/

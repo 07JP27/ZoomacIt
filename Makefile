@@ -11,7 +11,7 @@ VERSION     ?= 0.0.0
 -include .env
 export
 
-.PHONY: build test run release clean generate notarize dmg
+.PHONY: build test run release clean generate notarize dmg docs docs-build
 
 build:
 	xcodebuild -project $(PROJECT) -scheme $(SCHEME) -configuration Debug -derivedDataPath $(BUILD_DIR) build
@@ -70,3 +70,9 @@ clean:
 
 generate:
 	cd src && xcodegen generate
+
+docs:
+	cd docs && npm run docs:dev
+
+docs-build:
+	cd docs && npm run docs:build
