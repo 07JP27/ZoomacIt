@@ -90,7 +90,6 @@ cp .env.example .env
 | `APPLE_ID` | Your Apple ID email address |
 | `TEAM_ID` | Your Apple Developer Team ID (used by `make release` / `make notarize`) |
 | `APP_PASSWORD` | An [app-specific password](https://support.apple.com/en-us/102654) generated at appleid.apple.com |
-| `DEVELOPER_NAME` | Your name as it appears on your Developer ID certificate |
 
 Then run:
 
