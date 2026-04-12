@@ -9,8 +9,8 @@ export default defineConfig({
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:title', content: 'ZoomacIt' }],
     ['meta', { property: 'og:description', content: 'A native macOS menu bar app inspired by ZoomIt for Windows — zoom, draw, and break timer' }],
-    ['meta', { property: 'og:image', content: 'https://07jp27.net/images/banner.png' }],
-    ['meta', { property: 'og:url', content: 'https://07jp27.net/' }],
+    ['meta', { property: 'og:image', content: 'https://zoomacit.07jp27.net/images/banner.png' }],
+    ['meta', { property: 'og:url', content: 'https://zoomacit.07jp27.net/' }],
   ],
 
   locales: {
