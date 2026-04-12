@@ -12,7 +12,7 @@
 ZoomacIt/                          # リポジトリルート
 ├── .github/
 │   └── copilot-instructions.md    # Copilot 用指示書
-├── Design/
+├── design/
 │   ├── ARCHITECTURE.md            # 本ドキュメント
 │   ├── CONCEPT.md                 # 機能定義書（Windows版 ZoomIt v10.0 完全互換を目指す）
 │   └── Draw.md                    # Draw機能の詳細技術設計

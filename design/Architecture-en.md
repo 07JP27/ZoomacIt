@@ -12,7 +12,7 @@
 ZoomacIt/                          # Repository root
 ├── .github/
 │   └── copilot-instructions.md    # Copilot instructions
-├── Design/
+├── design/
 │   ├── ARCHITECTURE.md            # This document
 │   ├── CONCEPT.md                 # Feature specification (aiming for full compatibility with Windows ZoomIt v10.0)
 │   └── Draw.md                    # Detailed technical design for Draw feature

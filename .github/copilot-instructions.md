@@ -96,7 +96,7 @@ Use `NSLog("[ComponentName] message")` — not `print()`. NSLog is visible in Co
 
 ## Design Documents
 
-Detailed specs live in `Design/`: `ARCHITECTURE.md` (full system design), `CONCEPT.md` (feature spec), `Draw.md` (draw engine), `Zoom.md` (still + live zoom), `BreakTimer.md` (timer behavior). Read these before making structural changes.
+Detailed specs live in `design/`: `ARCHITECTURE.md` (full system design), `CONCEPT.md` (feature spec), `Draw.md` (draw engine), `Zoom.md` (still + live zoom), `BreakTimer.md` (timer behavior). Read these before making structural changes.
 
 ## Testing
 

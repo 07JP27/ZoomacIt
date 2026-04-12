@@ -60,7 +60,7 @@ Tests cover Models, Draw renderers, and ZoomMath (80 test methods across 7 files
 
 ## Design Documents
 
-Detailed specs in `Design/`: `ARCHITECTURE.md`, `CONCEPT.md`, `Draw.md`, `Zoom.md`, `BreakTimer.md`. Read before making structural changes.
+Detailed specs in `design/`: `ARCHITECTURE.md`, `CONCEPT.md`, `Draw.md`, `Zoom.md`, `BreakTimer.md`. Read before making structural changes.
 
 ## Only Permission Required
 
