@@ -90,6 +90,7 @@ cp .env.example .env
 | `APPLE_ID` | Apple ID のメールアドレス |
 | `TEAM_ID` | Apple Developer Team ID（`make release` / `make notarize` で使用） |
 | `APP_PASSWORD` | appleid.apple.com で生成した[アプリ用パスワード](https://support.apple.com/ja-jp/102654) |
+| `DEVELOPER_NAME` | Developer ID 証明書に記載されている名前 |
 
 次のコマンドを実行します：
 
