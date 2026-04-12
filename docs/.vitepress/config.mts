@@ -21,7 +21,6 @@ export default defineConfig({
         nav: [
           { text: 'Installation', link: '/installation' },
           { text: 'Usage', link: '/usage' },
-          { text: 'Shortcuts', link: '/shortcuts' },
         ],
         sidebar: [
           {
@@ -37,7 +36,6 @@ export default defineConfig({
                   { text: 'Break Timer', link: '/usage/break-timer' },
                 ],
               },
-              { text: 'Keyboard Shortcuts', link: '/shortcuts' },
             ],
           },
         ],
@@ -51,7 +49,6 @@ export default defineConfig({
         nav: [
           { text: 'インストール', link: '/ja/installation' },
           { text: '使い方', link: '/ja/usage' },
-          { text: 'ショートカット', link: '/ja/shortcuts' },
         ],
         sidebar: [
           {
@@ -67,7 +64,6 @@ export default defineConfig({
                   { text: '休憩タイマー', link: '/ja/usage/break-timer' },
                 ],
               },
-              { text: 'キーボードショートカット', link: '/ja/shortcuts' },
             ],
           },
         ],
