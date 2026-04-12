@@ -28,7 +28,15 @@ export default defineConfig({
             text: 'Guide',
             items: [
               { text: 'Installation', link: '/installation' },
-              { text: 'Usage', link: '/usage' },
+              {
+                text: 'Usage',
+                link: '/usage',
+                items: [
+                  { text: 'Zoom', link: '/usage/zoom' },
+                  { text: 'Draw', link: '/usage/draw' },
+                  { text: 'Break Timer', link: '/usage/break-timer' },
+                ],
+              },
               { text: 'Keyboard Shortcuts', link: '/shortcuts' },
             ],
           },
@@ -50,7 +58,15 @@ export default defineConfig({
             text: 'ガイド',
             items: [
               { text: 'インストール', link: '/ja/installation' },
-              { text: '使い方', link: '/ja/usage' },
+              {
+                text: '使い方',
+                link: '/ja/usage',
+                items: [
+                  { text: 'ズーム', link: '/ja/usage/zoom' },
+                  { text: 'ドロー', link: '/ja/usage/draw' },
+                  { text: '休憩タイマー', link: '/ja/usage/break-timer' },
+                ],
+              },
               { text: 'キーボードショートカット', link: '/ja/shortcuts' },
             ],
           },
