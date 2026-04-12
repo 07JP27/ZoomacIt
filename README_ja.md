@@ -50,7 +50,7 @@ https://github.com/user-attachments/assets/5f7563e4-584b-4bab-99c4-70f7d3265f54
 | **Settings** | `src/ZoomacIt/Settings/` | SwiftUI ベースの設定画面（ホットキーカスタマイズ） |
 | **Models / Utils** | `src/ZoomacIt/Models/`、`Utilities/` | 状態モデル (`DrawingState`、`Stroke`、`Settings`)、拡張 |
 
-詳細な設計ドキュメントは [`Design/`](Design/) にあります。
+詳細な設計ドキュメントは [`design/`](design/) にあります。
 
 ## 開発
 

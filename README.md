@@ -50,7 +50,7 @@ Pure **Swift 6 + AppKit** (SwiftUI used only for Settings UI). macOS 26+. No ext
 | **Settings** | `src/ZoomacIt/Settings/` | SwiftUI-based preferences with hotkey customization |
 | **Models / Utils** | `src/ZoomacIt/Models/`, `Utilities/` | State models (`DrawingState`, `Stroke`, `Settings`), extensions |
 
-Detailed design documents are in [`Design/`](Design/).
+Detailed design documents are in [`design/`](design/).
 
 ## Development
 
