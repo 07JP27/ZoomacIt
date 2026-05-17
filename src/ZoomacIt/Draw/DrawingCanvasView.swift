@@ -73,6 +73,12 @@ final class DrawingCanvasView: NSView {
         addCursorRect(bounds, cursor: cursor)
     }
 
+    /// Minimum width and height (points) for a spotlight rectangle to be confirmed
+    /// on mouseUp. Drags smaller than this are treated as accidental clicks /
+    /// micro-drags and discarded — chosen above AppKit's ~3pt drag threshold so
+    /// the gesture has to be visibly intentional.
+    private static let spotlightMinSize: CGFloat = 10
+
     /// Custom cursor used while the spotlight tool is armed.
     /// Reuses the system crosshair image and overlays a small dashed-rectangle
     /// badge in the lower-right corner so it reads as "drag a rectangle".
@@ -296,13 +302,17 @@ final class DrawingCanvasView: NSView {
 
         if drawingState.activeTool == .spotlight {
             // Confirm the spotlight rectangle and auto-return to the draw tool.
-            strokeManager.pushUndoSnapshot(
-                finishedLayer,
-                backgroundMode: drawingState.backgroundMode,
-                spotlightRect: drawingState.spotlightRect
-            )
-            // Discard zero-sized "click without drag" gestures.
-            if let dragRect = spotlightDragRect, dragRect.standardized.width > 1 && dragRect.standardized.height > 1 {
+            // Reject tiny gestures (clicks, accidental micro-drags) so they don't
+            // create unusable spotlights or push a phantom undo snapshot that
+            // would silently evict older legitimate entries from the 30-slot stack.
+            if let dragRect = spotlightDragRect,
+               dragRect.standardized.width > Self.spotlightMinSize,
+               dragRect.standardized.height > Self.spotlightMinSize {
+                strokeManager.pushUndoSnapshot(
+                    finishedLayer,
+                    backgroundMode: drawingState.backgroundMode,
+                    spotlightRect: drawingState.spotlightRect
+                )
                 drawingState.spotlightRect = dragRect.standardized
             }
             spotlightDragRect = nil
