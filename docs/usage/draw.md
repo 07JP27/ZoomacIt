@@ -29,6 +29,7 @@ Press **⌃2** (Control+2) to enter Draw mode. The screen freezes and you can dr
 | Key | Action |
 |---|---|
 | T | Text input mode |
+| S | Dim everything outside a selected rectangle |
 | ⌃ + scroll wheel | Change pen width |
 | E | Erase all |
 | W | Whiteboard background |
@@ -54,3 +55,12 @@ Press **T** to enter text mode. Click anywhere to place a text field and start t
 - **Scroll wheel** — change font size
 - **Color keys** (R/G/B/O/Y/P) — change text color
 - **Right-click** — confirms the current text and exits Draw mode
+
+## Spotlight
+
+Press **S** to arm the spotlight tool, then drag a rectangle. Everything outside the rectangle is dimmed so the audience's attention is drawn to that area.
+
+- **Drag (after S)** — creates the spotlight rectangle; the tool returns to normal drawing afterward
+- **S (again)** — clears the active spotlight
+- **↑ / ↓** — increase / decrease dimming opacity
+- **Escape** — exits Draw mode and clears the spotlight
