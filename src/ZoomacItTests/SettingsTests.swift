@@ -35,6 +35,15 @@ final class SettingsTests: XCTestCase {
         XCTAssertEqual(Settings.shared.highlighterWidthMultiplier, 4.0)
     }
 
+    func testDefaultSpotlightDarkness() {
+        XCTAssertEqual(Settings.shared.spotlightDarkness, 0.6, accuracy: 0.001)
+    }
+
+    func testSpotlightDarknessRoundTrip() {
+        Settings.shared.spotlightDarkness = 0.4
+        XCTAssertEqual(Settings.shared.spotlightDarkness, 0.4, accuracy: 0.001)
+    }
+
     func testDefaultFontSize() {
         XCTAssertEqual(Settings.shared.defaultFontSize, 24.0)
     }

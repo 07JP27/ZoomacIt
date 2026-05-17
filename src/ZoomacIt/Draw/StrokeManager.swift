@@ -5,6 +5,7 @@ import CoreGraphics
 struct UndoSnapshot {
     let finishedLayer: CGImage?
     let backgroundMode: DrawingState.BackgroundMode
+    let spotlightRect: CGRect?
 }
 
 /// Manages undo history using snapshots of the canvas state.
@@ -20,8 +21,16 @@ final class StrokeManager {
     // MARK: - Undo
 
     /// Push the current canvas state onto the undo stack.
-    func pushUndoSnapshot(_ finishedLayer: CGImage?, backgroundMode: DrawingState.BackgroundMode = .transparent) {
-        undoStack.append(UndoSnapshot(finishedLayer: finishedLayer, backgroundMode: backgroundMode))
+    func pushUndoSnapshot(
+        _ finishedLayer: CGImage?,
+        backgroundMode: DrawingState.BackgroundMode = .transparent,
+        spotlightRect: CGRect? = nil
+    ) {
+        undoStack.append(UndoSnapshot(
+            finishedLayer: finishedLayer,
+            backgroundMode: backgroundMode,
+            spotlightRect: spotlightRect
+        ))
 
         // Cap the stack to prevent unbounded memory growth
         if undoStack.count > maxUndoLevels {

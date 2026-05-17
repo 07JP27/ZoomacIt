@@ -29,6 +29,12 @@ enum PenColor: String, Sendable, CaseIterable {
     }
 }
 
+/// Active sub-tool inside Draw mode.
+enum DrawingTool {
+    case draw       // freehand / shape / text — the existing Draw behavior
+    case spotlight  // next drag creates the spotlight rectangle
+}
+
 /// Mutable drawing state that drives the rendering.
 final class DrawingState {
 
@@ -55,6 +61,30 @@ final class DrawingState {
         case blackboard
     }
     var backgroundMode: BackgroundMode = .transparent
+
+    // MARK: - Spotlight
+
+    var activeTool: DrawingTool = .draw
+
+    /// The confirmed spotlight rectangle in view coordinates. `nil` means spotlight is off.
+    var spotlightRect: CGRect?
+
+    /// Darkness of the area outside the spotlight rectangle (0.1 ... 0.9).
+    var spotlightDarkness: CGFloat = Settings.shared.spotlightDarkness
+
+    static let spotlightDarknessMin: CGFloat = 0.1
+    static let spotlightDarknessMax: CGFloat = 0.9
+    static let spotlightDarknessStep: CGFloat = 0.05
+
+    /// Increase spotlight darkness, capped at the max.
+    func increaseSpotlightDarkness() {
+        spotlightDarkness = min(spotlightDarkness + Self.spotlightDarknessStep, Self.spotlightDarknessMax)
+    }
+
+    /// Decrease spotlight darkness, capped at the min.
+    func decreaseSpotlightDarkness() {
+        spotlightDarkness = max(spotlightDarkness - Self.spotlightDarknessStep, Self.spotlightDarknessMin)
+    }
 
     // MARK: - Derived
 

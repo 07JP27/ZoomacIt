@@ -107,4 +107,49 @@ final class DrawingStateTests: XCTestCase {
         default: XCTFail("Default background should be .transparent")
         }
     }
+
+    // MARK: - Spotlight
+
+    func testDefaultSpotlightState() {
+        let state = DrawingState()
+        XCTAssertEqual(state.activeTool, .draw)
+        XCTAssertNil(state.spotlightRect)
+        XCTAssertEqual(state.spotlightDarkness, Settings.shared.spotlightDarkness, accuracy: 0.001)
+    }
+
+    func testSpotlightDarknessUpperBound() {
+        let state = DrawingState()
+        state.spotlightDarkness = 0.85
+        for _ in 0..<10 {
+            state.increaseSpotlightDarkness()
+        }
+        XCTAssertEqual(state.spotlightDarkness, DrawingState.spotlightDarknessMax, accuracy: 0.001)
+    }
+
+    func testSpotlightDarknessLowerBound() {
+        let state = DrawingState()
+        state.spotlightDarkness = 0.15
+        for _ in 0..<10 {
+            state.decreaseSpotlightDarkness()
+        }
+        XCTAssertEqual(state.spotlightDarkness, DrawingState.spotlightDarknessMin, accuracy: 0.001)
+    }
+
+    func testSpotlightDarknessStepSize() {
+        let state = DrawingState()
+        state.spotlightDarkness = 0.5
+        state.increaseSpotlightDarkness()
+        XCTAssertEqual(state.spotlightDarkness, 0.5 + DrawingState.spotlightDarknessStep, accuracy: 0.001)
+        state.decreaseSpotlightDarkness()
+        XCTAssertEqual(state.spotlightDarkness, 0.5, accuracy: 0.001)
+    }
+
+    func testActiveToolTransitions() {
+        let state = DrawingState()
+        XCTAssertEqual(state.activeTool, .draw)
+        state.activeTool = .spotlight
+        XCTAssertEqual(state.activeTool, .spotlight)
+        state.activeTool = .draw
+        XCTAssertEqual(state.activeTool, .draw)
+    }
 }

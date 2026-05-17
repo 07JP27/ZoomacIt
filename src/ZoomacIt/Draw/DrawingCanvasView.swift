@@ -37,6 +37,10 @@ final class DrawingCanvasView: NSView {
     /// Freehand path being drawn.
     private var activeFreehand: NSBezierPath?
 
+    /// Live spotlight rectangle preview while the user is dragging.
+    /// `nil` outside of an active spotlight drag.
+    private var spotlightDragRect: CGRect?
+
     // MARK: - Drag State
 
     private var dragOrigin: CGPoint = .zero
@@ -63,7 +67,72 @@ final class DrawingCanvasView: NSView {
     // MARK: - Cursor
 
     override func resetCursorRects() {
-        addCursorRect(bounds, cursor: .crosshair)
+        let cursor: NSCursor = (drawingState.activeTool == .spotlight)
+            ? Self.spotlightCursor
+            : .crosshair
+        addCursorRect(bounds, cursor: cursor)
+    }
+
+    /// Custom cursor used while the spotlight tool is armed.
+    /// Reuses the system crosshair image and overlays a small dashed-rectangle
+    /// badge in the lower-right corner so it reads as "drag a rectangle".
+    private static let spotlightCursor: NSCursor = {
+        let baseCursor = NSCursor.crosshair
+        let baseImage = baseCursor.image
+        let baseSize = baseImage.size
+        let baseHotspot = baseCursor.hotSpot
+
+        // The system crosshair image has a lot of transparent padding around the
+        // visible cross. We overlap the badge into that padding so it sits close
+        // to the bottom-right arm of the cross instead of floating away from it.
+        let badgeWidth: CGFloat = 9
+        let badgeHeight: CGFloat = 6
+        let badgeOverlap: CGFloat = 6  // how far the badge intrudes into the base image
+        let canvasSize = NSSize(
+            width: baseSize.width + badgeWidth - badgeOverlap,
+            height: baseSize.height + badgeHeight - badgeOverlap
+        )
+
+        let composed = NSImage(size: canvasSize, flipped: false) { _ in
+            // Draw the system crosshair anchored to the top-left.
+            // Image coordinates are bottom-up, so the crosshair's bottom edge
+            // sits at y = (canvasSize.height - baseSize.height).
+            let baseOrigin = NSPoint(x: 0, y: canvasSize.height - baseSize.height)
+            baseImage.draw(at: baseOrigin, from: .zero, operation: .sourceOver, fraction: 1.0)
+
+            // Badge in the bottom-right, partially overlapping the crosshair's padding.
+            let badgeRect = NSRect(
+                x: canvasSize.width - badgeWidth - 0.5,
+                y: 0.5,
+                width: badgeWidth,
+                height: badgeHeight
+            )
+
+            // Outline for visibility on any background.
+            NSColor.black.setStroke()
+            let outline = NSBezierPath(rect: badgeRect)
+            outline.lineWidth = 1.5
+            outline.stroke()
+
+            // Dashed white rectangle on top — reads as a "selection / spotlight" hint.
+            NSColor.white.setStroke()
+            let dashed = NSBezierPath(rect: badgeRect)
+            dashed.lineWidth = 1
+            dashed.setLineDash([1.5, 1.5], count: 2, phase: 0)
+            dashed.stroke()
+
+            return true
+        }
+
+        // Hot spot is measured from the top-left in NSCursor, so the x is unchanged
+        // and the y matches the system crosshair's hot spot directly (we placed the
+        // base image flush with the top of the padded canvas).
+        return NSCursor(image: composed, hotSpot: baseHotspot)
+    }()
+
+    /// Refresh the cursor after the active tool changes.
+    private func updateCursorForTool() {
+        window?.invalidateCursorRects(for: self)
     }
 
     // MARK: - Drawing
@@ -73,6 +142,14 @@ final class DrawingCanvasView: NSView {
 
         // 1. Draw background (captured screen or whiteboard/blackboard)
         drawBackground(in: context)
+
+        // 1.5 Spotlight mask — drawn between background and strokes so that
+        // strokes (finished, preview, freehand) always sit on top of the dim layer.
+        if let dragRect = spotlightDragRect {
+            drawSpotlightMask(rect: dragRect, in: context)
+        } else if let confirmedRect = drawingState.spotlightRect {
+            drawSpotlightMask(rect: confirmedRect, in: context)
+        }
 
         // 2. Draw finishedLayer (all confirmed strokes)
         if let finished = finishedLayer {
@@ -128,6 +205,18 @@ final class DrawingCanvasView: NSView {
         }
     }
 
+    /// Darken everything outside `rect`. The rectangle area itself is left untouched
+    /// (the layer below the spotlight stays visible).
+    private func drawSpotlightMask(rect: CGRect, in context: CGContext) {
+        let normalized = rect.standardized
+        context.saveGState()
+        context.setFillColor(NSColor.black.withAlphaComponent(drawingState.spotlightDarkness).cgColor)
+        context.fill(bounds)
+        context.setBlendMode(.clear)
+        context.fill(normalized)
+        context.restoreGState()
+    }
+
     // MARK: - Mouse Events
 
     override func mouseDown(with event: NSEvent) {
@@ -139,6 +228,14 @@ final class DrawingCanvasView: NSView {
 
         let point = convert(event.locationInWindow, from: nil)
         dragOrigin = point
+
+        if drawingState.activeTool == .spotlight {
+            spotlightDragRect = CGRect(origin: point, size: .zero)
+            isDragging = true
+            previewLayer = nil
+            activeFreehand = nil
+            return
+        }
 
         freehandPoints = [point]
         isDragging = true
@@ -152,6 +249,17 @@ final class DrawingCanvasView: NSView {
         guard isDragging else { return }
 
         let currentPoint = convert(event.locationInWindow, from: nil)
+
+        if drawingState.activeTool == .spotlight {
+            spotlightDragRect = CGRect(
+                x: dragOrigin.x,
+                y: dragOrigin.y,
+                width: currentPoint.x - dragOrigin.x,
+                height: currentPoint.y - dragOrigin.y
+            )
+            setNeedsDisplay(bounds)
+            return
+        }
 
         let modifiers = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
         let shapeType = drawingState.currentShapeType(modifiers: modifiers)
@@ -186,12 +294,34 @@ final class DrawingCanvasView: NSView {
         guard isDragging else { return }
         isDragging = false
 
+        if drawingState.activeTool == .spotlight {
+            // Confirm the spotlight rectangle and auto-return to the draw tool.
+            strokeManager.pushUndoSnapshot(
+                finishedLayer,
+                backgroundMode: drawingState.backgroundMode,
+                spotlightRect: drawingState.spotlightRect
+            )
+            // Discard zero-sized "click without drag" gestures.
+            if let dragRect = spotlightDragRect, dragRect.standardized.width > 1 && dragRect.standardized.height > 1 {
+                drawingState.spotlightRect = dragRect.standardized
+            }
+            spotlightDragRect = nil
+            drawingState.activeTool = .draw
+            updateCursorForTool()
+            setNeedsDisplay(bounds)
+            return
+        }
+
         let currentPoint = convert(event.locationInWindow, from: nil)
         let modifiers = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
         let shapeType = drawingState.currentShapeType(modifiers: modifiers)
 
         // Push current state for undo
-        strokeManager.pushUndoSnapshot(finishedLayer, backgroundMode: drawingState.backgroundMode)
+        strokeManager.pushUndoSnapshot(
+            finishedLayer,
+            backgroundMode: drawingState.backgroundMode,
+            spotlightRect: drawingState.spotlightRect
+        )
 
         // Composite the completed stroke onto finishedLayer
         finishedLayer = compositeStrokeOntoFinished(
@@ -249,20 +379,32 @@ final class DrawingCanvasView: NSView {
 
         // Clear all
         case "E":
-            strokeManager.pushUndoSnapshot(finishedLayer, backgroundMode: drawingState.backgroundMode)
+            strokeManager.pushUndoSnapshot(
+                finishedLayer,
+                backgroundMode: drawingState.backgroundMode,
+                spotlightRect: drawingState.spotlightRect
+            )
             finishedLayer = nil
             setNeedsDisplay(bounds)
 
         // Whiteboard
         case "W":
-            strokeManager.pushUndoSnapshot(finishedLayer, backgroundMode: drawingState.backgroundMode)
+            strokeManager.pushUndoSnapshot(
+                finishedLayer,
+                backgroundMode: drawingState.backgroundMode,
+                spotlightRect: drawingState.spotlightRect
+            )
             drawingState.backgroundMode = .whiteboard
             finishedLayer = nil
             setNeedsDisplay(bounds)
 
         // Blackboard
         case "K":
-            strokeManager.pushUndoSnapshot(finishedLayer, backgroundMode: drawingState.backgroundMode)
+            strokeManager.pushUndoSnapshot(
+                finishedLayer,
+                backgroundMode: drawingState.backgroundMode,
+                spotlightRect: drawingState.spotlightRect
+            )
             drawingState.backgroundMode = .blackboard
             finishedLayer = nil
             setNeedsDisplay(bounds)
@@ -297,9 +439,48 @@ final class DrawingCanvasView: NSView {
                 await saveToFile()
             }
 
+        // Spotlight toggle (S without modifiers)
+        case "S" where modifiers.intersection([.command, .control, .option, .shift]).isEmpty:
+            toggleSpotlightTool()
+
+        // Spotlight darkness — only meaningful when a spotlight rect exists
+        case String(UnicodeScalar(NSUpArrowFunctionKey)!)
+            where drawingState.spotlightRect != nil
+                && modifiers.intersection([.command, .control, .option, .shift]).isEmpty:
+            drawingState.increaseSpotlightDarkness()
+            setNeedsDisplay(bounds)
+
+        case String(UnicodeScalar(NSDownArrowFunctionKey)!)
+            where drawingState.spotlightRect != nil
+                && modifiers.intersection([.command, .control, .option, .shift]).isEmpty:
+            drawingState.decreaseSpotlightDarkness()
+            setNeedsDisplay(bounds)
+
         default:
             break
         }
+    }
+
+    /// Toggle spotlight: arm the tool if no rect exists, otherwise clear the active rect.
+    private func toggleSpotlightTool() {
+        if drawingState.spotlightRect != nil {
+            // Active spotlight → clear (and snapshot for undo).
+            strokeManager.pushUndoSnapshot(
+                finishedLayer,
+                backgroundMode: drawingState.backgroundMode,
+                spotlightRect: drawingState.spotlightRect
+            )
+            drawingState.spotlightRect = nil
+            drawingState.activeTool = .draw
+        } else {
+            // No confirmed spotlight rect. Toggle the tool itself:
+            //   .draw      → .spotlight  (arm — wait for the next drag)
+            //   .spotlight → .draw       (cancel an armed spotlight before any drag)
+            // No undo snapshot is pushed here because nothing has been committed yet.
+            drawingState.activeTool = (drawingState.activeTool == .spotlight) ? .draw : .spotlight
+        }
+        updateCursorForTool()
+        setNeedsDisplay(bounds)
     }
 
     override func keyUp(with event: NSEvent) {
@@ -400,8 +581,10 @@ final class DrawingCanvasView: NSView {
         if let snapshot = strokeManager.popUndoSnapshot() {
             finishedLayer = snapshot.finishedLayer
             drawingState.backgroundMode = snapshot.backgroundMode
+            drawingState.spotlightRect = snapshot.spotlightRect
         } else {
             finishedLayer = nil
+            drawingState.spotlightRect = nil
         }
         setNeedsDisplay(bounds)
     }
@@ -427,7 +610,11 @@ final class DrawingCanvasView: NSView {
     /// Rasterize current text into finishedLayer without leaving text mode.
     private func commitCurrentText() {
         guard let controller = textInputController, controller.hasText else { return }
-        strokeManager.pushUndoSnapshot(finishedLayer, backgroundMode: drawingState.backgroundMode)
+        strokeManager.pushUndoSnapshot(
+            finishedLayer,
+            backgroundMode: drawingState.backgroundMode,
+            spotlightRect: drawingState.spotlightRect
+        )
         finishedLayer = controller.rasterizeAndComposite(onto: finishedLayer, canvasSize: bounds.size)
         controller.cleanup()
         setNeedsDisplay(bounds)
@@ -508,6 +695,18 @@ final class DrawingCanvasView: NSView {
         case .blackboard:
             context.setFillColor(NSColor.black.cgColor)
             context.fill(CGRect(origin: .zero, size: size))
+        }
+
+        // Spotlight mask — placed under the strokes so drawings remain visible
+        // both inside and outside the spotlight rectangle.
+        if let rect = drawingState.spotlightRect {
+            let exportBounds = CGRect(origin: .zero, size: size)
+            context.saveGState()
+            context.setFillColor(NSColor.black.withAlphaComponent(drawingState.spotlightDarkness).cgColor)
+            context.fill(exportBounds)
+            context.setBlendMode(.clear)
+            context.fill(rect.standardized)
+            context.restoreGState()
         }
 
         // Finished strokes

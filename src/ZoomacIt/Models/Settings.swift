@@ -70,6 +70,7 @@ final class Settings: @unchecked Sendable {
         static let defaultPenWidth = "drawDefaultPenWidth"
         static let highlighterOpacity = "drawHighlighterOpacity"
         static let highlighterWidthMultiplier = "drawHighlighterWidthMultiplier"
+        static let spotlightDarkness = "drawSpotlightDarkness"
 
         // Text
         static let defaultFontSize = "textDefaultFontSize"
@@ -107,6 +108,7 @@ final class Settings: @unchecked Sendable {
             Keys.defaultPenWidth: 3.0,
             Keys.highlighterOpacity: 0.35,
             Keys.highlighterWidthMultiplier: 4.0,
+            Keys.spotlightDarkness: 0.6,
 
             // Text
             Keys.defaultFontSize: 24.0,
@@ -179,6 +181,11 @@ final class Settings: @unchecked Sendable {
     var highlighterWidthMultiplier: CGFloat {
         get { CGFloat(defaults.double(forKey: Keys.highlighterWidthMultiplier)) }
         set { defaults.set(Double(newValue), forKey: Keys.highlighterWidthMultiplier) }
+    }
+
+    var spotlightDarkness: CGFloat {
+        get { CGFloat(defaults.double(forKey: Keys.spotlightDarkness)) }
+        set { defaults.set(Double(newValue), forKey: Keys.spotlightDarkness) }
     }
 
     // MARK: - Text
@@ -259,6 +266,7 @@ final class Settings: @unchecked Sendable {
             Keys.breakHotkeyKeyCode, Keys.breakHotkeyModifiers,
             Keys.defaultPenColor, Keys.defaultPenWidth,
             Keys.highlighterOpacity, Keys.highlighterWidthMultiplier,
+            Keys.spotlightDarkness,
             Keys.defaultFontSize, Keys.fontWeight,
             Keys.defaultZoomLevel, Keys.zoomAnimationEnabled,
             Keys.breakTimerDefaultDuration, Keys.breakTimerColor,

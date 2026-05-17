@@ -7,6 +7,7 @@ struct DrawTab: View {
     @AppStorage(Settings.Keys.defaultPenWidth) private var penWidth: Double = 3.0
     @AppStorage(Settings.Keys.highlighterOpacity) private var highlighterOpacity: Double = 0.35
     @AppStorage(Settings.Keys.highlighterWidthMultiplier) private var highlighterMultiplier: Double = 4.0
+    @AppStorage(Settings.Keys.spotlightDarkness) private var spotlightDarkness: Double = 0.6
     @AppStorage(Settings.Keys.defaultFontSize) private var fontSize: Double = 24.0
     @AppStorage(Settings.Keys.fontWeight) private var fontWeightRaw: String = FontWeightOption.medium.rawValue
 
@@ -61,6 +62,16 @@ struct DrawTab: View {
                     Text("Width Multiplier")
                     Slider(value: $highlighterMultiplier, in: 1...10, step: 0.5)
                     Text(String(format: "%.1fx", highlighterMultiplier))
+                        .frame(width: 40, alignment: .trailing)
+                        .monospacedDigit()
+                }
+            }
+
+            Section("Spotlight") {
+                HStack {
+                    Text("Darkness")
+                    Slider(value: $spotlightDarkness, in: 0.1...0.9, step: 0.05)
+                    Text(String(format: "%.0f%%", spotlightDarkness * 100))
                         .frame(width: 40, alignment: .trailing)
                         .monospacedDigit()
                 }

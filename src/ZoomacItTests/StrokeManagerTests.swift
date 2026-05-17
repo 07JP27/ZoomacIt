@@ -57,4 +57,19 @@ final class StrokeManagerTests: XCTestCase {
         manager.clearHistory()
         XCTAssertEqual(manager.undoLevels, 0)
     }
+
+    func testPushAndPopSpotlightRect() {
+        let manager = StrokeManager()
+        let rect = CGRect(x: 10, y: 20, width: 100, height: 50)
+        manager.pushUndoSnapshot(nil, backgroundMode: .transparent, spotlightRect: rect)
+        let snapshot = manager.popUndoSnapshot()
+        XCTAssertEqual(snapshot?.spotlightRect, rect)
+    }
+
+    func testPushUndoSnapshotDefaultSpotlightIsNil() {
+        let manager = StrokeManager()
+        manager.pushUndoSnapshot(nil)
+        let snapshot = manager.popUndoSnapshot()
+        XCTAssertNil(snapshot?.spotlightRect)
+    }
 }
