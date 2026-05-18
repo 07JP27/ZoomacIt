@@ -58,9 +58,9 @@ Press **T** to enter text mode. Click anywhere to place a text field and start t
 
 ## Spotlight
 
-Press **S** to arm the spotlight tool, then drag a rectangle. Everything outside the rectangle is dimmed so the audience's attention is drawn to that area.
+Press **S** to arm the spotlight tool, then drag a rectangle. Everything outside the rectangle is dimmed so the audience's attention is drawn to that area. Only one spotlight rectangle exists at a time — press **S** again and drag to replace it. After confirming a rectangle, the tool returns to normal drawing so you can immediately annotate on top of the spotlight.
 
-- **Drag (after S)** — creates the spotlight rectangle; the tool returns to normal drawing afterward
+- **Drag (after S)** — creates the spotlight rectangle
 - **S (again)** — clears the active spotlight
 - **↑ / ↓** — increase / decrease dimming opacity
 - **Escape** — exits Draw mode and clears the spotlight
