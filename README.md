@@ -6,6 +6,7 @@
   <a href="https://github.com/07JP27/ZoomacIt/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/07JP27/ZoomacIt/ci.yml?style=flat&label=CI" alt="CI"></a>
   <a href="https://github.com/07JP27/ZoomacIt/releases/latest"><img src="https://img.shields.io/github/v/release/07JP27/ZoomacIt?style=flat" alt="Release"></a>
   <a href="LICENSE"><img src="https://img.shields.io/github/license/07JP27/ZoomacIt?style=flat" alt="License"></a>
+  <a href="CONTRIBUTORS.md"><img src="https://img.shields.io/github/contributors/07JP27/ZoomacIt?style=flat" alt="Contributors"></a>
   <img src="https://img.shields.io/badge/Swift-6.0-orange?style=flat&logo=swift&logoColor=white" alt="Swift 6.0">
   <img src="https://img.shields.io/badge/macOS-26%2B-blue?style=flat&logo=apple&logoColor=white" alt="macOS 26+">
   <a href="https://github.com/sponsors/07JP27"><img src="https://img.shields.io/badge/Sponsor-%E2%9D%A4-ea4aaa?style=flat&logo=githubsponsors&logoColor=white" alt="Sponsor"></a>
@@ -101,6 +102,10 @@ make dmg VERSION=1.0.0
 This builds a Release binary signed with your Developer ID, submits it to Apple for notarization, staples the notarization ticket, and packages the result into a distributable DMG.
 
 > **Note:** Notarization requires an [Apple Developer Program](https://developer.apple.com/programs/) membership. The `.env` file is gitignored and must never be committed.
+
+## Contributors
+
+Thanks to everyone who helps improve ZoomacIt. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for acknowledgments.
 
 ## License
 
