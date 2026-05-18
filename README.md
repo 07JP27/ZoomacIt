@@ -105,6 +105,10 @@ This builds a Release binary signed with your Developer ID, submits it to Apple 
 
 ## Contributors
 
+<a href="https://github.com/07JP27/ZoomacIt/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=07JP27/ZoomacIt" alt="Contributors" />
+</a>
+
 Thanks to everyone who helps improve ZoomacIt. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for acknowledgments.
 
 ## License

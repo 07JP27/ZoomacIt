@@ -105,6 +105,10 @@ Developer ID で署名されたリリースバイナリをビルドし、Apple �
 
 ## コントリビューター
 
+<a href="https://github.com/07JP27/ZoomacIt/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=07JP27/ZoomacIt" alt="Contributors" />
+</a>
+
 ZoomacIt の改善に協力してくださるすべての方に感謝します。謝辞は [CONTRIBUTORS.md](CONTRIBUTORS.md) をご覧ください。
 
 ## ライセンス
