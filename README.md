@@ -76,6 +76,21 @@ make docs        # Start local documentation dev server
 make docs-build  # Build documentation site
 ```
 
+### Building as a contributor
+
+The project's `src/project.yml` hardcodes the maintainer's team ID. To build and run locally, replace it with your own:
+
+1. Find your team ID: `security find-certificate -c "Apple Development" -p | openssl x509 -noout -subject | grep -o 'OU=[^,]*' | cut -d= -f2`
+2. Edit `src/project.yml` — replace the `DEVELOPMENT_TEAM` value with yours (appears twice)
+3. Regenerate and build:
+   ```bash
+   make generate
+   make build
+   make run
+   ```
+
+> **Note:** A valid code signature is required for macOS to launch the app and grant Screen Recording (TCC) permission. Do not commit your team ID — this is a local-only change.
+
 ### Code signing and notarization
 
 macOS Gatekeeper blocks unsigned apps downloaded from the internet. To distribute ZoomacIt without requiring users to bypass Gatekeeper warnings, the app must be signed with a Developer ID certificate and notarized by Apple.
