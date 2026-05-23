@@ -7,6 +7,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var hotkeyManager: HotkeyManager { HotkeyManager.shared }
     private var overlayController: OverlayWindowController?
     private var zoomController: StillZoomWindowController?
+    private var liveZoomController: LiveZoomWindowController?
     private var breakTimerController: BreakTimerWindowController?
     /// Stores the full-resolution source image when transitioning from Zoom → Draw,
     /// so that Escape from Draw can return to Zoom mode.
@@ -30,6 +31,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         hotkeyManager.onBreakHotkey = { [weak self] in
             self?.toggleBreakTimer()
+        }
+        hotkeyManager.onLiveZoomHotkey = { [weak self] in
+            self?.toggleLiveZoomMode()
         }
         hotkeyManager.start()
     }
@@ -146,6 +150,43 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         zoomController = controller
         zoomPanCenterForDrawReturn = nil
         zoomLevelForDrawReturn = nil
+    }
+
+    // MARK: - Live Zoom
+
+    private func toggleLiveZoomMode() {
+        NSLog("[AppDelegate] toggleLiveZoomMode called")
+        if let controller = liveZoomController {
+            controller.dismiss()
+            liveZoomController = nil
+            return
+        }
+
+        // Dismiss other modes first
+        if let drawController = overlayController {
+            drawController.dismiss()
+            overlayController = nil
+        }
+        if let stillZoom = zoomController {
+            stillZoom.dismiss()
+            zoomController = nil
+        }
+
+        let controller = LiveZoomWindowController()
+        controller.onDismiss = { [weak self] in
+            self?.liveZoomController = nil
+        }
+        controller.onEnterDrawMode = { [weak self] snapshot in
+            guard let self else { return }
+            self.liveZoomController?.dismiss()
+            self.liveZoomController = nil
+            self.presentDrawMode(backgroundImage: snapshot)
+        }
+        controller.onShowFailed = { [weak self] in
+            self?.liveZoomController = nil
+        }
+        controller.showLiveZoom()
+        liveZoomController = controller
     }
 
     // MARK: - Break Timer

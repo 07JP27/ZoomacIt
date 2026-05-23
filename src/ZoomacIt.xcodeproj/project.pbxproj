@@ -21,6 +21,7 @@
 		3ECA67329DFFE9622AF916FB /* HighlighterRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD20BCB0F5497D5789C75AF /* HighlighterRenderer.swift */; };
 		407536072A77EEE413110305 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36559530A20E76797485A4D4 /* Settings.swift */; };
 		41011F5512E5B70E02211DF4 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA294A8321CAB0BBDA54F11 /* Stroke.swift */; };
+		49E9DBB015C57215FC819A39 /* LiveZoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A419159D2CE7F92C1ED334EB /* LiveZoomView.swift */; };
 		62B9C3FC42F88FE77EB06D9E /* DrawingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F716B76F77ECE1104368663A /* DrawingState.swift */; };
 		6C1F1EE5DFAA671FED75C390 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4181F7E2885B9460376EE3A4 /* SettingsView.swift */; };
 		792274BFCD677E75A47C4FB5 /* KeyRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4861D0131871D035CC07327 /* KeyRecorderView.swift */; };
@@ -32,6 +33,7 @@
 		8A686087B160C1E5DB5A386C /* HighlighterRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1292E2C0A68D01827A3396D0 /* HighlighterRendererTests.swift */; };
 		8C86FC94752D7A7E397DE877 /* ZoomMathTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 122958CC072CEF51A4973BAD /* ZoomMathTests.swift */; };
 		8EB5433F06804DD1E27E51DF /* ShapeRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8699BCE233A5E7F09663017F /* ShapeRendererTests.swift */; };
+		8EF72DE97F310702D4924D99 /* LiveZoomWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3884984CB5B8714C1CB6DAE7 /* LiveZoomWindowController.swift */; };
 		9582B9FF70AFDB7FD8FC292D /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A978FA296EF6E99DE42DE5A5 /* SettingsWindowController.swift */; };
 		9DF3FA34ED77F2109586D4B5 /* StillZoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02D0969B89076B7BC986452B /* StillZoomView.swift */; };
 		B4CBD67B2A6AEEB3109F5792 /* CGContextExtensionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A10C3F6A8082DAF58EE6949 /* CGContextExtensionsTests.swift */; };
@@ -81,6 +83,7 @@
 		2C8A2C544CC0510AA2EA9A06 /* StrokeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeTests.swift; sourceTree = "<group>"; };
 		3091F75DCC9B6EA27DC8FA61 /* FontWeightOptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontWeightOptionTests.swift; sourceTree = "<group>"; };
 		36559530A20E76797485A4D4 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
+		3884984CB5B8714C1CB6DAE7 /* LiveZoomWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveZoomWindowController.swift; sourceTree = "<group>"; };
 		3AA294A8321CAB0BBDA54F11 /* Stroke.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stroke.swift; sourceTree = "<group>"; };
 		4181F7E2885B9460376EE3A4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		453513CAB75B5909A1521589 /* StrokeManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeManagerTests.swift; sourceTree = "<group>"; };
@@ -102,6 +105,7 @@
 		9059A7F84AC48FE489FC4064 /* OverlayWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowController.swift; sourceTree = "<group>"; };
 		972CA1E50E6818D068D22333 /* TextInputController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextInputController.swift; sourceTree = "<group>"; };
 		A3EBA7640893729E53D436F6 /* GeneralTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralTab.swift; sourceTree = "<group>"; };
+		A419159D2CE7F92C1ED334EB /* LiveZoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveZoomView.swift; sourceTree = "<group>"; };
 		A978FA296EF6E99DE42DE5A5 /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
 		AD7667A522D320490BA4461A /* ZoomacItTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ZoomacItTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AFD499A142CC237EF664DD96 /* BreakTimerWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakTimerWindow.swift; sourceTree = "<group>"; };
@@ -182,6 +186,8 @@
 				1B27C880479A92E16A621C7B /* BreakTimerView.swift */,
 				AFD499A142CC237EF664DD96 /* BreakTimerWindow.swift */,
 				BE3023CD2A9E7BBC51D21E79 /* BreakTimerWindowController.swift */,
+				A419159D2CE7F92C1ED334EB /* LiveZoomView.swift */,
+				3884984CB5B8714C1CB6DAE7 /* LiveZoomWindowController.swift */,
 				167B3BE9B273B7B056C41CD5 /* OverlayWindow.swift */,
 				9059A7F84AC48FE489FC4064 /* OverlayWindowController.swift */,
 				02D0969B89076B7BC986452B /* StillZoomView.swift */,
@@ -385,6 +391,8 @@
 				3ECA67329DFFE9622AF916FB /* HighlighterRenderer.swift in Sources */,
 				BFE4A25ECEF31F988FA3CBC0 /* HotkeyManager.swift in Sources */,
 				792274BFCD677E75A47C4FB5 /* KeyRecorderView.swift in Sources */,
+				49E9DBB015C57215FC819A39 /* LiveZoomView.swift in Sources */,
+				8EF72DE97F310702D4924D99 /* LiveZoomWindowController.swift in Sources */,
 				19840E05A102F6B23E08C60C /* NSScreen+Extensions.swift in Sources */,
 				E9920C14A86002F653920D7E /* OverlayWindow.swift in Sources */,
 				EFB76DD8BEEDF74D7AB326DD /* OverlayWindowController.swift in Sources */,

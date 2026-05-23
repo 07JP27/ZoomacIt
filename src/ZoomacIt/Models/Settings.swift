@@ -64,6 +64,8 @@ final class Settings: @unchecked Sendable {
         static let drawHotkeyModifiers = "hotkeyDrawModifiers"
         static let breakHotkeyKeyCode = "hotkeyBreakKeyCode"
         static let breakHotkeyModifiers = "hotkeyBreakModifiers"
+        static let liveZoomHotkeyKeyCode = "hotkeyLiveZoomKeyCode"
+        static let liveZoomHotkeyModifiers = "hotkeyLiveZoomModifiers"
 
         // Draw
         static let defaultPenColor = "drawDefaultPenColor"
@@ -102,6 +104,8 @@ final class Settings: @unchecked Sendable {
             Keys.drawHotkeyModifiers: Int(controlKey),
             Keys.breakHotkeyKeyCode: Int(kVK_ANSI_3),
             Keys.breakHotkeyModifiers: Int(controlKey),
+            Keys.liveZoomHotkeyKeyCode: Int(kVK_ANSI_1),
+            Keys.liveZoomHotkeyModifiers: Int(controlKey | shiftKey),
 
             // Draw
             Keys.defaultPenColor: PenColor.red.rawValue,
@@ -159,6 +163,16 @@ final class Settings: @unchecked Sendable {
     var breakHotkeyModifiers: UInt32 {
         get { UInt32(defaults.integer(forKey: Keys.breakHotkeyModifiers)) }
         set { defaults.set(Int(newValue), forKey: Keys.breakHotkeyModifiers) }
+    }
+
+    var liveZoomHotkeyKeyCode: UInt32 {
+        get { UInt32(defaults.integer(forKey: Keys.liveZoomHotkeyKeyCode)) }
+        set { defaults.set(Int(newValue), forKey: Keys.liveZoomHotkeyKeyCode) }
+    }
+
+    var liveZoomHotkeyModifiers: UInt32 {
+        get { UInt32(defaults.integer(forKey: Keys.liveZoomHotkeyModifiers)) }
+        set { defaults.set(Int(newValue), forKey: Keys.liveZoomHotkeyModifiers) }
     }
 
     // MARK: - Draw

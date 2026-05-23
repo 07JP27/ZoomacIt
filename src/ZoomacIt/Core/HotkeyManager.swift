@@ -16,9 +16,13 @@ final class HotkeyManager: @unchecked Sendable {
     /// Called when the Break Timer hotkey (⌃3) is triggered.
     var onBreakHotkey: (() -> Void)?
 
+    /// Called when the Live Zoom hotkey (⌃⇧1) is triggered.
+    var onLiveZoomHotkey: (() -> Void)?
+
     private var hotKeyRef: EventHotKeyRef?
     private var zoomHotKeyRef: EventHotKeyRef?
     private var breakHotKeyRef: EventHotKeyRef?
+    private var liveZoomHotKeyRef: EventHotKeyRef?
     private var eventHandlerRef: EventHandlerRef?
 
     /// Signature used to identify our hot-key events ('ZmIt')
@@ -26,6 +30,7 @@ final class HotkeyManager: @unchecked Sendable {
     private let zoomHotKeyID: UInt32 = 0
     private let drawHotKeyID: UInt32 = 1
     private let breakHotKeyID: UInt32 = 2
+    private let liveZoomHotKeyID: UInt32 = 3
 
     private init() {}
 
@@ -120,6 +125,26 @@ final class HotkeyManager: @unchecked Sendable {
         NSLog("[HotkeyManager] Break hotkey registered: %@",
               Settings.hotkeyDisplayString(keyCode: Settings.shared.breakHotkeyKeyCode,
                                            modifiers: Settings.shared.breakHotkeyModifiers))
+
+        // Register Live Zoom hotkey
+        let liveZoomKeyID = EventHotKeyID(signature: hotKeySignature, id: liveZoomHotKeyID)
+        let liveZoomStatus = RegisterEventHotKey(
+            Settings.shared.liveZoomHotkeyKeyCode,
+            Settings.shared.liveZoomHotkeyModifiers,
+            liveZoomKeyID,
+            GetApplicationEventTarget(),
+            0,
+            &liveZoomHotKeyRef
+        )
+
+        guard liveZoomStatus == noErr else {
+            NSLog("[HotkeyManager] Failed to register live zoom hotkey: %d", liveZoomStatus)
+            return
+        }
+
+        NSLog("[HotkeyManager] Live Zoom hotkey registered: %@",
+              Settings.hotkeyDisplayString(keyCode: Settings.shared.liveZoomHotkeyKeyCode,
+                                           modifiers: Settings.shared.liveZoomHotkeyModifiers))
     }
 
     func stop() {
@@ -134,6 +159,10 @@ final class HotkeyManager: @unchecked Sendable {
         if let ref = breakHotKeyRef {
             UnregisterEventHotKey(ref)
             breakHotKeyRef = nil
+        }
+        if let ref = liveZoomHotKeyRef {
+            UnregisterEventHotKey(ref)
+            liveZoomHotKeyRef = nil
         }
         if let handler = eventHandlerRef {
             RemoveEventHandler(handler)
@@ -177,6 +206,10 @@ final class HotkeyManager: @unchecked Sendable {
         } else if hotKeyID.id == breakHotKeyID {
             DispatchQueue.main.async { [weak self] in
                 self?.onBreakHotkey?()
+            }
+        } else if hotKeyID.id == liveZoomHotKeyID {
+            DispatchQueue.main.async { [weak self] in
+                self?.onLiveZoomHotkey?()
             }
         }
     }
