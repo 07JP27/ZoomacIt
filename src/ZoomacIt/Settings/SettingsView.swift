@@ -16,6 +16,8 @@ struct SettingsView: View {
                     .tabItem { Text("Zoom") }
                 BreakTimerTab()
                     .tabItem { Text("Break Timer") }
+                DemoTypeTab()
+                    .tabItem { Text("DemoType") }
             }
             .frame(minWidth: 480, minHeight: 320)
 

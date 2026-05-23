@@ -66,6 +66,10 @@ final class Settings: @unchecked Sendable {
         static let breakHotkeyModifiers = "hotkeyBreakModifiers"
         static let liveZoomHotkeyKeyCode = "hotkeyLiveZoomKeyCode"
         static let liveZoomHotkeyModifiers = "hotkeyLiveZoomModifiers"
+        static let demoTypeHotkeyKeyCode = "hotkeyDemoTypeKeyCode"
+        static let demoTypeHotkeyModifiers = "hotkeyDemoTypeModifiers"
+        static let demoTypeText = "demoTypeText"
+        static let demoTypeSpeed = "demoTypeSpeed"
 
         // Draw
         static let defaultPenColor = "drawDefaultPenColor"
@@ -106,6 +110,10 @@ final class Settings: @unchecked Sendable {
             Keys.breakHotkeyModifiers: Int(controlKey),
             Keys.liveZoomHotkeyKeyCode: Int(kVK_ANSI_4),
             Keys.liveZoomHotkeyModifiers: Int(controlKey),
+            Keys.demoTypeHotkeyKeyCode: Int(kVK_ANSI_D),
+            Keys.demoTypeHotkeyModifiers: Int(controlKey | shiftKey),
+            Keys.demoTypeText: "",
+            Keys.demoTypeSpeed: 15.0,
 
             // Draw
             Keys.defaultPenColor: PenColor.red.rawValue,
@@ -173,6 +181,26 @@ final class Settings: @unchecked Sendable {
     var liveZoomHotkeyModifiers: UInt32 {
         get { UInt32(defaults.integer(forKey: Keys.liveZoomHotkeyModifiers)) }
         set { defaults.set(Int(newValue), forKey: Keys.liveZoomHotkeyModifiers) }
+    }
+
+    var demoTypeHotkeyKeyCode: UInt32 {
+        get { UInt32(defaults.integer(forKey: Keys.demoTypeHotkeyKeyCode)) }
+        set { defaults.set(Int(newValue), forKey: Keys.demoTypeHotkeyKeyCode) }
+    }
+
+    var demoTypeHotkeyModifiers: UInt32 {
+        get { UInt32(defaults.integer(forKey: Keys.demoTypeHotkeyModifiers)) }
+        set { defaults.set(Int(newValue), forKey: Keys.demoTypeHotkeyModifiers) }
+    }
+
+    var demoTypeText: String {
+        get { defaults.string(forKey: Keys.demoTypeText) ?? "" }
+        set { defaults.set(newValue, forKey: Keys.demoTypeText) }
+    }
+
+    var demoTypeSpeed: Double {
+        get { defaults.double(forKey: Keys.demoTypeSpeed) }
+        set { defaults.set(newValue, forKey: Keys.demoTypeSpeed) }
     }
 
     // MARK: - Draw
@@ -279,6 +307,8 @@ final class Settings: @unchecked Sendable {
             Keys.drawHotkeyKeyCode, Keys.drawHotkeyModifiers,
             Keys.breakHotkeyKeyCode, Keys.breakHotkeyModifiers,
             Keys.liveZoomHotkeyKeyCode, Keys.liveZoomHotkeyModifiers,
+            Keys.demoTypeHotkeyKeyCode, Keys.demoTypeHotkeyModifiers,
+            Keys.demoTypeText, Keys.demoTypeSpeed,
             Keys.defaultPenColor, Keys.defaultPenWidth,
             Keys.highlighterOpacity, Keys.highlighterWidthMultiplier,
             Keys.spotlightDarkness,

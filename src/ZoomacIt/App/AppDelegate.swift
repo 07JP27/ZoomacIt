@@ -9,6 +9,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var zoomController: StillZoomWindowController?
     private var liveZoomController: LiveZoomWindowController?
     private var breakTimerController: BreakTimerWindowController?
+    private var demoTypeController: DemoTypeController?
+    /// The app that was active before we took focus — restored on dismiss.
+    private var previousApp: NSRunningApplication?
     /// Stores the full-resolution source image when transitioning from Zoom → Draw,
     /// so that Escape from Draw can return to Zoom mode.
     private var zoomSourceForDrawReturn: CGImage?
@@ -35,11 +38,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         hotkeyManager.onLiveZoomHotkey = { [weak self] in
             self?.toggleLiveZoomMode()
         }
+        hotkeyManager.onDemoTypeHotkey = { [weak self] in
+            self?.toggleDemoType()
+        }
         hotkeyManager.start()
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
         true
+    }
+
+    // MARK: - Focus Management
+
+    private func savePreviousApp() {
+        previousApp = NSWorkspace.shared.frontmostApplication
+    }
+
+    private func restorePreviousApp() {
+        previousApp?.activate()
+        previousApp = nil
     }
 
     // MARK: - Draw Mode
@@ -63,7 +80,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             zoomSourceForDrawReturn = nil  // ⌃2 toggle = full exit, don't return to zoom
             controller.dismiss()
             overlayController = nil
+            restorePreviousApp()
         } else {
+            savePreviousApp()
             presentDrawMode(backgroundImage: nil)
         }
     }
@@ -80,6 +99,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if let savedImage = zoomSourceForDrawReturn {
             zoomSourceForDrawReturn = nil
             restoreZoomMode(withImage: savedImage)
+        } else {
+            restorePreviousApp()
         }
     }
 
@@ -91,6 +112,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             NSLog("[AppDelegate] Zoom already active — dismissing")
             controller.dismiss()
             zoomController = nil
+            restorePreviousApp()
             return
         }
 
@@ -106,6 +128,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
             NSLog("[AppDelegate] Draw active (standalone) — dismissing before zoom")
         }
 
+        savePreviousApp()
         let controller = StillZoomWindowController()
         setupZoomCallbacks(controller)
         controller.showZoomOverlay()
@@ -117,6 +140,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         controller.onDismiss = { [weak self] in
             NSLog("[AppDelegate] Zoom onDismiss callback")
             self?.zoomController = nil
+            self?.restorePreviousApp()
         }
         controller.onEnterDrawMode = { [weak self] snapshot in
             guard let self else { return }
@@ -188,6 +212,23 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         liveZoomController = controller
         controller.showLiveZoom()
+    }
+
+    // MARK: - DemoType
+
+    private func toggleDemoType() {
+        if let controller = demoTypeController {
+            controller.stop()
+            demoTypeController = nil
+            return
+        }
+
+        let controller = DemoTypeController()
+        controller.onFinished = { [weak self] in
+            self?.demoTypeController = nil
+        }
+        controller.start()
+        demoTypeController = controller
     }
 
     // MARK: - Break Timer
