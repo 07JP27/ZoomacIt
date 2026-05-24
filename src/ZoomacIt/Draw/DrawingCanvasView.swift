@@ -73,11 +73,12 @@ final class DrawingCanvasView: NSView {
             cursor = Self.spotlightCursor
         default:
             let mods = NSEvent.modifierFlags.intersection([.shift, .control])
-            if mods.isEmpty && !drawingState.isTabHeld {
+            if drawingState.isTabHeld {
+                cursor = shapeCursor(for: [])  // ellipse — Tab takes precedence
+            } else if mods.isEmpty {
                 cursor = penCursor()
             } else {
-                cursor = shapeCursor(for: mods.isEmpty && drawingState.isTabHeld
-                    ? [] : mods)
+                cursor = shapeCursor(for: mods)
             }
         }
         addCursorRect(bounds, cursor: cursor)
@@ -537,6 +538,7 @@ final class DrawingCanvasView: NSView {
         // Tab key for ellipse (track as key, not modifier)
         case "\t":
             drawingState.isTabHeld = true
+            updateCursorForTool()
 
         // Space — move cursor to center
         case " ":
@@ -608,6 +610,7 @@ final class DrawingCanvasView: NSView {
         guard let characters = event.charactersIgnoringModifiers else { return }
         if characters == "\t" {
             drawingState.isTabHeld = false
+            updateCursorForTool()
         }
     }
 
