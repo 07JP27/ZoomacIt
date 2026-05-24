@@ -71,17 +71,24 @@ final class LiveZoomWindowController: NSObject {
         // Present overlay first so it exists when we query windows
         presentOverlay(on: screen, scaleFactor: scaleFactor)
 
-        // Small delay to ensure window is registered with the window server
-        try await Task.sleep(nanoseconds: 50_000_000) // 50ms
+        // Wait until our overlay window is visible to the window server
+        var excludedWindows: [SCWindow] = []
+        let myPID = ProcessInfo.processInfo.processIdentifier
+        for _ in 0..<10 {
+            try await Task.sleep(nanoseconds: 20_000_000) // 20ms
+            let content = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
+            excludedWindows = content.windows.filter { $0.owningApplication?.processID == myPID }
+            if !excludedWindows.isEmpty { break }
+        }
 
         let content = try await SCShareableContent.excludingDesktopWindows(false, onScreenWindowsOnly: true)
         guard let display = content.displays.first(where: { $0.displayID == displayID }) else {
             throw LiveZoomError.displayNotFound
         }
 
-        // Exclude all windows belonging to our app
-        let myPID = ProcessInfo.processInfo.processIdentifier
-        let excludedWindows = content.windows.filter { $0.owningApplication?.processID == myPID }
+        if excludedWindows.isEmpty {
+            excludedWindows = content.windows.filter { $0.owningApplication?.processID == myPID }
+        }
         NSLog("[LiveZoomWindowController] Excluding %d windows from capture (pid=%d)", excludedWindows.count, myPID)
 
         let filter = SCContentFilter(display: display, excludingWindows: excludedWindows)
@@ -90,16 +97,19 @@ final class LiveZoomWindowController: NSObject {
         config.height = Int(screen.frame.height * scaleFactor)
         config.minimumFrameInterval = CMTime(value: 1, timescale: 60)
         config.pixelFormat = kCVPixelFormatType_32BGRA
-        config.showsCursor = true
+        config.showsCursor = false
         config.queueDepth = 3
 
         let outputHandler = StreamOutputHandler { [weak self] buffer in
-            self?.handleFrame(buffer)
+            DispatchQueue.main.async {
+                self?.handleFrame(buffer)
+            }
         }
         self.streamOutput = outputHandler
 
         let newStream = SCStream(filter: filter, configuration: config, delegate: nil)
-        try newStream.addStreamOutput(outputHandler, type: .screen, sampleHandlerQueue: .main)
+        let captureQueue = DispatchQueue(label: "com.zoomacit.livezoom.capture", qos: .userInteractive)
+        try newStream.addStreamOutput(outputHandler, type: .screen, sampleHandlerQueue: captureQueue)
         try await newStream.startCapture()
         self.stream = newStream
         NSLog("[LiveZoomWindowController] Stream started at %dx%d @60fps", config.width, config.height)

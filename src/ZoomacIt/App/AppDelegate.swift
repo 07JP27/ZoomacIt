@@ -185,8 +185,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         controller.onShowFailed = { [weak self] in
             self?.liveZoomController = nil
         }
-        controller.showLiveZoom()
         liveZoomController = controller
+        controller.showLiveZoom()
     }
 
     // MARK: - Break Timer

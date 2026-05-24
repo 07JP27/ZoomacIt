@@ -10,7 +10,7 @@ final class LiveZoomView: NSView {
     var onEnterDrawMode: (() -> Void)?
 
     private let screenScaleFactor: CGFloat
-    private(set) var zoomLevel: CGFloat = Settings.shared.defaultZoomLevel
+    private(set) var zoomLevel: CGFloat = min(max(Settings.shared.defaultZoomLevel, 1.0), 8.0)
     private let minimumZoom: CGFloat = 1.0
     private let maximumZoom: CGFloat = 8.0
 
