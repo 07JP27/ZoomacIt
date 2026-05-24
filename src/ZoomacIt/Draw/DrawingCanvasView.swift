@@ -67,11 +67,113 @@ final class DrawingCanvasView: NSView {
     // MARK: - Cursor
 
     override func resetCursorRects() {
-        let cursor: NSCursor = (drawingState.activeTool == .spotlight)
-            ? Self.spotlightCursor
-            : .crosshair
+        let cursor: NSCursor
+        switch drawingState.activeTool {
+        case .spotlight:
+            cursor = Self.spotlightCursor
+        default:
+            let mods = NSEvent.modifierFlags.intersection([.shift, .control])
+            if mods.isEmpty && !drawingState.isTabHeld {
+                cursor = penCursor()
+            } else {
+                cursor = shapeCursor(for: mods.isEmpty && drawingState.isTabHeld
+                    ? [] : mods)
+            }
+        }
         addCursorRect(bounds, cursor: cursor)
     }
+
+    /// Generates a circular cursor matching the current pen colour and width.
+    private func penCursor() -> NSCursor {
+        let penWidth = drawingState.penWidth
+        let color = drawingState.currentNSColor
+        let size = max(penWidth * 2, 8)
+        let imageSize = NSSize(width: size + 4, height: size + 4)
+
+        let image = NSImage(size: imageSize, flipped: false) { _ in
+            let rect = NSRect(x: 2, y: 2, width: size, height: size)
+            color.setFill()
+            NSBezierPath(ovalIn: rect).fill()
+            NSColor.white.withAlphaComponent(0.8).setStroke()
+            let border = NSBezierPath(ovalIn: rect)
+            border.lineWidth = 0.5
+            border.stroke()
+            return true
+        }
+
+        let hotSpot = NSPoint(x: imageSize.width / 2, y: imageSize.height / 2)
+        return NSCursor(image: image, hotSpot: hotSpot)
+    }
+
+    /// Generates a shape-indicator cursor based on held modifiers.
+    private func shapeCursor(for modifiers: NSEvent.ModifierFlags) -> NSCursor {
+        let color = drawingState.currentNSColor
+
+        if modifiers.contains(.shift) && modifiers.contains(.control) {
+            // Arrow — rotates with drag direction
+            return rotatingCursor(angle: dragAngle, color: color, withHead: true)
+        } else if modifiers.contains(.control) {
+            // Rectangle — small filled square (hidden during drag)
+            if isDragging { return .crosshair }
+            return smallSquareCursor(color: color)
+        } else if modifiers.contains(.shift) {
+            // Line — rotates with drag direction
+            return rotatingCursor(angle: dragAngle, color: color, withHead: false)
+        } else {
+            // Ellipse (Tab) — small circle (hidden during drag)
+            if isDragging { return .crosshair }
+            return smallCircleCursor(color: color)
+        }
+    }
+
+    private func rotatingCursor(angle: CGFloat, color: NSColor, withHead: Bool) -> NSCursor {
+        let size: CGFloat = 20
+        let image = NSImage(size: NSSize(width: size, height: size), flipped: false) { _ in
+            let ctx = NSGraphicsContext.current!.cgContext
+            ctx.translateBy(x: size / 2, y: size / 2)
+            ctx.rotate(by: angle)
+            color.setStroke()
+            color.setFill()
+            let path = NSBezierPath()
+            path.move(to: NSPoint(x: -7, y: 0))
+            path.line(to: NSPoint(x: 7, y: 0))
+            path.lineWidth = 2
+            path.stroke()
+            if withHead {
+                let head = NSBezierPath()
+                head.move(to: NSPoint(x: 7, y: 0))
+                head.line(to: NSPoint(x: 3, y: 3))
+                head.line(to: NSPoint(x: 3, y: -3))
+                head.close()
+                head.fill()
+            }
+            return true
+        }
+        return NSCursor(image: image, hotSpot: NSPoint(x: size / 2, y: size / 2))
+    }
+
+    private func smallSquareCursor(color: NSColor) -> NSCursor {
+        let size: CGFloat = 10
+        let image = NSImage(size: NSSize(width: size, height: size), flipped: false) { _ in
+            color.setFill()
+            NSBezierPath(rect: NSRect(x: 1, y: 1, width: size - 2, height: size - 2)).fill()
+            return true
+        }
+        return NSCursor(image: image, hotSpot: NSPoint(x: size / 2, y: size / 2))
+    }
+
+    private func smallCircleCursor(color: NSColor) -> NSCursor {
+        let size: CGFloat = 10
+        let image = NSImage(size: NSSize(width: size, height: size), flipped: false) { _ in
+            color.setFill()
+            NSBezierPath(ovalIn: NSRect(x: 1, y: 1, width: size - 2, height: size - 2)).fill()
+            return true
+        }
+        return NSCursor(image: image, hotSpot: NSPoint(x: size / 2, y: size / 2))
+    }
+
+    /// Current drag angle for rotating cursors (radians, 0 = right).
+    private var dragAngle: CGFloat = 0
 
     /// Minimum width and height (points) for a spotlight rectangle to be confirmed
     /// on mouseUp. Drags smaller than this are treated as accidental clicks /
@@ -293,6 +395,14 @@ final class DrawingCanvasView: NSView {
             activeFreehand = nil
         }
 
+        // Update drag angle for rotating cursors (arrow/line)
+        let dx = currentPoint.x - dragOrigin.x
+        let dy = currentPoint.y - dragOrigin.y
+        if dx * dx + dy * dy > 9 { // only update if dragged > 3pt
+            dragAngle = atan2(dy, dx)
+            updateCursorForTool()
+        }
+
         setNeedsDisplay(bounds)
     }
 
@@ -385,6 +495,7 @@ final class DrawingCanvasView: NSView {
                 if drawingState.isTextMode {
                     textInputController?.updateColor(drawingState.currentNSColor)
                 }
+                updateCursorForTool()
             }
 
         // Clear all
@@ -502,10 +613,12 @@ final class DrawingCanvasView: NSView {
 
     override func flagsChanged(with event: NSEvent) {
         // Modifier changes during drag cause shape type to update.
-        // The actual shape determination happens in mouseDragged via currentShapeType().
         if isDragging {
-            // Trigger a "drag" update with current position
             mouseDragged(with: event)
+        }
+        // Update cursor to reflect shape tool
+        if drawingState.activeTool != .spotlight {
+            updateCursorForTool()
         }
     }
 
@@ -527,6 +640,7 @@ final class DrawingCanvasView: NSView {
             } else if event.scrollingDeltaY < 0 {
                 drawingState.decreasePenWidth()
             }
+            updateCursorForTool()
         }
     }
 
