@@ -164,6 +164,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
         // Dismiss other modes first
         if let drawController = overlayController {
+            zoomSourceForDrawReturn = nil  // Don't restore Still Zoom when entering Live Zoom
             drawController.dismiss()
             overlayController = nil
         }
