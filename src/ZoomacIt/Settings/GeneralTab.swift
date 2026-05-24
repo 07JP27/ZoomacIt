@@ -7,6 +7,8 @@ struct GeneralTab: View {
 
     @AppStorage(Settings.Keys.zoomHotkeyKeyCode) private var zoomKeyCode: Int = Int(kVK_ANSI_1)
     @AppStorage(Settings.Keys.zoomHotkeyModifiers) private var zoomModifiers: Int = Int(controlKey)
+    @AppStorage(Settings.Keys.liveZoomHotkeyKeyCode) private var liveZoomKeyCode: Int = Int(kVK_ANSI_1)
+    @AppStorage(Settings.Keys.liveZoomHotkeyModifiers) private var liveZoomModifiers: Int = Int(controlKey | shiftKey)
     @AppStorage(Settings.Keys.drawHotkeyKeyCode) private var drawKeyCode: Int = Int(kVK_ANSI_2)
     @AppStorage(Settings.Keys.drawHotkeyModifiers) private var drawModifiers: Int = Int(controlKey)
     @AppStorage(Settings.Keys.breakHotkeyKeyCode) private var breakKeyCode: Int = Int(kVK_ANSI_3)
@@ -18,6 +20,7 @@ struct GeneralTab: View {
         Form {
             Section("Hotkeys") {
                 HotkeyRow(label: "Zoom", keyCode: $zoomKeyCode, modifiers: $zoomModifiers)
+                HotkeyRow(label: "Live Zoom", keyCode: $liveZoomKeyCode, modifiers: $liveZoomModifiers)
                 HotkeyRow(label: "Draw", keyCode: $drawKeyCode, modifiers: $drawModifiers)
                 HotkeyRow(label: "Break Timer", keyCode: $breakKeyCode, modifiers: $breakModifiers)
             }
@@ -29,6 +32,8 @@ struct GeneralTab: View {
         .formStyle(.grouped)
         .onChange(of: zoomKeyCode) { _, _ in reregisterHotkeys() }
         .onChange(of: zoomModifiers) { _, _ in reregisterHotkeys() }
+        .onChange(of: liveZoomKeyCode) { _, _ in reregisterHotkeys() }
+        .onChange(of: liveZoomModifiers) { _, _ in reregisterHotkeys() }
         .onChange(of: drawKeyCode) { _, _ in reregisterHotkeys() }
         .onChange(of: drawModifiers) { _, _ in reregisterHotkeys() }
         .onChange(of: breakKeyCode) { _, _ in reregisterHotkeys() }
