@@ -8,7 +8,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/github/license/07JP27/ZoomacIt?style=flat" alt="License"></a>
   <a href="CONTRIBUTORS.md"><img src="https://img.shields.io/github/contributors/07JP27/ZoomacIt?style=flat" alt="Contributors"></a>
   <img src="https://img.shields.io/badge/Swift-6.0-orange?style=flat&logo=swift&logoColor=white" alt="Swift 6.0">
-  <img src="https://img.shields.io/badge/macOS-15%2B-blue?style=flat&logo=apple&logoColor=white" alt="macOS 15+">
+  <img src="https://img.shields.io/badge/macOS-target%2015%2B%20%7C%20supported%2026%2B-blue?style=flat&logo=apple&logoColor=white" alt="macOS target 15+ | supported 26+">
   <a href="https://github.com/sponsors/07JP27"><img src="https://img.shields.io/badge/Sponsor-%E2%9D%A4-ea4aaa?style=flat&logo=githubsponsors&logoColor=white" alt="Sponsor"></a>
 </p>
 

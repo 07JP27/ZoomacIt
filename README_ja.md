@@ -8,7 +8,7 @@
   <a href="LICENSE"><img src="https://img.shields.io/github/license/07JP27/ZoomacIt?style=flat" alt="License"></a>
   <a href="CONTRIBUTORS.md"><img src="https://img.shields.io/github/contributors/07JP27/ZoomacIt?style=flat" alt="Contributors"></a>
   <img src="https://img.shields.io/badge/Swift-6.0-orange?style=flat&logo=swift&logoColor=white" alt="Swift 6.0">
-  <img src="https://img.shields.io/badge/macOS-26%2B-blue?style=flat&logo=apple&logoColor=white" alt="macOS 26+">
+  <img src="https://img.shields.io/badge/macOS-target%2015%2B%20%7C%20supported%2026%2B-blue?style=flat&logo=apple&logoColor=white" alt="macOS target 15+ | supported 26+">
   <a href="https://github.com/sponsors/07JP27"><img src="https://img.shields.io/badge/Sponsor-%E2%9D%A4-ea4aaa?style=flat&logo=githubsponsors&logoColor=white" alt="Sponsor"></a>
 </p>
 
@@ -31,7 +31,7 @@ https://github.com/user-attachments/assets/5f7563e4-584b-4bab-99c4-70f7d3265f54
 | 機能 | 状態 |
 |---|---|
 | ズーム（静止画ズーム） | ✅ |
-| ズーム（ライブズーム） | |
+| ズーム（ライブズーム） | ✅ |
 | ドロー | ✅ |
 | デモタイプ | |
 | 休憩タイマー | ✅ |
@@ -40,7 +40,7 @@ https://github.com/user-attachments/assets/5f7563e4-584b-4bab-99c4-70f7d3265f54
 
 ## アーキテクチャ
 
-純粋な **Swift 6 + AppKit**（SwiftUI は Settings UI のみ使用）。macOS 26+。外部依存なし。Xcode プロジェクトは [xcodegen](https://github.com/yonaskolb/XcodeGen) により `src/project.yml` から生成されます。
+純粋な **Swift 6 + AppKit**（SwiftUI は Settings UI のみ使用）。macOS 15+。外部依存なし。Xcode プロジェクトは [xcodegen](https://github.com/yonaskolb/XcodeGen) により `src/project.yml` から生成されます。
 
 | レイヤー | ディレクトリ | 役割 |
 |---|---|---|
@@ -57,8 +57,10 @@ https://github.com/user-attachments/assets/5f7563e4-584b-4bab-99c4-70f7d3265f54
 
 ### 前提条件
 
-- macOS 26+
+- macOS 15+（ビルドターゲット）
 - Xcode（Swift 6 ツールチェーン）
+
+> **互換性について:** 最小デプロイターゲットは macOS 15 ですが、公式にテスト・サポートされているのは macOS 26 のみです。それ以前のバージョンでも動作する可能性はありますが、保証はされません。
 - [xcodegen](https://github.com/yonaskolb/XcodeGen)（`brew install xcodegen`）— `src/project.yml` を編集する場合のみ必要
 
 ### ビルドコマンド
@@ -75,6 +77,21 @@ make generate    # .xcodeproj を再生成（src/project.yml 編集後）
 make docs        # ドキュメントサイトのローカル開発サーバーを起動
 make docs-build  # ドキュメントサイトをビルド
 ```
+
+### コントリビューターとしてビルドする
+
+プロジェクトの `src/project.yml` にはメンテナーのチーム ID がハードコードされています。ローカルでビルド・実行するには、自分のチーム ID に置き換えてください：
+
+1. チーム ID を確認: `security find-certificate -c "Apple Development" -p | openssl x509 -noout -subject | grep -o 'OU=[^,]*' | cut -d= -f2`
+2. `src/project.yml` を編集 — `DEVELOPMENT_TEAM` の値を自分のものに置き換え（2箇所）
+3. 再生成してビルド:
+   ```bash
+   make generate
+   make build
+   make run
+   ```
+
+> **注意:** macOS がアプリを起動し、画面収録（TCC）権限を付与するには、有効なコード署名が必要です。チーム ID はコミットしないでください — ローカルのみの変更です。
 
 ### コード署名と公証
 
