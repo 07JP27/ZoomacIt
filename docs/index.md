@@ -19,7 +19,7 @@ hero:
 features:
   - icon: 🔍
     title: Zoom
-    details: Capture the screen and zoom in/out with smooth scrolling. Pan around with mouse movement. One-click transition to Draw mode.
+    details: Capture the screen and zoom in/out with smooth scrolling. Pan around with mouse movement. One-click transition to Draw mode. Live Zoom keeps the screen updating in real time.
   - icon: ✏️
     title: Draw
     details: Freehand drawing, shapes (lines, rectangles, ellipses, arrows), text input, multiple colors, and highlighter mode — all with keyboard shortcuts.

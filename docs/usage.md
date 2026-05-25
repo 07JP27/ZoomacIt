@@ -5,6 +5,7 @@ Each feature can be launched via a global hotkey or from the menu bar icon.
 | Feature | Default Hotkey |
 |---|---|
 | Zoom | **⌃1** (Control+1) |
+| Live Zoom | **⌃⇧1** (Control+Shift+1) |
 | Draw | **⌃2** (Control+2) |
 | Break Timer | **⌃3** (Control+3) |
 
@@ -17,6 +18,10 @@ Hotkeys can be customized in **Settings** (click the menu bar icon → Settings)
 ### [Zoom](./usage/zoom)
 
 Capture the screen and zoom in/out with smooth scrolling. Pan around with mouse movement. One-click transition to Draw mode.
+
+### [Live Zoom](./usage/zoom#live-zoom)
+
+Real-time screen magnification — videos, terminals, and animations keep playing while zoomed. Click to freeze the frame and enter Draw mode.
 
 ### [Draw](./usage/draw)
 

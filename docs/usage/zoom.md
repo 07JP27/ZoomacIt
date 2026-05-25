@@ -21,3 +21,25 @@ When you click in Zoom mode, you enter Draw mode on top of the zoomed view:
 3. **Zoom mode** — press **Escape** again to exit completely
 
 This two-step dismiss works similarly to text mode in Draw.
+
+## Live Zoom
+
+Press **⌃⇧1** (Control+Shift+1) to enter Live Zoom mode. Unlike standard Zoom, the screen content updates in real time — videos, terminals, and animations keep playing while zoomed.
+
+### Controls
+
+| Input | Action |
+|---|---|
+| Mouse move | Pan the zoomed viewport |
+| Scroll wheel / ↑↓ | Zoom in / out (1.0x–8.0x) |
+| Click | Freeze the frame and enter Draw mode |
+| Escape | Exit Live Zoom |
+| Right-click | Exit Live Zoom |
+
+### Differences from Still Zoom
+
+| | Still Zoom (⌃1) | Live Zoom (⌃⇧1) |
+|---|---|---|
+| Screen content | Static snapshot | Real-time updates |
+| Mouse cursor | May not appear (captured in snapshot) | Always visible |
+| Enter Draw | Click (stays zoomed) | Click (freezes current frame, then draw) |
