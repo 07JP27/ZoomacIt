@@ -72,19 +72,14 @@ final class DrawingCanvasView: NSView {
         case .spotlight:
             cursor = Self.spotlightCursor
         default:
-            let mods = NSEvent.modifierFlags.intersection([.shift, .control])
-            if drawingState.isTabHeld {
-                cursor = shapeCursor(for: [])  // ellipse — Tab takes precedence
-            } else if mods.isEmpty {
-                cursor = penCursor()
-            } else {
-                cursor = shapeCursor(for: mods)
-            }
+            let mods = NSEvent.modifierFlags.intersection(.deviceIndependentFlagsMask)
+            let shapeType = drawingState.currentShapeType(modifiers: mods)
+            cursor = shapeType == .freehand ? penCursor() : crosshairCursor()
         }
         addCursorRect(bounds, cursor: cursor)
     }
 
-    /// Generates a circular cursor matching the current pen colour and width.
+    /// Generates a circular cursor matching the current pen colour and width (freehand mode).
     private func penCursor() -> NSCursor {
         let penWidth = drawingState.penWidth
         let color = drawingState.currentNSColor
@@ -106,75 +101,53 @@ final class DrawingCanvasView: NSView {
         return NSCursor(image: image, hotSpot: hotSpot)
     }
 
-    /// Generates a shape-indicator cursor based on held modifiers.
-    private func shapeCursor(for modifiers: NSEvent.ModifierFlags) -> NSCursor {
+    /// Generates a crosshair cursor scaled by pen width (shape modes).
+    private func crosshairCursor() -> NSCursor {
+        let penWidth = drawingState.penWidth
         let color = drawingState.currentNSColor
+        let armLength = min(max(penWidth * 1.5, 8), 40)
+        let thickness = min(max(penWidth, 1), 10)
+        let size = armLength * 2 + thickness + 6
+        let center = size / 2
 
-        if modifiers.contains(.shift) && modifiers.contains(.control) {
-            // Arrow — rotates with drag direction
-            return rotatingCursor(angle: dragAngle, color: color, withHead: true)
-        } else if modifiers.contains(.control) {
-            // Rectangle — small filled square (hidden during drag)
-            if isDragging { return .crosshair }
-            return smallSquareCursor(color: color)
-        } else if modifiers.contains(.shift) {
-            // Line — rotates with drag direction
-            return rotatingCursor(angle: dragAngle, color: color, withHead: false)
-        } else {
-            // Ellipse (Tab) — small circle (hidden during drag)
-            if isDragging { return .crosshair }
-            return smallCircleCursor(color: color)
-        }
-    }
-
-    private func rotatingCursor(angle: CGFloat, color: NSColor, withHead: Bool) -> NSCursor {
-        let size: CGFloat = 20
         let image = NSImage(size: NSSize(width: size, height: size), flipped: false) { _ in
-            let ctx = NSGraphicsContext.current!.cgContext
-            ctx.translateBy(x: size / 2, y: size / 2)
-            ctx.rotate(by: angle)
+            // Outer contrast stroke (black)
+            NSColor.black.withAlphaComponent(0.4).setStroke()
+            let outerH = NSBezierPath()
+            outerH.move(to: NSPoint(x: center - armLength, y: center))
+            outerH.line(to: NSPoint(x: center + armLength, y: center))
+            outerH.lineWidth = thickness + 2
+            outerH.lineCapStyle = .round
+            outerH.stroke()
+
+            let outerV = NSBezierPath()
+            outerV.move(to: NSPoint(x: center, y: center - armLength))
+            outerV.line(to: NSPoint(x: center, y: center + armLength))
+            outerV.lineWidth = thickness + 2
+            outerV.lineCapStyle = .round
+            outerV.stroke()
+
+            // Inner colored stroke
             color.setStroke()
-            color.setFill()
-            let path = NSBezierPath()
-            path.move(to: NSPoint(x: -7, y: 0))
-            path.line(to: NSPoint(x: 7, y: 0))
-            path.lineWidth = 2
-            path.stroke()
-            if withHead {
-                let head = NSBezierPath()
-                head.move(to: NSPoint(x: 7, y: 0))
-                head.line(to: NSPoint(x: 3, y: 3))
-                head.line(to: NSPoint(x: 3, y: -3))
-                head.close()
-                head.fill()
-            }
+            let innerH = NSBezierPath()
+            innerH.move(to: NSPoint(x: center - armLength, y: center))
+            innerH.line(to: NSPoint(x: center + armLength, y: center))
+            innerH.lineWidth = thickness
+            innerH.lineCapStyle = .round
+            innerH.stroke()
+
+            let innerV = NSBezierPath()
+            innerV.move(to: NSPoint(x: center, y: center - armLength))
+            innerV.line(to: NSPoint(x: center, y: center + armLength))
+            innerV.lineWidth = thickness
+            innerV.lineCapStyle = .round
+            innerV.stroke()
+
             return true
         }
-        return NSCursor(image: image, hotSpot: NSPoint(x: size / 2, y: size / 2))
-    }
 
-    private func smallSquareCursor(color: NSColor) -> NSCursor {
-        let size: CGFloat = 10
-        let image = NSImage(size: NSSize(width: size, height: size), flipped: false) { _ in
-            color.setFill()
-            NSBezierPath(rect: NSRect(x: 1, y: 1, width: size - 2, height: size - 2)).fill()
-            return true
-        }
-        return NSCursor(image: image, hotSpot: NSPoint(x: size / 2, y: size / 2))
+        return NSCursor(image: image, hotSpot: NSPoint(x: center, y: center))
     }
-
-    private func smallCircleCursor(color: NSColor) -> NSCursor {
-        let size: CGFloat = 10
-        let image = NSImage(size: NSSize(width: size, height: size), flipped: false) { _ in
-            color.setFill()
-            NSBezierPath(ovalIn: NSRect(x: 1, y: 1, width: size - 2, height: size - 2)).fill()
-            return true
-        }
-        return NSCursor(image: image, hotSpot: NSPoint(x: size / 2, y: size / 2))
-    }
-
-    /// Current drag angle for rotating cursors (radians, 0 = right).
-    private var dragAngle: CGFloat = 0
 
     /// Minimum width and height (points) for a spotlight rectangle to be confirmed
     /// on mouseUp. Drags smaller than this are treated as accidental clicks /
@@ -392,16 +365,8 @@ final class DrawingCanvasView: NSView {
             activeFreehand = nil
 
         case .arrow:
-            previewLayer = ShapeRenderer.arrowPath(from: dragOrigin, to: currentPoint)
+            previewLayer = ShapeRenderer.arrowPath(from: dragOrigin, to: currentPoint, penWidth: drawingState.penWidth)
             activeFreehand = nil
-        }
-
-        // Update drag angle for rotating cursors (arrow/line)
-        let dx = currentPoint.x - dragOrigin.x
-        let dy = currentPoint.y - dragOrigin.y
-        if dx * dx + dy * dy > 9 { // only update if dragged > 3pt
-            dragAngle = atan2(dy, dx)
-            updateCursorForTool()
         }
 
         setNeedsDisplay(bounds)
@@ -566,6 +531,17 @@ final class DrawingCanvasView: NSView {
         case "S" where modifiers.intersection([.command, .control, .option, .shift]).isEmpty:
             toggleSpotlightTool()
 
+        // Arrow keys — pen size (when no spotlight rect; ZoomIt-compatible)
+        case String(UnicodeScalar(NSUpArrowFunctionKey)!)
+            where drawingState.spotlightRect == nil:
+            drawingState.increasePenWidth()
+            updateCursorForTool()
+
+        case String(UnicodeScalar(NSDownArrowFunctionKey)!)
+            where drawingState.spotlightRect == nil:
+            drawingState.decreasePenWidth()
+            updateCursorForTool()
+
         // Spotlight darkness — only meaningful when a spotlight rect exists
         case String(UnicodeScalar(NSUpArrowFunctionKey)!)
             where drawingState.spotlightRect != nil
@@ -628,23 +604,19 @@ final class DrawingCanvasView: NSView {
     // MARK: - Scroll Wheel (Pen Size)
 
     override func scrollWheel(with event: NSEvent) {
-        let modifiers = event.modifierFlags
-
         if drawingState.isTextMode {
             // In text mode, scroll wheel changes font size
             textInputController?.adjustFontSize(delta: event.scrollingDeltaY)
             return
         }
 
-        if modifiers.contains(.control) {
-            // ⌃ + scroll wheel → pen size
-            if event.scrollingDeltaY > 0 {
-                drawingState.increasePenWidth()
-            } else if event.scrollingDeltaY < 0 {
-                drawingState.decreasePenWidth()
-            }
-            updateCursorForTool()
+        // Scroll wheel → pen size (also works with Ctrl held for ZoomIt compatibility)
+        if event.scrollingDeltaY > 0 {
+            drawingState.increasePenWidth()
+        } else if event.scrollingDeltaY < 0 {
+            drawingState.decreasePenWidth()
         }
+        updateCursorForTool()
     }
 
     // MARK: - Compositing
@@ -693,7 +665,7 @@ final class DrawingCanvasView: NSView {
         case .ellipse:
             path = ShapeRenderer.ellipsePath(from: dragOrigin, to: endPoint).cgPath
         case .arrow:
-            path = ShapeRenderer.arrowPath(from: dragOrigin, to: endPoint).cgPath
+            path = ShapeRenderer.arrowPath(from: dragOrigin, to: endPoint, penWidth: drawingState.penWidth).cgPath
         }
 
         bitmapContext.addPath(path)

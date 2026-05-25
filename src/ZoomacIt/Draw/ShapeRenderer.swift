@@ -40,15 +40,15 @@ enum ShapeRenderer {
 
     /// Creates an arrow path where the **start point is the arrowhead tip**
     /// (ZoomIt-specific behavior — the arrow points toward where you started dragging).
-    static func arrowPath(from start: CGPoint, to end: CGPoint) -> NSBezierPath {
+    static func arrowPath(from start: CGPoint, to end: CGPoint, penWidth: CGFloat = 3.0) -> NSBezierPath {
         let path = NSBezierPath()
 
         // The shaft goes from end (tail) to start (tip)
         path.move(to: end)
         path.line(to: start)
 
-        // Arrowhead at the start point (tip)
-        let headLength: CGFloat = 20.0
+        // Arrowhead at the start point (tip) — scale with pen width
+        let headLength: CGFloat = max(20.0, penWidth * 3.0)
         let headAngle: CGFloat = .pi / 6  // 30 degrees
 
         let dx = end.x - start.x
