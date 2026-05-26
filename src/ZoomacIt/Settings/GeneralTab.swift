@@ -7,8 +7,8 @@ struct GeneralTab: View {
 
     @AppStorage(Settings.Keys.zoomHotkeyKeyCode) private var zoomKeyCode: Int = Int(kVK_ANSI_1)
     @AppStorage(Settings.Keys.zoomHotkeyModifiers) private var zoomModifiers: Int = Int(controlKey)
-    @AppStorage(Settings.Keys.liveZoomHotkeyKeyCode) private var liveZoomKeyCode: Int = Int(kVK_ANSI_1)
-    @AppStorage(Settings.Keys.liveZoomHotkeyModifiers) private var liveZoomModifiers: Int = Int(controlKey | shiftKey)
+    @AppStorage(Settings.Keys.liveZoomHotkeyKeyCode) private var liveZoomKeyCode: Int = Int(kVK_ANSI_4)
+    @AppStorage(Settings.Keys.liveZoomHotkeyModifiers) private var liveZoomModifiers: Int = Int(controlKey)
     @AppStorage(Settings.Keys.drawHotkeyKeyCode) private var drawKeyCode: Int = Int(kVK_ANSI_2)
     @AppStorage(Settings.Keys.drawHotkeyModifiers) private var drawModifiers: Int = Int(controlKey)
     @AppStorage(Settings.Keys.breakHotkeyKeyCode) private var breakKeyCode: Int = Int(kVK_ANSI_3)
