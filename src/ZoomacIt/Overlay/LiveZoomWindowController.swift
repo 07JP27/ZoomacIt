@@ -18,6 +18,7 @@ final class LiveZoomWindowController: NSObject {
 
     /// Last received pixel buffer — used for Draw mode transition snapshot.
     private var lastPixelBuffer: CVPixelBuffer?
+    private lazy var ciContext = CIContext()
 
     func showLiveZoom() {
         NSLog("[LiveZoomWindowController] showLiveZoom called")
@@ -40,6 +41,7 @@ final class LiveZoomWindowController: NSObject {
                 try await self.startStream(screen: screen, displayID: displayID, scaleFactor: scaleFactor)
             } catch {
                 NSLog("[LiveZoomWindowController] Failed to start stream: %@", error.localizedDescription)
+                self.dismiss()
                 self.onShowFailed?()
             }
         }
@@ -61,8 +63,7 @@ final class LiveZoomWindowController: NSObject {
     func snapshotLastFrame() -> CGImage? {
         guard let buffer = lastPixelBuffer else { return nil }
         let ciImage = CIImage(cvPixelBuffer: buffer)
-        let context = CIContext()
-        return context.createCGImage(ciImage, from: ciImage.extent)
+        return ciContext.createCGImage(ciImage, from: ciImage.extent)
     }
 
     // MARK: - Private

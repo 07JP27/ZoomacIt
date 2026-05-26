@@ -104,8 +104,8 @@ final class Settings: @unchecked Sendable {
             Keys.drawHotkeyModifiers: Int(controlKey),
             Keys.breakHotkeyKeyCode: Int(kVK_ANSI_3),
             Keys.breakHotkeyModifiers: Int(controlKey),
-            Keys.liveZoomHotkeyKeyCode: Int(kVK_ANSI_1),
-            Keys.liveZoomHotkeyModifiers: Int(controlKey | shiftKey),
+            Keys.liveZoomHotkeyKeyCode: Int(kVK_ANSI_4),
+            Keys.liveZoomHotkeyModifiers: Int(controlKey),
 
             // Draw
             Keys.defaultPenColor: PenColor.red.rawValue,
