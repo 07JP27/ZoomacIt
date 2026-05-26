@@ -6,7 +6,7 @@ ZoomIt has two types of zoom. Both are required in the Mac implementation.
 
 | | Still Zoom | Live Zoom |
 |---|---|---|
-| Hotkey (default) | ⌃1 | ⌃⇧1 |
+| Hotkey (default) | ⌃1 | ⌃4 |
 | Screen update | **Frozen** (snapshot) | **Real-time** (videos, terminal, etc. continue to update) |
 | Draw integration | Click during zoom to immediately enter Draw | Screen freezes the moment Draw is entered |
 | Implementation difficulty | Low (enlarge a single CGImage) | High (requires ScreenCaptureKit stream) |
@@ -54,7 +54,7 @@ ZoomIt has two types of zoom. Both are required in the Mac implementation.
 
 | Operation | Effect |
 |---|---|
-| ⌃⇧1 (hotkey) | Start real-time zoom |
+| ⌃4 (hotkey) | Start real-time zoom |
 | Scroll wheel up / ↑ / ↓ | Zoom in / Zoom out |
 | Mouse movement | Pan the visible area |
 | ⌃2 (Draw hotkey) | **Enter Draw mode (screen freezes at this moment)** |
@@ -78,7 +78,7 @@ ZoomIt has two types of zoom. Both are required in the Mac implementation.
 | Setting | Description |
 |---|---|
 | Zoom hotkey | Customizable (default: ⌃1) |
-| Live Zoom hotkey | Customizable (default: ⌃⇧1) |
+| Live Zoom hotkey | Customizable (default: ⌃4) |
 | Animation | ON/OFF for smooth zoom in/out animation |
 
 ---
@@ -204,7 +204,7 @@ When the animation OFF setting is active, skip with `CATransaction.setDisableAct
   → Destroy overlay on Escape/right-click
 
 【Live Zoom】
-⌃⇧1 pressed
+⌃4 pressed
   → SCStream.startCapture()  ← Start frame stream
   → Every frame: pixelBuffer → Update CALayer.contents (60fps)
   → Update contentsRect with mouse movement/scroll (same as Still Zoom)

@@ -92,8 +92,8 @@ All feature hotkeys are customizable by the user
 | Break Timer | Ctrl + 3 | ⌃3 |
 | Snip | Ctrl + 4 | ⌃4 |
 | Record | Ctrl + 5 | ⌃5 |
-| Live Zoom | Ctrl + Shift + 1 | ⌃⇧1 |
-| DemoType | Ctrl + Shift + D | ⌃⇧D |
+| Live Zoom | Ctrl + 4 | ⌃4 |
+| DemoType | Ctrl + 7 | ⌃7 |
 
 ---
 
