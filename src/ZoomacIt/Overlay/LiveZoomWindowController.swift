@@ -59,11 +59,12 @@ final class LiveZoomWindowController: NSObject {
         onDismiss?()
     }
 
-    /// Snapshot the last frame for Draw mode transition.
-    func snapshotLastFrame() -> CGImage? {
+    /// Snapshot the currently visible zoomed frame for Draw mode transition.
+    func snapshotCurrentZoomedFrame() -> CGImage? {
         guard let buffer = lastPixelBuffer else { return nil }
         let ciImage = CIImage(cvPixelBuffer: buffer)
-        return ciContext.createCGImage(ciImage, from: ciImage.extent)
+        guard let sourceImage = ciContext.createCGImage(ciImage, from: ciImage.extent) else { return nil }
+        return zoomView?.currentZoomedSnapshot(from: sourceImage) ?? sourceImage
     }
 
     // MARK: - Private
@@ -127,7 +128,7 @@ final class LiveZoomWindowController: NSObject {
             self?.dismiss()
         }
         view.onEnterDrawMode = { [weak self] in
-            guard let self, let snapshot = self.snapshotLastFrame() else { return }
+            guard let self, let snapshot = self.snapshotCurrentZoomedFrame() else { return }
             self.onEnterDrawMode?(snapshot)
         }
 
