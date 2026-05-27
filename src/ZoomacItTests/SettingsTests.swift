@@ -313,8 +313,9 @@ final class SettingsTests: XCTestCase {
     // MARK: - DemoType Settings
 
     func testDefaultDemoTypeHotkey() {
-        XCTAssertEqual(Settings.shared.demoTypeHotkeyKeyCode, UInt32(kVK_ANSI_D))
-        XCTAssertEqual(Settings.shared.demoTypeHotkeyModifiers, UInt32(controlKey | shiftKey))
+        // Default: ⌃7 (matches Windows ZoomIt convention)
+        XCTAssertEqual(Settings.shared.demoTypeHotkeyKeyCode, UInt32(kVK_ANSI_7))
+        XCTAssertEqual(Settings.shared.demoTypeHotkeyModifiers, UInt32(controlKey))
     }
 
     func testDefaultDemoTypeSettings() {
