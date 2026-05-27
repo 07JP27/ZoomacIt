@@ -5,7 +5,7 @@ Each feature can be launched via a global hotkey or from the menu bar icon.
 | Feature | Default Hotkey |
 |---|---|
 | Zoom | **⌃1** (Control+1) |
-| Live Zoom | **⌃⇧1** (Control+Shift+1) |
+| Live Zoom | **⌃4** (Control+4) |
 | Draw | **⌃2** (Control+2) |
 | Break Timer | **⌃3** (Control+3) |
 

@@ -24,7 +24,7 @@ This two-step dismiss works similarly to text mode in Draw.
 
 ## Live Zoom
 
-Press **⌃⇧1** (Control+Shift+1) to enter Live Zoom mode. Unlike standard Zoom, the screen content updates in real time — videos, terminals, and animations keep playing while zoomed.
+Press **⌃4** (Control+4) to enter Live Zoom mode. Unlike standard Zoom, the screen content updates in real time — videos, terminals, and animations keep playing while zoomed.
 
 ### Controls
 
@@ -38,7 +38,7 @@ Press **⌃⇧1** (Control+Shift+1) to enter Live Zoom mode. Unlike standard Zoo
 
 ### Differences from Still Zoom
 
-| | Still Zoom (⌃1) | Live Zoom (⌃⇧1) |
+| | Still Zoom (⌃1) | Live Zoom (⌃4) |
 |---|---|---|
 | Screen content | Static snapshot | Real-time updates |
 | Mouse cursor | May not appear (captured in snapshot) | Always visible |

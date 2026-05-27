@@ -16,7 +16,7 @@ final class HotkeyManager: @unchecked Sendable {
     /// Called when the Break Timer hotkey (⌃3) is triggered.
     var onBreakHotkey: (() -> Void)?
 
-    /// Called when the Live Zoom hotkey (⌃⇧1) is triggered.
+    /// Called when the Live Zoom hotkey (⌃4) is triggered.
     var onLiveZoomHotkey: (() -> Void)?
 
     private var hotKeyRef: EventHotKeyRef?

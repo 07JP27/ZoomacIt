@@ -19,7 +19,7 @@ Implement real-time zoom using ScreenCaptureKit's `SCStream` for continuous fram
 - [ ] Edge clamping to prevent black bars
 
 ### Phase 3: Hotkey & Lifecycle
-- [ ] Register ⌃⇧1 hotkey (configurable in Settings)
+- [ ] Register ⌃4 hotkey (configurable in Settings)
 - [ ] Start/stop SCStream on hotkey toggle
 - [ ] Escape / right-click → stop stream, destroy overlay
 - [ ] Multi-monitor: capture only the screen where cursor is located
