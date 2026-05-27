@@ -8,18 +8,22 @@ final class DemoTypeController {
 
     var onFinished: (() -> Void)?
 
-    private var text: String = ""
+    private var characters: [Character] = []
     private var charIndex: Int = 0
     private var timer: Timer?
     private var isTyping: Bool = false
 
-    private var speed: Double { Settings.shared.demoTypeSpeed }
+    private var speed: Double {
+        max(1.0, min(Settings.shared.demoTypeSpeed, 200.0))
+    }
 
     func start() {
         if isTyping {
             stop()
             return
         }
+
+        guard checkAccessibilityPermission() else { return }
         showInputDialog()
     }
 
@@ -28,6 +32,17 @@ final class DemoTypeController {
         timer = nil
         isTyping = false
         onFinished?()
+    }
+
+    private func checkAccessibilityPermission() -> Bool {
+        let trusted = AXIsProcessTrusted()
+        if !trusted {
+            let key = "AXTrustedCheckOptionPrompt" as CFString
+            let options = [key: true] as CFDictionary
+            AXIsProcessTrustedWithOptions(options)
+            NSLog("[DemoTypeController] Accessibility permission not granted")
+        }
+        return trusted
     }
 
     private func showInputDialog() {
@@ -56,18 +71,20 @@ final class DemoTypeController {
 
         let response = alert.runModal()
         guard response == .alertFirstButtonReturn else {
+            targetApp?.activate()
             onFinished?()
             return
         }
 
         let inputText = textView.string
         guard !inputText.isEmpty else {
+            targetApp?.activate()
             onFinished?()
             return
         }
 
         Settings.shared.demoTypeText = inputText
-        text = inputText
+        characters = Array(inputText)
         charIndex = 0
         isTyping = true
 
@@ -79,7 +96,7 @@ final class DemoTypeController {
     }
 
     private func startTyping() {
-        NSLog("[DemoTypeController] Typing %d chars at %.0f cps", text.count, speed)
+        NSLog("[DemoTypeController] Typing %d chars at %.0f cps", characters.count, speed)
         let interval = 1.0 / speed
         timer = Timer.scheduledTimer(withTimeInterval: interval, repeats: true) { [weak self] _ in
             MainActor.assumeIsolated {
@@ -89,13 +106,12 @@ final class DemoTypeController {
     }
 
     private func typeNextCharacter() {
-        guard charIndex < text.count else {
+        guard charIndex < characters.count else {
             stop()
             return
         }
 
-        let index = text.index(text.startIndex, offsetBy: charIndex)
-        let char = text[index]
+        let char = characters[charIndex]
         charIndex += 1
 
         simulateKeyPress(for: char)

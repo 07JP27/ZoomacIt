@@ -55,7 +55,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
 
     private func restorePreviousApp() {
-        previousApp?.activate()
+        previousApp?.activate(options: .activateIgnoringOtherApps)
         previousApp = nil
     }
 
@@ -227,8 +227,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         controller.onFinished = { [weak self] in
             self?.demoTypeController = nil
         }
-        controller.start()
         demoTypeController = controller
+        controller.start()
     }
 
     // MARK: - Break Timer
