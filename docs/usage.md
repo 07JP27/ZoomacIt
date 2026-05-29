@@ -8,6 +8,7 @@ Each feature can be launched via a global hotkey or from the menu bar icon.
 | Live Zoom | **⌃4** (Control+4) |
 | Draw | **⌃2** (Control+2) |
 | Break Timer | **⌃3** (Control+3) |
+| DemoType | **⌃7** (Control+7) |
 
 ::: tip
 Hotkeys can be customized in **Settings** (click the menu bar icon → Settings).
@@ -30,3 +31,7 @@ Freehand drawing, shapes (lines, rectangles, ellipses, arrows), text input, mult
 ### [Break Timer](./usage/break-timer)
 
 Full-screen countdown timer for presentations and breaks. Adjustable duration, customizable colors, and runs in the background.
+
+### [DemoType](./usage/demo-type)
+
+Simulated typing for live demos. Enter text in a dialog, then watch it type character-by-character into any app at a configurable speed.
