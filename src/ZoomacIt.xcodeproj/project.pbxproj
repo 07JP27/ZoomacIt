@@ -22,6 +22,7 @@
 		407536072A77EEE413110305 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36559530A20E76797485A4D4 /* Settings.swift */; };
 		41011F5512E5B70E02211DF4 /* Stroke.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA294A8321CAB0BBDA54F11 /* Stroke.swift */; };
 		49E9DBB015C57215FC819A39 /* LiveZoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A419159D2CE7F92C1ED334EB /* LiveZoomView.swift */; };
+		611F26E0260668E279BA6090 /* SnipView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF04E4CA353D0460DD50737A /* SnipView.swift */; };
 		62B9C3FC42F88FE77EB06D9E /* DrawingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F716B76F77ECE1104368663A /* DrawingState.swift */; };
 		6C1F1EE5DFAA671FED75C390 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4181F7E2885B9460376EE3A4 /* SettingsView.swift */; };
 		792274BFCD677E75A47C4FB5 /* KeyRecorderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4861D0131871D035CC07327 /* KeyRecorderView.swift */; };
@@ -43,6 +44,7 @@
 		C3267D6C7B3527E75BC44373 /* BreakTimerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD11F607239F9F22444F64A /* BreakTimerState.swift */; };
 		C4AB6F7D6D54525206A767EE /* StillZoomWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CA4E00EAC24379AB71E2EC /* StillZoomWindowController.swift */; };
 		C851D93A53C172EA7A4F10C6 /* BreakTimerStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35CEE9FA480AD8EA3412F68 /* BreakTimerStateTests.swift */; };
+		C88A1E10A77B6E34349B0A89 /* SnipWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7DAAEFBEBE3860E5F5C8FD22 /* SnipWindowController.swift */; };
 		C93442BB6C4635032200E48B /* ShapeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 478A14C839BA1275E186312E /* ShapeRenderer.swift */; };
 		CB7DAA6D3BA711D13B9C0D94 /* FreehandRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 068AF06DCD4187879DA06178 /* FreehandRenderer.swift */; };
 		D4EFADF937D92699DC1BB041 /* DrawTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D373A688250139487280BB /* DrawTab.swift */; };
@@ -97,6 +99,7 @@
 		68A34CBC6D716010D6E3DA63 /* DrawingStateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingStateTests.swift; sourceTree = "<group>"; };
 		6CD11F607239F9F22444F64A /* BreakTimerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakTimerState.swift; sourceTree = "<group>"; };
 		7286484084AB512E3F4C7433 /* PenColorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PenColorTests.swift; sourceTree = "<group>"; };
+		7DAAEFBEBE3860E5F5C8FD22 /* SnipWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnipWindowController.swift; sourceTree = "<group>"; };
 		7DED7AFD9439A1BCE15FFFAC /* StatusBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatusBarController.swift; sourceTree = "<group>"; };
 		81D668C866412DF33D52B15D /* ZoomMath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomMath.swift; sourceTree = "<group>"; };
 		84315B937F6619F5764F7B7F /* ZoomacIt-Release.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "ZoomacIt-Release.entitlements"; sourceTree = "<group>"; };
@@ -116,6 +119,7 @@
 		CF0B1156D71050ABD1623796 /* CGContext+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGContext+Extensions.swift"; sourceTree = "<group>"; };
 		E670EBEBFE36CE4EF3BFEDDD /* NSScreen+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSScreen+Extensions.swift"; sourceTree = "<group>"; };
 		F716B76F77ECE1104368663A /* DrawingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingState.swift; sourceTree = "<group>"; };
+		FF04E4CA353D0460DD50737A /* SnipView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnipView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -190,6 +194,8 @@
 				3884984CB5B8714C1CB6DAE7 /* LiveZoomWindowController.swift */,
 				167B3BE9B273B7B056C41CD5 /* OverlayWindow.swift */,
 				9059A7F84AC48FE489FC4064 /* OverlayWindowController.swift */,
+				FF04E4CA353D0460DD50737A /* SnipView.swift */,
+				7DAAEFBEBE3860E5F5C8FD22 /* SnipWindowController.swift */,
 				02D0969B89076B7BC986452B /* StillZoomView.swift */,
 				01CA4E00EAC24379AB71E2EC /* StillZoomWindowController.swift */,
 				81D668C866412DF33D52B15D /* ZoomMath.swift */,
@@ -400,6 +406,8 @@
 				6C1F1EE5DFAA671FED75C390 /* SettingsView.swift in Sources */,
 				9582B9FF70AFDB7FD8FC292D /* SettingsWindowController.swift in Sources */,
 				C93442BB6C4635032200E48B /* ShapeRenderer.swift in Sources */,
+				611F26E0260668E279BA6090 /* SnipView.swift in Sources */,
+				C88A1E10A77B6E34349B0A89 /* SnipWindowController.swift in Sources */,
 				7B4FDA5C58C43A27DA1A201B /* StatusBarController.swift in Sources */,
 				9DF3FA34ED77F2109586D4B5 /* StillZoomView.swift in Sources */,
 				C4AB6F7D6D54525206A767EE /* StillZoomWindowController.swift in Sources */,

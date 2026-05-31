@@ -35,7 +35,7 @@ https://github.com/user-attachments/assets/5f7563e4-584b-4bab-99c4-70f7d3265f54
 | Draw | ✅ |
 | DemoType | |
 | Break Timer | ✅ |
-| Snip | |
+| Snip | ✅ |
 | Record | |
 
 ## Architecture

@@ -9,6 +9,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var zoomController: StillZoomWindowController?
     private var liveZoomController: LiveZoomWindowController?
     private var breakTimerController: BreakTimerWindowController?
+    private var snipController: SnipWindowController?
+    /// The app that was active before we took focus — restored on dismiss.
+    private var previousApp: NSRunningApplication?
     /// Stores the full-resolution source image when transitioning from Zoom → Draw,
     /// so that Escape from Draw can return to Zoom mode.
     private var zoomSourceForDrawReturn: CGImage?
@@ -35,11 +38,28 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         hotkeyManager.onLiveZoomHotkey = { [weak self] in
             self?.toggleLiveZoomMode()
         }
+        hotkeyManager.onSnipHotkey = { [weak self] in
+            self?.toggleSnip(saveToFile: false)
+        }
+        hotkeyManager.onSnipSaveHotkey = { [weak self] in
+            self?.toggleSnip(saveToFile: true)
+        }
         hotkeyManager.start()
     }
 
     func applicationSupportsSecureRestorableState(_ app: NSApplication) -> Bool {
         true
+    }
+
+    // MARK: - Focus Management
+
+    private func savePreviousApp() {
+        previousApp = NSWorkspace.shared.frontmostApplication
+    }
+
+    private func restorePreviousApp() {
+        previousApp?.activate()
+        previousApp = nil
     }
 
     // MARK: - Draw Mode
@@ -188,6 +208,33 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         liveZoomController = controller
         controller.showLiveZoom()
+    }
+
+    // MARK: - Snip
+
+    private func toggleSnip(saveToFile: Bool = false) {
+        if let controller = snipController {
+            controller.dismiss()
+            snipController = nil
+            return
+        }
+
+        savePreviousApp()
+        let controller = SnipWindowController()
+        controller.saveToFile = saveToFile
+        controller.onDismiss = { [weak self] in
+            self?.snipController = nil
+            // Delay restore slightly to ensure window is fully closed
+            DispatchQueue.main.async {
+                self?.restorePreviousApp()
+            }
+        }
+        controller.onShowFailed = { [weak self] in
+            self?.snipController = nil
+            self?.restorePreviousApp()
+        }
+        controller.showSnipOverlay()
+        snipController = controller
     }
 
     // MARK: - Break Timer

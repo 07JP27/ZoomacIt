@@ -88,6 +88,17 @@ final class StatusBarController: NSObject {
         liveZoomItem.keyEquivalentModifierMask = Settings.carbonToNSEventModifiers(s.liveZoomHotkeyModifiers)
         liveZoomItem.target = self
         menu.addItem(liveZoomItem)
+        let snipItem = NSMenuItem(title: "Snip", action: #selector(snipAction),
+                                  keyEquivalent: Settings.keyCodeToMenuCharacter(s.snipHotkeyKeyCode))
+        snipItem.keyEquivalentModifierMask = Settings.carbonToNSEventModifiers(s.snipHotkeyModifiers)
+        snipItem.target = self
+        menu.addItem(snipItem)
+
+        let snipSaveItem = NSMenuItem(title: "Snip to File", action: #selector(snipSaveAction),
+                                      keyEquivalent: Settings.keyCodeToMenuCharacter(s.snipSaveHotkeyKeyCode))
+        snipSaveItem.keyEquivalentModifierMask = Settings.carbonToNSEventModifiers(s.snipSaveHotkeyModifiers)
+        snipSaveItem.target = self
+        menu.addItem(snipSaveItem)
 
         menu.addItem(.separator())
 
@@ -126,6 +137,14 @@ final class StatusBarController: NSObject {
 
     @objc private func liveZoomAction() {
         HotkeyManager.shared.onLiveZoomHotkey?()
+    }
+
+    @objc private func snipAction() {
+        HotkeyManager.shared.onSnipHotkey?()
+    }
+
+    @objc private func snipSaveAction() {
+        HotkeyManager.shared.onSnipSaveHotkey?()
     }
 
     @objc private func preferencesAction() {

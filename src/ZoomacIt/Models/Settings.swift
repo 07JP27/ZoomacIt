@@ -66,6 +66,10 @@ final class Settings: @unchecked Sendable {
         static let breakHotkeyModifiers = "hotkeyBreakModifiers"
         static let liveZoomHotkeyKeyCode = "hotkeyLiveZoomKeyCode"
         static let liveZoomHotkeyModifiers = "hotkeyLiveZoomModifiers"
+        static let snipHotkeyKeyCode = "hotkeySnipKeyCode"
+        static let snipHotkeyModifiers = "hotkeySnipModifiers"
+        static let snipSaveHotkeyKeyCode = "hotkeySnipSaveKeyCode"
+        static let snipSaveHotkeyModifiers = "hotkeySnipSaveModifiers"
 
         // Draw
         static let defaultPenColor = "drawDefaultPenColor"
@@ -106,6 +110,10 @@ final class Settings: @unchecked Sendable {
             Keys.breakHotkeyModifiers: Int(controlKey),
             Keys.liveZoomHotkeyKeyCode: Int(kVK_ANSI_4),
             Keys.liveZoomHotkeyModifiers: Int(controlKey),
+            Keys.snipHotkeyKeyCode: Int(kVK_ANSI_6),
+            Keys.snipHotkeyModifiers: Int(controlKey),
+            Keys.snipSaveHotkeyKeyCode: Int(kVK_ANSI_6),
+            Keys.snipSaveHotkeyModifiers: Int(controlKey | shiftKey),
 
             // Draw
             Keys.defaultPenColor: PenColor.red.rawValue,
@@ -173,6 +181,26 @@ final class Settings: @unchecked Sendable {
     var liveZoomHotkeyModifiers: UInt32 {
         get { UInt32(defaults.integer(forKey: Keys.liveZoomHotkeyModifiers)) }
         set { defaults.set(Int(newValue), forKey: Keys.liveZoomHotkeyModifiers) }
+    }
+
+    var snipHotkeyKeyCode: UInt32 {
+        get { UInt32(defaults.integer(forKey: Keys.snipHotkeyKeyCode)) }
+        set { defaults.set(Int(newValue), forKey: Keys.snipHotkeyKeyCode) }
+    }
+
+    var snipHotkeyModifiers: UInt32 {
+        get { UInt32(defaults.integer(forKey: Keys.snipHotkeyModifiers)) }
+        set { defaults.set(Int(newValue), forKey: Keys.snipHotkeyModifiers) }
+    }
+
+    var snipSaveHotkeyKeyCode: UInt32 {
+        get { UInt32(defaults.integer(forKey: Keys.snipSaveHotkeyKeyCode)) }
+        set { defaults.set(Int(newValue), forKey: Keys.snipSaveHotkeyKeyCode) }
+    }
+
+    var snipSaveHotkeyModifiers: UInt32 {
+        get { UInt32(defaults.integer(forKey: Keys.snipSaveHotkeyModifiers)) }
+        set { defaults.set(Int(newValue), forKey: Keys.snipSaveHotkeyModifiers) }
     }
 
     // MARK: - Draw
@@ -279,6 +307,8 @@ final class Settings: @unchecked Sendable {
             Keys.drawHotkeyKeyCode, Keys.drawHotkeyModifiers,
             Keys.breakHotkeyKeyCode, Keys.breakHotkeyModifiers,
             Keys.liveZoomHotkeyKeyCode, Keys.liveZoomHotkeyModifiers,
+            Keys.snipHotkeyKeyCode, Keys.snipHotkeyModifiers,
+            Keys.snipSaveHotkeyKeyCode, Keys.snipSaveHotkeyModifiers,
             Keys.defaultPenColor, Keys.defaultPenWidth,
             Keys.highlighterOpacity, Keys.highlighterWidthMultiplier,
             Keys.spotlightDarkness,

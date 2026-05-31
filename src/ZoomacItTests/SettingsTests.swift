@@ -309,4 +309,34 @@ final class SettingsTests: XCTestCase {
         XCTAssertEqual(Settings.shared.liveZoomHotkeyKeyCode, UInt32(kVK_ANSI_4))
         XCTAssertEqual(Settings.shared.liveZoomHotkeyModifiers, UInt32(controlKey))
     }
+
+    // MARK: - Snip Settings
+
+    func testDefaultSnipHotkey() {
+        // Default: ⌃6
+        XCTAssertEqual(Settings.shared.snipHotkeyKeyCode, UInt32(kVK_ANSI_6))
+        XCTAssertEqual(Settings.shared.snipHotkeyModifiers, UInt32(controlKey))
+    }
+
+    func testDefaultSnipSaveHotkey() {
+        // Default: ⌃⇧6
+        XCTAssertEqual(Settings.shared.snipSaveHotkeyKeyCode, UInt32(kVK_ANSI_6))
+        XCTAssertEqual(Settings.shared.snipSaveHotkeyModifiers, UInt32(controlKey | shiftKey))
+    }
+
+    func testSnipHotkeyRoundTrip() {
+        Settings.shared.snipHotkeyKeyCode = UInt32(kVK_ANSI_S)
+        Settings.shared.snipHotkeyModifiers = UInt32(controlKey | optionKey)
+
+        XCTAssertEqual(Settings.shared.snipHotkeyKeyCode, UInt32(kVK_ANSI_S))
+        XCTAssertEqual(Settings.shared.snipHotkeyModifiers, UInt32(controlKey | optionKey))
+    }
+
+    func testSnipHotkeyIndependentOfSnipSave() {
+        Settings.shared.snipHotkeyKeyCode = UInt32(kVK_ANSI_3)
+        Settings.shared.snipSaveHotkeyKeyCode = UInt32(kVK_ANSI_7)
+
+        XCTAssertEqual(Settings.shared.snipHotkeyKeyCode, UInt32(kVK_ANSI_3))
+        XCTAssertEqual(Settings.shared.snipSaveHotkeyKeyCode, UInt32(kVK_ANSI_7))
+    }
 }
