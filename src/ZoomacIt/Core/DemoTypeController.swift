@@ -35,7 +35,11 @@ final class DemoTypeController {
             return
         }
 
-        beginTyping()
+        // Delay to let target app retain focus before injecting
+        targetApp = NSWorkspace.shared.frontmostApplication
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+            self?.beginTyping()
+        }
     }
 
     func stop() {
@@ -70,25 +74,72 @@ final class DemoTypeController {
     private func showInputDialog() {
         targetApp = NSWorkspace.shared.frontmostApplication
 
-        let alert = NSAlert()
-        alert.messageText = "DemoType"
-        alert.informativeText = "Enter text to type (or set a script file in Settings):"
-        alert.addButton(withTitle: "Type")
-        alert.addButton(withTitle: "Cancel")
+        let panel = NSPanel(
+            contentRect: NSRect(x: 0, y: 0, width: 440, height: 220),
+            styleMask: [.titled, .closable],
+            backing: .buffered, defer: false
+        )
+        panel.title = "DemoType"
+        panel.level = .floating
+        panel.isFloatingPanel = true
+        panel.center()
 
-        let textView = NSTextView(frame: NSRect(x: 0, y: 0, width: 400, height: 150))
+        let contentView = NSView(frame: panel.contentView!.bounds)
+
+        let label = NSTextField(labelWithString: "Enter text to type:")
+        label.frame = NSRect(x: 20, y: 185, width: 400, height: 17)
+        contentView.addSubview(label)
+
+        let scrollView = NSScrollView(frame: NSRect(x: 20, y: 50, width: 400, height: 130))
+        let textView = NSTextView(frame: scrollView.bounds)
         textView.isEditable = true
         textView.isRichText = false
+        textView.allowsUndo = true
         textView.font = NSFont.monospacedSystemFont(ofSize: 13, weight: .regular)
-
-        let scrollView = NSScrollView(frame: NSRect(x: 0, y: 0, width: 400, height: 150))
+        textView.autoresizingMask = [.width, .height]
         scrollView.documentView = textView
         scrollView.hasVerticalScroller = true
-        alert.accessoryView = scrollView
-        alert.window.level = .floating
+        contentView.addSubview(scrollView)
 
-        let response = alert.runModal()
-        guard response == .alertFirstButtonReturn, !textView.string.isEmpty else {
+        let typeButton = NSButton(title: "Type", target: nil, action: nil)
+        typeButton.frame = NSRect(x: 340, y: 10, width: 80, height: 32)
+        typeButton.bezelStyle = .rounded
+        typeButton.keyEquivalent = "\r"
+        contentView.addSubview(typeButton)
+
+        let cancelButton = NSButton(title: "Cancel", target: nil, action: nil)
+        cancelButton.frame = NSRect(x: 250, y: 10, width: 80, height: 32)
+        cancelButton.bezelStyle = .rounded
+        cancelButton.keyEquivalent = "\u{1b}"
+        contentView.addSubview(cancelButton)
+
+        panel.contentView = contentView
+        panel.makeFirstResponder(textView)
+
+        // Ensure Edit menu exists so Cmd+V works in modal
+        let editMenu = NSMenu(title: "Edit")
+        editMenu.addItem(withTitle: "Cut", action: #selector(NSText.cut(_:)), keyEquivalent: "x")
+        editMenu.addItem(withTitle: "Copy", action: #selector(NSText.copy(_:)), keyEquivalent: "c")
+        editMenu.addItem(withTitle: "Paste", action: #selector(NSText.paste(_:)), keyEquivalent: "v")
+        editMenu.addItem(withTitle: "Select All", action: #selector(NSText.selectAll(_:)), keyEquivalent: "a")
+        let editMenuItem = NSMenuItem(title: "Edit", action: nil, keyEquivalent: "")
+        editMenuItem.submenu = editMenu
+        if NSApp.mainMenu == nil { NSApp.mainMenu = NSMenu() }
+        if let existing = NSApp.mainMenu?.item(withTitle: "Edit") {
+            NSApp.mainMenu?.removeItem(existing)
+        }
+        NSApp.mainMenu?.addItem(editMenuItem)
+
+        let helper = ModalHelper()
+        typeButton.target = helper
+        typeButton.action = #selector(ModalHelper.confirm)
+        cancelButton.target = helper
+        cancelButton.action = #selector(ModalHelper.cancel)
+
+        NSApp.runModal(for: panel)
+        panel.orderOut(nil)
+
+        guard helper.confirmed, !textView.string.isEmpty else {
             targetApp?.activate()
             onFinished?()
             return
@@ -338,5 +389,21 @@ final class DemoTypeController {
             NSLog("[DemoTypeController] Accessibility permission not granted")
         }
         return trusted
+    }
+}
+
+// MARK: - Modal Helper
+
+private class ModalHelper: NSObject {
+    var confirmed = false
+
+    @objc func confirm() {
+        confirmed = true
+        NSApp.stopModal()
+    }
+
+    @objc func cancel() {
+        confirmed = false
+        NSApp.stopModal()
     }
 }
