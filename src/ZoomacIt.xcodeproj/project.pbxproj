@@ -40,6 +40,7 @@
 		BC7354984F865D5E2177B245 /* GeneralTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A3EBA7640893729E53D436F6 /* GeneralTab.swift */; };
 		BDA90D7BFA5D8BEB00DCDB50 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 00930854C1D0CC9734D203CD /* Assets.xcassets */; };
 		BFE4A25ECEF31F988FA3CBC0 /* HotkeyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2601F1F38544CFA522261C7D /* HotkeyManager.swift */; };
+		DE01DEM00001000000000001 /* DemoTypeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE01DEM00001000000000002 /* DemoTypeController.swift */; };
 		C3267D6C7B3527E75BC44373 /* BreakTimerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CD11F607239F9F22444F64A /* BreakTimerState.swift */; };
 		C4AB6F7D6D54525206A767EE /* StillZoomWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CA4E00EAC24379AB71E2EC /* StillZoomWindowController.swift */; };
 		C851D93A53C172EA7A4F10C6 /* BreakTimerStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C35CEE9FA480AD8EA3412F68 /* BreakTimerStateTests.swift */; };
@@ -80,6 +81,7 @@
 		1F7CB4AB580AE896C4DAEE2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		21CAEB2FA51070F7C3BCA3EC /* SettingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTests.swift; sourceTree = "<group>"; };
 		2601F1F38544CFA522261C7D /* HotkeyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyManager.swift; sourceTree = "<group>"; };
+		DE01DEM00001000000000002 /* DemoTypeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoTypeController.swift; sourceTree = "<group>"; };
 		2C8A2C544CC0510AA2EA9A06 /* StrokeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeTests.swift; sourceTree = "<group>"; };
 		3091F75DCC9B6EA27DC8FA61 /* FontWeightOptionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FontWeightOptionTests.swift; sourceTree = "<group>"; };
 		36559530A20E76797485A4D4 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -231,6 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				2601F1F38544CFA522261C7D /* HotkeyManager.swift */,
+				DE01DEM00001000000000002 /* DemoTypeController.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -390,6 +393,7 @@
 				BC7354984F865D5E2177B245 /* GeneralTab.swift in Sources */,
 				3ECA67329DFFE9622AF916FB /* HighlighterRenderer.swift in Sources */,
 				BFE4A25ECEF31F988FA3CBC0 /* HotkeyManager.swift in Sources */,
+				DE01DEM00001000000000001 /* DemoTypeController.swift in Sources */,
 				792274BFCD677E75A47C4FB5 /* KeyRecorderView.swift in Sources */,
 				49E9DBB015C57215FC819A39 /* LiveZoomView.swift in Sources */,
 				8EF72DE97F310702D4924D99 /* LiveZoomWindowController.swift in Sources */,

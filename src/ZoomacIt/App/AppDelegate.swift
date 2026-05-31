@@ -8,6 +8,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var overlayController: OverlayWindowController?
     private var zoomController: StillZoomWindowController?
     private var liveZoomController: LiveZoomWindowController?
+    private var demoTypeController: DemoTypeController?
     private var breakTimerController: BreakTimerWindowController?
     /// Stores the full-resolution source image when transitioning from Zoom → Draw,
     /// so that Escape from Draw can return to Zoom mode.
@@ -34,6 +35,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         }
         hotkeyManager.onLiveZoomHotkey = { [weak self] in
             self?.toggleLiveZoomMode()
+        }
+        hotkeyManager.onDemoTypeHotkey = { [weak self] in
+            self?.toggleDemoType()
         }
         hotkeyManager.start()
     }
@@ -206,6 +210,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// Called from BreakTimerWindowController when the timer is dismissed.
     func breakTimerDidEnd() {
         breakTimerController = nil
+    }
+
+    // MARK: - DemoType
+
+    private func toggleDemoType() {
+        NSLog("[AppDelegate] toggleDemoType called")
+        if demoTypeController == nil {
+            demoTypeController = DemoTypeController()
+            demoTypeController?.onFinished = { [weak self] in
+                self?.demoTypeController = nil
+            }
+        }
+        demoTypeController?.start()
     }
 
     // MARK: - Preferences

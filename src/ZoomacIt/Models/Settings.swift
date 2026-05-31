@@ -66,6 +66,13 @@ final class Settings: @unchecked Sendable {
         static let breakHotkeyModifiers = "hotkeyBreakModifiers"
         static let liveZoomHotkeyKeyCode = "hotkeyLiveZoomKeyCode"
         static let liveZoomHotkeyModifiers = "hotkeyLiveZoomModifiers"
+        static let demoTypeHotkeyKeyCode = "hotkeyDemoTypeKeyCode"
+        static let demoTypeHotkeyModifiers = "hotkeyDemoTypeModifiers"
+
+        // DemoType
+        static let demoTypeFilePath = "demoTypeFilePath"
+        static let demoTypeSpeed = "demoTypeSpeed"
+        static let demoTypeUserDriven = "demoTypeUserDriven"
 
         // Draw
         static let defaultPenColor = "drawDefaultPenColor"
@@ -106,6 +113,13 @@ final class Settings: @unchecked Sendable {
             Keys.breakHotkeyModifiers: Int(controlKey),
             Keys.liveZoomHotkeyKeyCode: Int(kVK_ANSI_4),
             Keys.liveZoomHotkeyModifiers: Int(controlKey),
+            Keys.demoTypeHotkeyKeyCode: Int(kVK_ANSI_7),
+            Keys.demoTypeHotkeyModifiers: Int(controlKey),
+
+            // DemoType
+            Keys.demoTypeFilePath: "",
+            Keys.demoTypeSpeed: 55.0,
+            Keys.demoTypeUserDriven: false,
 
             // Draw
             Keys.defaultPenColor: PenColor.red.rawValue,
@@ -173,6 +187,33 @@ final class Settings: @unchecked Sendable {
     var liveZoomHotkeyModifiers: UInt32 {
         get { UInt32(defaults.integer(forKey: Keys.liveZoomHotkeyModifiers)) }
         set { defaults.set(Int(newValue), forKey: Keys.liveZoomHotkeyModifiers) }
+    }
+
+    var demoTypeHotkeyKeyCode: UInt32 {
+        get { UInt32(defaults.integer(forKey: Keys.demoTypeHotkeyKeyCode)) }
+        set { defaults.set(Int(newValue), forKey: Keys.demoTypeHotkeyKeyCode) }
+    }
+
+    var demoTypeHotkeyModifiers: UInt32 {
+        get { UInt32(defaults.integer(forKey: Keys.demoTypeHotkeyModifiers)) }
+        set { defaults.set(Int(newValue), forKey: Keys.demoTypeHotkeyModifiers) }
+    }
+
+    // MARK: - DemoType
+
+    var demoTypeFilePath: String {
+        get { defaults.string(forKey: Keys.demoTypeFilePath) ?? "" }
+        set { defaults.set(newValue, forKey: Keys.demoTypeFilePath) }
+    }
+
+    var demoTypeSpeed: Double {
+        get { defaults.double(forKey: Keys.demoTypeSpeed) }
+        set { defaults.set(newValue, forKey: Keys.demoTypeSpeed) }
+    }
+
+    var demoTypeUserDriven: Bool {
+        get { defaults.bool(forKey: Keys.demoTypeUserDriven) }
+        set { defaults.set(newValue, forKey: Keys.demoTypeUserDriven) }
     }
 
     // MARK: - Draw
