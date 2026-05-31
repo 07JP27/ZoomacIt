@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		073F50A0A188D44D8EED3093 /* RecordController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 493A9AE69AAA58E6FDDC7123 /* RecordController.swift */; };
 		17A6C1BCCBE9B8670704E4C2 /* DrawingStateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68A34CBC6D716010D6E3DA63 /* DrawingStateTests.swift */; };
 		19840E05A102F6B23E08C60C /* NSScreen+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E670EBEBFE36CE4EF3BFEDDD /* NSScreen+Extensions.swift */; };
 		1EAA0D96B867DF66AF0A6D2A /* BreakTimerWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFD499A142CC237EF664DD96 /* BreakTimerWindow.swift */; };
@@ -89,6 +90,7 @@
 		453513CAB75B5909A1521589 /* StrokeManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrokeManagerTests.swift; sourceTree = "<group>"; };
 		45593731F94EA53BB0FE31D8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		478A14C839BA1275E186312E /* ShapeRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeRenderer.swift; sourceTree = "<group>"; };
+		493A9AE69AAA58E6FDDC7123 /* RecordController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordController.swift; sourceTree = "<group>"; };
 		4ABECEA7A773ED6A7EAE57DC /* FreehandRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreehandRendererTests.swift; sourceTree = "<group>"; };
 		4BD20BCB0F5497D5789C75AF /* HighlighterRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlighterRenderer.swift; sourceTree = "<group>"; };
 		52BB99CA77A8C7A975390CA9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -132,6 +134,14 @@
 			path = Draw;
 			sourceTree = "<group>";
 		};
+		3F9A3426D9E20F292A5C2A7D /* Record */ = {
+			isa = PBXGroup;
+			children = (
+				493A9AE69AAA58E6FDDC7123 /* RecordController.swift */,
+			);
+			path = Record;
+			sourceTree = "<group>";
+		};
 		4007C233C8932FB7607F4066 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,6 +183,7 @@
 				0B308FEA3D4B703ECDA6ADA0 /* Draw */,
 				C26D593D3EDA4357E09FE02E /* Models */,
 				A9848C7C71E899E74E3268AF /* Overlay */,
+				3F9A3426D9E20F292A5C2A7D /* Record */,
 				F5870D59500E7EFBE56924CD /* Resources */,
 				686F881469257F4DCE0E34B6 /* Settings */,
 				4007C233C8932FB7607F4066 /* Utilities */,
@@ -396,6 +407,7 @@
 				19840E05A102F6B23E08C60C /* NSScreen+Extensions.swift in Sources */,
 				E9920C14A86002F653920D7E /* OverlayWindow.swift in Sources */,
 				EFB76DD8BEEDF74D7AB326DD /* OverlayWindowController.swift in Sources */,
+				073F50A0A188D44D8EED3093 /* RecordController.swift in Sources */,
 				407536072A77EEE413110305 /* Settings.swift in Sources */,
 				6C1F1EE5DFAA671FED75C390 /* SettingsView.swift in Sources */,
 				9582B9FF70AFDB7FD8FC292D /* SettingsWindowController.swift in Sources */,

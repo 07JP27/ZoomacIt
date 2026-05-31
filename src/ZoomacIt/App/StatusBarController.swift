@@ -88,6 +88,11 @@ final class StatusBarController: NSObject {
         liveZoomItem.keyEquivalentModifierMask = Settings.carbonToNSEventModifiers(s.liveZoomHotkeyModifiers)
         liveZoomItem.target = self
         menu.addItem(liveZoomItem)
+        let recordItem = NSMenuItem(title: "Record", action: #selector(recordAction),
+                                    keyEquivalent: Settings.keyCodeToMenuCharacter(s.recordHotkeyKeyCode))
+        recordItem.keyEquivalentModifierMask = Settings.carbonToNSEventModifiers(s.recordHotkeyModifiers)
+        recordItem.target = self
+        menu.addItem(recordItem)
 
         menu.addItem(.separator())
 
@@ -126,6 +131,9 @@ final class StatusBarController: NSObject {
 
     @objc private func liveZoomAction() {
         HotkeyManager.shared.onLiveZoomHotkey?()
+        }
+    @objc private func recordAction() {
+        HotkeyManager.shared.onRecordHotkey?()
     }
 
     @objc private func preferencesAction() {

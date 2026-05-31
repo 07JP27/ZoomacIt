@@ -66,6 +66,8 @@ final class Settings: @unchecked Sendable {
         static let breakHotkeyModifiers = "hotkeyBreakModifiers"
         static let liveZoomHotkeyKeyCode = "hotkeyLiveZoomKeyCode"
         static let liveZoomHotkeyModifiers = "hotkeyLiveZoomModifiers"
+        static let recordHotkeyKeyCode = "hotkeyRecordKeyCode"
+        static let recordHotkeyModifiers = "hotkeyRecordModifiers"
 
         // Draw
         static let defaultPenColor = "drawDefaultPenColor"
@@ -106,6 +108,8 @@ final class Settings: @unchecked Sendable {
             Keys.breakHotkeyModifiers: Int(controlKey),
             Keys.liveZoomHotkeyKeyCode: Int(kVK_ANSI_4),
             Keys.liveZoomHotkeyModifiers: Int(controlKey),
+            Keys.recordHotkeyKeyCode: Int(kVK_ANSI_5),
+            Keys.recordHotkeyModifiers: Int(controlKey),
 
             // Draw
             Keys.defaultPenColor: PenColor.red.rawValue,
@@ -173,6 +177,16 @@ final class Settings: @unchecked Sendable {
     var liveZoomHotkeyModifiers: UInt32 {
         get { UInt32(defaults.integer(forKey: Keys.liveZoomHotkeyModifiers)) }
         set { defaults.set(Int(newValue), forKey: Keys.liveZoomHotkeyModifiers) }
+    }
+
+    var recordHotkeyKeyCode: UInt32 {
+        get { UInt32(defaults.integer(forKey: Keys.recordHotkeyKeyCode)) }
+        set { defaults.set(Int(newValue), forKey: Keys.recordHotkeyKeyCode) }
+    }
+
+    var recordHotkeyModifiers: UInt32 {
+        get { UInt32(defaults.integer(forKey: Keys.recordHotkeyModifiers)) }
+        set { defaults.set(Int(newValue), forKey: Keys.recordHotkeyModifiers) }
     }
 
     // MARK: - Draw
@@ -279,6 +293,7 @@ final class Settings: @unchecked Sendable {
             Keys.drawHotkeyKeyCode, Keys.drawHotkeyModifiers,
             Keys.breakHotkeyKeyCode, Keys.breakHotkeyModifiers,
             Keys.liveZoomHotkeyKeyCode, Keys.liveZoomHotkeyModifiers,
+            Keys.recordHotkeyKeyCode, Keys.recordHotkeyModifiers,
             Keys.defaultPenColor, Keys.defaultPenWidth,
             Keys.highlighterOpacity, Keys.highlighterWidthMultiplier,
             Keys.spotlightDarkness,
