@@ -15,16 +15,11 @@
 
 ## Acceptance Checklist
 
-<!-- Check each item before requesting review. If an item does not apply, explain why in the PR body. -->
+<!-- Check each item before requesting review. -->
 
-- [ ] The change scope and user-visible behavior are clearly described.
-- [ ] For ZoomIt-compatible features, I compared the relevant behavior and settings items with ZoomIt.
-- [ ] Any new or changed settings that users need to configure are exposed in the Settings UI.
-- [ ] I verified the implemented behavior locally on macOS, including relevant UI states, hotkeys, permissions, and settings.
-- [ ] I updated user-facing documentation and/or design documentation when behavior, settings, shortcuts, permissions, or workflows changed.
-- [ ] I included screenshots or recordings for UI-facing changes when they help reviewers understand the result.
-- [ ] I updated generated project files or related metadata when source configuration changes required it.
-- [ ] I explained any checklist item that does not apply.
+- [ ] ZoomIt との機能互換（操作や設定項目）が一致していることを確認しました。ZoomacIt 独自の機能の場合は、Owner とその機能の必要性について Issues でディスカッションしました。
+- [ ] ローカルマシンで動作を確認しました。
+- [ ] ユーザー向けドキュメントを記述し、内容が実際の挙動と一致していることを確認しました。
 
 ## Screenshots / Recordings
 
