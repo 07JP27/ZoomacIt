@@ -3,6 +3,10 @@ name: CI
 on:
   pull_request:
     branches: [main]
+    paths:
+      - 'src/**'
+      - 'Makefile'
+      - '.github/workflows/ci.yml'
 
 concurrency:
   group: ci-${{ github.ref }}
