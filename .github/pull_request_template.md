@@ -13,41 +13,18 @@
 - [ ] Refactor / maintenance
 - [ ] Build / release / CI
 
-## Behavior and Compatibility
+## Acceptance Checklist
 
-<!-- For ZoomIt-compatible features, confirm that behavior and settings match the reference implementation. Use N/A with a short reason when this does not apply. -->
+<!-- Check each item before requesting review. If an item does not apply, explain why in the PR body. -->
 
-- [ ] I confirmed ZoomIt compatibility for related behavior.
-- [ ] I confirmed ZoomIt compatibility for related settings items.
-- [ ] I verified that any new or changed settings are exposed in the Settings UI when users need to configure them.
-- [ ] Not applicable: <!-- Explain why. -->
-
-## Local Verification
-
-<!-- Check the commands or manual verification you ran. Use N/A with a short reason when a check does not apply. -->
-
-- [ ] `make build`
-- [ ] `make test`
-- [ ] `make run` or equivalent local app launch
-- [ ] Manual verification on macOS:
-  <!-- Describe the workflow tested, including relevant hotkeys, permissions, settings, or UI states. -->
-- [ ] Not applicable: <!-- Explain why. -->
-
-## Documentation
-
-<!-- Update user-facing docs, design docs, or both when behavior, settings, shortcuts, permissions, or workflows change. -->
-
-- [ ] I updated user-facing documentation.
-- [ ] I updated design / implementation documentation.
-- [ ] I updated screenshots or recordings, if needed.
-- [ ] Not applicable: <!-- Explain why. -->
-
-## Project Files
-
-<!-- The Xcode project is generated from src/project.yml. -->
-
-- [ ] If I changed `src/project.yml`, I ran `make generate` and committed the generated project changes.
-- [ ] Not applicable: <!-- Explain why. -->
+- [ ] The change scope and user-visible behavior are clearly described.
+- [ ] For ZoomIt-compatible features, I compared the relevant behavior and settings items with ZoomIt.
+- [ ] Any new or changed settings that users need to configure are exposed in the Settings UI.
+- [ ] I verified the implemented behavior locally on macOS, including relevant UI states, hotkeys, permissions, and settings.
+- [ ] I updated user-facing documentation and/or design documentation when behavior, settings, shortcuts, permissions, or workflows changed.
+- [ ] I included screenshots or recordings for UI-facing changes when they help reviewers understand the result.
+- [ ] I updated generated project files or related metadata when source configuration changes required it.
+- [ ] I explained any checklist item that does not apply.
 
 ## Screenshots / Recordings
 
