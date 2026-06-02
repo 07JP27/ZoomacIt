@@ -49,6 +49,7 @@
 		D4EFADF937D92699DC1BB041 /* DrawTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10D373A688250139487280BB /* DrawTab.swift */; };
 		DD29E7A2CA8719348BC7F361 /* DrawingCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E069EC8EF00483692203882 /* DrawingCanvasView.swift */; };
 		E5D3BADF6F8A9BB8A808F28D /* BreakTimerTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15F0FBF26F55526DA1BEF95E /* BreakTimerTab.swift */; };
+		DE02DEM00002000000000001 /* DemoTypeTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE02DEM00002000000000002 /* DemoTypeTab.swift */; };
 		E9920C14A86002F653920D7E /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 167B3BE9B273B7B056C41CD5 /* OverlayWindow.swift */; };
 		EFB76DD8BEEDF74D7AB326DD /* OverlayWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9059A7F84AC48FE489FC4064 /* OverlayWindowController.swift */; };
 		F5CC9D2C9692AEFD40DA3C32 /* TextInputController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 972CA1E50E6818D068D22333 /* TextInputController.swift */; };
@@ -76,6 +77,7 @@
 		122958CC072CEF51A4973BAD /* ZoomMathTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomMathTests.swift; sourceTree = "<group>"; };
 		1292E2C0A68D01827A3396D0 /* HighlighterRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HighlighterRendererTests.swift; sourceTree = "<group>"; };
 		15F0FBF26F55526DA1BEF95E /* BreakTimerTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakTimerTab.swift; sourceTree = "<group>"; };
+		DE02DEM00002000000000002 /* DemoTypeTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoTypeTab.swift; sourceTree = "<group>"; };
 		167B3BE9B273B7B056C41CD5 /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
 		1B27C880479A92E16A621C7B /* BreakTimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakTimerView.swift; sourceTree = "<group>"; };
 		1F7CB4AB580AE896C4DAEE2C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -157,6 +159,7 @@
 			isa = PBXGroup;
 			children = (
 				15F0FBF26F55526DA1BEF95E /* BreakTimerTab.swift */,
+				DE02DEM00002000000000002 /* DemoTypeTab.swift */,
 				10D373A688250139487280BB /* DrawTab.swift */,
 				A3EBA7640893729E53D436F6 /* GeneralTab.swift */,
 				C4861D0131871D035CC07327 /* KeyRecorderView.swift */,
@@ -382,6 +385,7 @@
 				398052FC99D2C2CD71B1DFC5 /* AppDelegate.swift in Sources */,
 				C3267D6C7B3527E75BC44373 /* BreakTimerState.swift in Sources */,
 				E5D3BADF6F8A9BB8A808F28D /* BreakTimerTab.swift in Sources */,
+				DE02DEM00002000000000001 /* DemoTypeTab.swift in Sources */,
 				26292806CB72F8D077354D37 /* BreakTimerView.swift in Sources */,
 				1EAA0D96B867DF66AF0A6D2A /* BreakTimerWindow.swift in Sources */,
 				862780FF803ABA4C039BC6B7 /* BreakTimerWindowController.swift in Sources */,
