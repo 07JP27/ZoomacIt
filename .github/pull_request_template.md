@@ -17,9 +17,9 @@
 
 <!-- Check each item before requesting review. -->
 
-- [ ] ZoomIt との機能互換（操作や設定項目）が一致していることを確認しました。ZoomacIt 独自の機能の場合は、Owner とその機能の必要性について Issues でディスカッションしました。
-- [ ] ローカルマシンで動作を確認しました。
-- [ ] ユーザー向けドキュメントを記述し、内容が実際の挙動と一致していることを確認しました。
+- [ ] I confirmed feature compatibility with ZoomIt, including operations and settings items. For ZoomacIt-specific features, I discussed the need for the feature with the Owner in Issues.
+- [ ] I verified the behavior on my local machine.
+- [ ] I wrote user-facing documentation and confirmed that it matches the actual behavior.
 
 ## Screenshots / Recordings
 
