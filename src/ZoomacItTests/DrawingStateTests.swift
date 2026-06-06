@@ -3,6 +3,11 @@ import XCTest
 
 final class DrawingStateTests: XCTestCase {
 
+    override func setUp() {
+        super.setUp()
+        Settings.shared.defaultDrawShape = .freehand
+    }
+
     func testDefaultState() {
         let state = DrawingState()
         XCTAssertEqual(state.penWidth, 3.0)

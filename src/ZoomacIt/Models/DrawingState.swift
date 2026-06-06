@@ -95,20 +95,23 @@ final class DrawingState {
     }
 
     /// Determine the current shape type based on modifier flags and Tab key state.
+    /// When a non-freehand default is configured, the modifier that would normally
+    /// produce that shape gives freehand instead (swap behavior).
     func currentShapeType(modifiers: NSEvent.ModifierFlags) -> ShapeType {
         let hasShift = modifiers.contains(.shift)
         let hasControl = modifiers.contains(.control)
+        let defaultShape = Settings.shared.defaultDrawShape
 
         if isTabHeld {
-            return .ellipse
+            return defaultShape == .ellipse ? .freehand : .ellipse
         } else if hasShift && hasControl {
-            return .arrow
+            return defaultShape == .arrow ? .freehand : .arrow
         } else if hasShift {
-            return .line
+            return defaultShape == .line ? .freehand : .line
         } else if hasControl {
-            return .rectangle
+            return defaultShape == .rectangle ? .freehand : .rectangle
         } else {
-            return Settings.shared.defaultDrawShape
+            return defaultShape
         }
     }
 
