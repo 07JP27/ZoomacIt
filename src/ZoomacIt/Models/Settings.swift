@@ -70,6 +70,7 @@ final class Settings: @unchecked Sendable {
         // Draw
         static let defaultPenColor = "drawDefaultPenColor"
         static let defaultPenWidth = "drawDefaultPenWidth"
+        static let defaultDrawShape = "drawDefaultShape"
         static let highlighterOpacity = "drawHighlighterOpacity"
         static let highlighterWidthMultiplier = "drawHighlighterWidthMultiplier"
         static let spotlightDarkness = "drawSpotlightDarkness"
@@ -110,6 +111,7 @@ final class Settings: @unchecked Sendable {
             // Draw
             Keys.defaultPenColor: PenColor.red.rawValue,
             Keys.defaultPenWidth: 3.0,
+            Keys.defaultDrawShape: "freehand",
             Keys.highlighterOpacity: 0.35,
             Keys.highlighterWidthMultiplier: 4.0,
             Keys.spotlightDarkness: 0.6,
@@ -185,6 +187,11 @@ final class Settings: @unchecked Sendable {
     var defaultPenWidth: CGFloat {
         get { CGFloat(defaults.double(forKey: Keys.defaultPenWidth)) }
         set { defaults.set(Double(newValue), forKey: Keys.defaultPenWidth) }
+    }
+
+    var defaultDrawShape: ShapeType {
+        get { ShapeType(rawValue: defaults.string(forKey: Keys.defaultDrawShape) ?? "freehand") ?? .freehand }
+        set { defaults.set(newValue.rawValue, forKey: Keys.defaultDrawShape) }
     }
 
     var highlighterOpacity: CGFloat {

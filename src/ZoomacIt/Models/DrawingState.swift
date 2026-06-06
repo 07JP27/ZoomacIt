@@ -108,7 +108,7 @@ final class DrawingState {
         } else if hasControl {
             return .rectangle
         } else {
-            return .freehand
+            return Settings.shared.defaultDrawShape
         }
     }
 

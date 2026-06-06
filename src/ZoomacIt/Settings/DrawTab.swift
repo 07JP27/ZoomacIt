@@ -5,6 +5,7 @@ struct DrawTab: View {
 
     @AppStorage(Settings.Keys.defaultPenColor) private var penColorRaw: String = PenColor.red.rawValue
     @AppStorage(Settings.Keys.defaultPenWidth) private var penWidth: Double = 3.0
+    @AppStorage(Settings.Keys.defaultDrawShape) private var drawShapeRaw: String = "freehand"
     @AppStorage(Settings.Keys.highlighterOpacity) private var highlighterOpacity: Double = 0.35
     @AppStorage(Settings.Keys.highlighterWidthMultiplier) private var highlighterMultiplier: Double = 4.0
     @AppStorage(Settings.Keys.spotlightDarkness) private var spotlightDarkness: Double = 0.6
@@ -46,6 +47,12 @@ struct DrawTab: View {
                     Text("\(Int(penWidth)) pt")
                         .frame(width: 40, alignment: .trailing)
                         .monospacedDigit()
+                }
+
+                Picker("Default Shape", selection: $drawShapeRaw) {
+                    ForEach(ShapeType.allCases, id: \.self) { shape in
+                        Text(shape.rawValue.capitalized).tag(shape.rawValue)
+                    }
                 }
             }
 
