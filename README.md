@@ -1,3 +1,9 @@
+The official ZoomIt for Mac has now been released, so this project will no longer be maintained.
+
+https://github.com/microsoft/ZoomitForMac
+
+Thank you for the huge support you've given us so far.
+
 <p align="center">
   <img src="images/banner.png" width="500">
 </p>
